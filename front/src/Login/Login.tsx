@@ -2,8 +2,13 @@ import {useState} from 'react'
 import axios, { Axios, AxiosResponse } from 'axios'
 import styled from 'styled-components'
 
-interface LoginRespinse {
+interface LoginResponse {
     
+}
+
+interface LoginCredentials {
+    userId : string;
+    password : string;
 }
 
 const LoginContainer = styled.div `
