@@ -1,10 +1,9 @@
 import React from 'react';
+import { RegiContainer } from './Register/RegiSelect/RegiContainer';
 
 function App() {
   return (
-    <div>
-      <div>안녕하세요</div>
-    </div>
+    <RegiContainer></RegiContainer>
   );
 }
 
