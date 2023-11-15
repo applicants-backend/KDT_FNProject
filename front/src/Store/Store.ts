@@ -33,3 +33,5 @@ const UserDataState = create<UserDatainterface>(set=>({
     setStoreid : res => set({Storeid : res}),
     setToken : res =>set({Token : res})
 }))
+export {UserDataState};
+
