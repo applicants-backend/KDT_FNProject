@@ -1,2 +1,16 @@
-import create from 'zustand' // create로 zustand를 불러옵니다.
+import create from 'zustand'
 
+///// 유저타입 상태
+interface UserType {
+    UserType: string;
+    setUserTypeAdmin: () => void;
+    setUserTypeWorker: () => void;
+}
+
+const UserTypeState = create<UserType>(set => ({
+    UserType : "none",
+    setUserTypeAdmin : ()=> set({UserType:"Admin"}),
+    setUserTypeWorker : () => set({UserType: "Worker"})
+}))
+
+export default UserTypeState;
