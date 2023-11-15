@@ -1,6 +1,10 @@
 export default function RegiInformation () {
-    return 
-        <>
-            <div>RegiInformation</div>
-        </>
+    return (
+        <div>
+            <label>
+                ID : 
+            <input name="ID" placeholder="ID"/>
+            </label>
+        </div>
+    )
 }

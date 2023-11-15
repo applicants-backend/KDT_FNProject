@@ -1,13 +1,14 @@
-import Login from './Login/Login';
+import RegiInformation from './Register/RegiInformation/RegiInformation';
+
 import RegiContainer from './Register/RegiSelect/RegiContainer';
 
 function App() {
   return (
-    <>
-      <RegiContainer></RegiContainer>
-      <Login/>
-    </>
-    
+
+      <>
+        <RegiContainer></RegiContainer>
+        <RegiInformation></RegiInformation>
+      </>
   );
 }
 
