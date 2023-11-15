@@ -8,7 +8,7 @@ interface UserType {
 }
 
 const UserTypeState = create<UserType>(set => ({
-    UserType : "none",
+    UserType : "Worker",
     setUserTypeAdmin : ()=> set({UserType:"Admin"}),
     setUserTypeWorker : () => set({UserType: "Worker"})
 }))
