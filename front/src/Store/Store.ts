@@ -8,9 +8,28 @@ interface UserType {
 }
 
 const UserTypeState = create<UserType>(set => ({
-    UserType : "none",
+    UserType : "Worker",
     setUserTypeAdmin : ()=> set({UserType:"Admin"}),
     setUserTypeWorker : () => set({UserType: "Worker"})
 }))
 
 export default UserTypeState;
+
+///// 유정정보
+interface UserDatainterface{
+    Userid : string,
+    Storeid : string,
+    Token : string
+    setUserid : (res:string) => void;
+    setStoreid : (res:string) => void;
+    setToken : (res:string) => void;
+}
+
+const UserDataState = create<UserDatainterface>(set=>({
+    Userid : "none",
+    Storeid :"none",
+    Token : "none",
+    setUserid : res => set({Userid: res}),
+    setStoreid : res => set({Storeid : res}),
+    setToken : res =>set({Token : res})
+}))
