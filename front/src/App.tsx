@@ -7,8 +7,8 @@ function App() {
 
       <>
       <Loginpage/>
-        {/* <RegiContainer></RegiContainer>
-        <RegiInformation></RegiInformation> */}
+        <RegiContainer></RegiContainer>
+        <RegiInformation></RegiInformation>
       </>
   );
 }
