@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import UserTypeState from "../Store/Store";
+import {UserDataState} from "../Store/Store";
 
 interface props {
   type : String;
@@ -11,6 +12,8 @@ export default function Login({type, img} : props) {
   const [userId, setUserId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const {UserType,setUserTypeAdmin, setUserTypeWorker} = UserTypeState(state => state)
+  const { setUserid, setStoreid, setToken } = UserDataState(state => state); 
+
 
   const handleLogin = async () => {
     try {
@@ -22,7 +25,9 @@ export default function Login({type, img} : props) {
       const response = await axios.post(`/${UserType}/login`, { userId, password });
       console.log('로그인', response.data);
       if(response.data.result){
-        
+        setUserid(response.data.member.userid);
+        setStoreid(response.data.member.storeid);
+        setToken(response.data.token);
       }
     } catch (error) {
       alert('로그인 실패. 아이디와 비밀번호를 확인하세요.');
