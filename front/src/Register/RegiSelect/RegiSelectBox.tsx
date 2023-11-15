@@ -1,19 +1,22 @@
+import UserTypeState from "../../Store/Store";
+
 interface props {
-    Usertype : String;
+    type : String;
     img : string;
 }
 
-export default function RegiSelectBox ({Usertype,img} : props) {
+export default function RegiSelectBox ({type,img} : props) {
 
-    function UsertypeSession(){
-        
-    }
+    const {UserType,setUserTypeAdmin, setUserTypeWorker} = UserTypeState(state => state)
+  
 
     return (
-        <div>
-            <div>{Usertype}</div>
-            <img src={img} alt={`${Usertype} 이미지`}/>
-            <button>{Usertype}</button>
+        <div onClick={type ===  "사업자"? setUserTypeAdmin : setUserTypeWorker}>
+            <div>{type}</div>
+            <img src={img} alt={`${type} 이미지`}/>
+            <button >{type}</button>
+            <div>{UserType}</div>
         </div>
+  
     )
 }
