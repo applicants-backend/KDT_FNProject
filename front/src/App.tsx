@@ -1,14 +1,13 @@
-import Loginpage from './Login/Loginpage';
-import RegiInformation from './Register/RegiInformation/RegiInformation';
-import RegiContainer from './Register/RegiSelect/RegiContainer';
+import NaviCon from './Navi/NaviBar/NaviCon';
+import Profile from './Navi/Profile/Profile';
+
 
 function App() {
   return (
 
       <>
-      <Loginpage/>
-        <RegiContainer></RegiContainer>
-        <RegiInformation></RegiInformation>
+      <Profile></Profile>
+      <NaviCon></NaviCon>
       </>
   );
 }
