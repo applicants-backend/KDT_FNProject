@@ -1,7 +1,9 @@
 import React from 'react';
 import SchedulerModal from './SchedulerModal';
 import { useScheduleStore } from '../../Store/Store';
-
+import Modal from 'react-modal'
+import ReactDatePicker from 'react-datepicker';
+import Fullcalander from '@fullcalendar/react'
 
 function Scheduler() {
   const scheduleStore = useScheduleStore();

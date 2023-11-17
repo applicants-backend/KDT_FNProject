@@ -1,20 +1,33 @@
-// SchedulerModal.tsx
-
 import React, { useState } from 'react';
+import axios from 'axios';
+import { UserDataState } from '../../Store/Store';
 
 interface SchedulerModalProps {
   onClose: () => void;
   onSubmit: (startTime: string, endTime: string, registerTime: string) => void;
 }
 
-const SchedulerModal: React.FC<SchedulerModalProps> = ({ onClose, onSubmit }) => {
+export default function SchedulerModal({ onClose, onSubmit }: SchedulerModalProps): React.ReactElement {
+  const MemberId = UserDataState();
   const [startTime, setStartTime] = useState<string>('');
   const [endTime, setEndTime] = useState<string>('');
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const registerTime = new Date().toISOString();
-    onSubmit(startTime, endTime, registerTime);
-    onClose();
+    console.log({startTime,endTime,registerTime,MemberId})
+    
+    try {
+      await axios.post('/Worktime/data', {
+        startTime,
+        endTime,
+        registerTime,
+        MemberId
+      });
+      onSubmit(startTime, endTime, registerTime);
+      onClose();
+    } catch (error) {
+      console.error('등록할수 없습니다.', error);
+    }
   };
 
   return (
@@ -29,6 +42,4 @@ const SchedulerModal: React.FC<SchedulerModalProps> = ({ onClose, onSubmit }) =>
       <button onClick={onClose}>취소</button>
     </div>
   );
-};
-
-export default SchedulerModal;
+}
