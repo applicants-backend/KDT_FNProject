@@ -19,12 +19,12 @@ export default function Profile () {
 
         const loadUserData = async () => {
 
-            // const Userprofile = await axios.post(`/${UserType}/profile`,Userid)
+            // const Userprofile = await axios.post(`/${UserType}/profile`,Memberid)
             // const Storeprofile = await axios.post(`/Store/profile`,Storeid)
 
-            // setuserImg(Userprofile.userImg)
-            // setuserName(Userprfile.userName)
-            // setphoneNumber(Userprofile.phoneNumber)
+            // setuserImg(Userprofile.memberimg)
+            // setuserName(Userprfile.name)
+            // setphoneNumber(Userprofile.phonenumber)
 
             // setcompanyName(Storeprofile.companyName)
             // setcompanyNumber(Storeprofile.companyNumber)
@@ -47,7 +47,6 @@ export default function Profile () {
                 :
             <></>
             }
-
         </div>
     )
 }
