@@ -22,6 +22,7 @@ export default function Login({type, img} : props) {
       } else {
         setUserTypeWorker();
       }
+      console.log(memberId,password,{UserType})
       const response = await axios.post(`/${UserType}/login`, { memberId, password });
       console.log('로그인', response.data);
       if(response.data.result){
