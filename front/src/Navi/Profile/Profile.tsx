@@ -5,7 +5,7 @@ import axios from "axios"
 export default function Profile () {
 
     const {UserType} = UserTypeState(state=>state)
-    const {Userid, Storeid, Token } = UserDataState(state=>state)
+    const {Memberid, Storeid, Token } = UserDataState(state=>state)
 
     const[userImg, setuserImg] =useState<string>()
     const[companyImg, setcompanyImg] =useState<string>()

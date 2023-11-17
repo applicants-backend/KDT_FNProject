@@ -17,19 +17,19 @@ export default UserTypeState;
 
 ///// 유정정보
 interface UserDatainterface{
-    Userid : string,
+    Memberid : string,
     Storeid : string,
     Token : string
-    setUserid : (res:string) => void;
+    setMemberid : (res:string) => void;
     setStoreid : (res:string) => void;
     setToken : (res:string) => void;
 }
 
 const UserDataState = create<UserDatainterface>(set=>({
-    Userid : "none",
+    Memberid : "none",
     Storeid :"none",
     Token : "none",
-    setUserid : res => set({Userid: res}),
+    setMemberid : res => set({Memberid: res}),
     setStoreid : res => set({Storeid : res}),
     setToken : res =>set({Token : res})
 }))
