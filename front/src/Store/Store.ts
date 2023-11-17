@@ -35,3 +35,19 @@ const UserDataState = create<UserDatainterface>(set=>({
 }))
 export {UserDataState};
 
+////// 스케쥴러 
+
+interface ScheduleStore {
+    startTime: string;
+    endTime: string;
+    registerTime: string;
+    setSchedule: (startTime: string, endTime: string, registerTime: string) => void;
+  }
+  
+  export const useScheduleStore = create<ScheduleStore>((set) => ({
+    startTime: '',
+    endTime: '',
+    registerTime: '',
+    setSchedule: (startTime, endTime, registerTime) => set({ startTime, endTime, registerTime }),
+  }));
+
