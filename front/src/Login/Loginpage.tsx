@@ -12,7 +12,7 @@ export default function Loginpage() {
       <button onClick={() => setUserTypeAdmin()}>사업자 로그인</button>
 
       {UserType && (
-        <Login type={UserType} img={UserType=== "Worker" ? "/Img/WorkerImg.jpeg" : "/Img/CompanyImg.jpeg"} />
+        <Login type={UserType} img={UserType=== "user" ? "/Img/WorkerImg.jpeg" : "/Img/CompanyImg.jpeg"} />
       )}
     </>
   );

@@ -1,5 +1,14 @@
 import create from 'zustand'
 
+///// EC2 URL
+interface url {
+    URL : string
+}
+const URLstate = create<url>(set=>({
+    URL : "http://ec2-3-39-203-178.ap-northeast-2.compute.amazonaws.com"
+}))
+export {URLstate};
+
 ///// 유저타입 상태
 interface UserType {
     UserType: string;
@@ -9,8 +18,8 @@ interface UserType {
 
 const UserTypeState = create<UserType>(set => ({
     UserType : "Worker",
-    setUserTypeAdmin : ()=> set({UserType:"Admin"}),
-    setUserTypeWorker : () => set({UserType: "Worker"})
+    setUserTypeAdmin : ()=> set({UserType:"admin"}),
+    setUserTypeWorker : () => set({UserType: "worker"})
 }))
 
 export default UserTypeState;

@@ -37,12 +37,12 @@ export default function Profile () {
 
     return (
         <div>
-            <img src={UserType=="Admin" ? companyImg : userImg} alt='Img'/>
+            <img src={UserType === "admin" ? companyImg : userImg} alt='Img'/>
             <div>{userName}</div>
             <div>{phoneNumber}</div>
             <div>{companyName}</div>
 
-            {UserType === "Admin" ?
+            {UserType === "admin" ?
             <div>{companyNumber}</div>
                 :
             <></>
