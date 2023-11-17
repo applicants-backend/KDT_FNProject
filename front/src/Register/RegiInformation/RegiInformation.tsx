@@ -1,17 +1,17 @@
 import axios from "axios"
 import UserTypeState from "../../Store/Store"
-import React, { useCallback, useState, useRef } from "react"
+import React, { useCallback, useState, useRef, useEffect } from "react"
 
 interface UserData {
-    id : String,
-    pw : String,
+    memberid : String,
+    password : String,
     name : String,
-    phoneNumber : String,
-    companyName? : String,
-    CEO? : String,
-    companyNumber? : String,
-    companyAddress? : String,
-    companyToken? : String
+    phonenumber : String,
+    companyName? : String | null,
+    CEO? : String | null,
+    companyNumber? : String | null,
+    companyAddress? : String | null,
+    companyToken? : String | null
 }
 
 export default function RegiInformation () {
@@ -19,10 +19,10 @@ export default function RegiInformation () {
 
     ///// sever로 전송 될 데이터들
     const [userForm, setuserForm] = useState<UserData>({
-        id : "",
-        pw : "",
+        memberid : "",
+        password : "",
         name : "",
-        phoneNumber : "",
+        phonenumber : "",
         companyName : "",
         CEO : "",
         companyNumber : "",
@@ -40,7 +40,6 @@ export default function RegiInformation () {
             setuserForm((prevForm) => ({ ...prevForm, [name]: value }));
     }
 
-
     ///// 유효성 검사 메세지들
     const [duplimessage,setDuplimessage] = useState<String>("아이디 중복검사를 해주세요")
     const [duplicate,setDuplicate] = useState<boolean>(false)
@@ -54,9 +53,12 @@ export default function RegiInformation () {
     const [companyNum,setcompanyNum] = useState<String>()
     const [companyNumIs, setcompanyNumIs] = useState<boolean>(false)
 
+    const [duliComNumber, setDuliComNumber] = useState<boolean>()
+    const [duliComNumberMsg, setDuliComNumberMsg] = useState<String>()
+
     const checkDuplicatedId = async () => {
 
-       const duplicate = await axios.post(`/duplicate/${UserType}`,userForm.id)
+       const duplicate = await axios.post(`/duplicate/${UserType}`,userForm.memberid)
        if(duplicate){
             setDuplicate(true)
             setDuplimessage("사용가능한 아이디입니다.")
@@ -91,7 +93,7 @@ export default function RegiInformation () {
         const {value} = e.target
         InputHandle(e);
 
-        if(userForm.pw === value){
+        if(userForm.password === value){
             setrepwMes("비밀번호가 일치합니다.")
             setrepwIS(true)
         } else {
@@ -99,7 +101,7 @@ export default function RegiInformation () {
             setrepwIS(false)
         }
 
-    },[userForm.pw])
+    },[userForm.password])
 
     const handleCompanyNumber = useCallback((e :React.ChangeEvent<HTMLInputElement>)=>{
         
@@ -133,11 +135,12 @@ export default function RegiInformation () {
     const Register = async () => {
         /////// 빈값에 focus 
         ////// 공통
-        if (!userForm.id) {
+        if (!userForm.memberid) {
             idInputRef.current && idInputRef.current.focus();
+            console.log("중복검사")
             return;
         }
-        if (!userForm.pw) {
+        if (!userForm.password) {
             pwInputRef.current && pwInputRef.current.focus();
             return;
         }
@@ -149,12 +152,18 @@ export default function RegiInformation () {
             nameInputRef.current && nameInputRef.current.focus();
             return;
         }
-        if (!userForm.phoneNumber) {
+        if (!userForm.phonenumber) {
             phoneNumberInputRef.current && phoneNumberInputRef.current.focus();
             return;
         }
 
-        if (UserType === "Admin") {
+        if (UserType === "Worker") {
+            ///// 근로자일때
+            if (!userForm.companyToken) {
+                companyTokenInputRef.current && companyTokenInputRef.current.focus();
+                return;
+            }
+        } else if (UserType === "Admin") {
             ////// 사업자일때
             if (!userForm.companyName) {
                 companyNameInputRef.current && companyNameInputRef.current.focus();
@@ -172,29 +181,31 @@ export default function RegiInformation () {
                 companyAddressInputRef.current && companyAddressInputRef.current.focus();
                 return;
             }
-
-        } else {
-            ///// 근로자일때
-            if (!userForm.companyToken) {
-                companyTokenInputRef.current && companyTokenInputRef.current.focus();
-                return;
-            }
-        }
+        }      
         ///// 유효성 통과검사
         if(!duplicate){
             idInputRef.current && idInputRef.current.focus();
+            console.log("유효성검사")
             return;
         }
         if(!pwIs){
             pwInputRef.current && pwInputRef.current.focus();
+            console.log("비밀번호검사")
             return;
         }
-        if(!companyNumIs){
-            companyNumberInputRef.current && companyNumberInputRef.current.focus();
-            return;
+        if(UserType === "Admin") {
+            if(!companyNumIs){
+                companyNumberInputRef.current && companyNumberInputRef.current.focus();
+                return;
+            }
         }
-
         console.log(userForm)
+        const dupliComNum = await axios.post(`/duplicate/campanynumber`,userForm.companyNumber)
+        if(!dupliComNum){
+            companyNumberInputRef.current && companyNumberInputRef.current.focus();
+            setDuliComNumberMsg("중복된 사업자번호입니다.")
+            return ;
+        }
         // const res = await axios.post(`/register/${UserType}`,userForm)
 
     }
@@ -203,12 +214,12 @@ export default function RegiInformation () {
     return (
         <form name="RegisterForm">
             <label htmlFor="id"> 아이디 : </label>
-            <input name="id" id="id" placeholder="아이디" ref={idInputRef} onChange={InputHandle}/>
+            <input name="memberid" id="id" placeholder="아이디" ref={idInputRef} onChange={InputHandle}/>
             <button type="button" onClick={(e)=>checkDuplicatedId()}>중복확인</button>
             <div style={{ color: duplicate ? 'green' : 'red' }}>{duplimessage}</div>
 
             <label htmlFor="pw"> 비밀번호 : </label>
-            <input name="pw" type="password" id="pw" placeholder="비밀번호" ref={pwInputRef} onChange={e=>handlePassWordVail(e)}/>
+            <input name="password" type="password" id="pw" placeholder="비밀번호" ref={pwInputRef} onChange={e=>handlePassWordVail(e)}/>
             <div style={{ color: pwIs ? 'green' : 'red' }}>{pwMes}</div>
 
             <label htmlFor="PWre"> 비밀번호 확인 : </label>
@@ -219,7 +230,7 @@ export default function RegiInformation () {
             <input name="name" id="name" placeholder="이름" ref={nameInputRef} onChange={InputHandle}/>
 
             <label htmlFor="phoneNumber"> 휴대전화 번호 : </label>
-            <input name="phoneNumber" id="phoneNumber" placeholder="휴대전화 번호" ref={phoneNumberInputRef} onChange={InputHandle}/>
+            <input name="phonenumber" id="phoneNumber" placeholder="휴대전화 번호" ref={phoneNumberInputRef} onChange={InputHandle}/>
 
             {UserType === "Admin" ? 
             /////// 유저타입이 사업자 일때 추가되는 input
@@ -233,6 +244,7 @@ export default function RegiInformation () {
             <label htmlFor="companyNumber"> 사업자 번호 : </label>
             <input name="companyNumber" id="companyNumber" placeholder="000-00-00000 형식으로 입력하세요" ref={companyNumberInputRef} onChange={e=>handleCompanyNumber(e)}/>
             <div style={{ color: companyNumIs ? 'green' : 'red' }}>{companyNum}</div>
+            <div style={{ color: duliComNumber ? 'green' : 'red' }}>{duliComNumberMsg}</div>
 
             <label htmlFor="companyAddress"> 사업자 주소 : </label>
             <input name="companyAddress" id="companyAddress" ref={companyAddressInputRef} onChange={InputHandle}/>
