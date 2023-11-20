@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react"
 import UserTypeState, { UserDataState } from "../../Store/Store"
 import axios from "axios"
+import ReactModal from "react-modal"
+import ProfileModal from "./ProfileModal"
+import NaviCon from "../NaviBar/NaviCon"
+
 
 export default function Profile () {
 
@@ -19,21 +23,30 @@ export default function Profile () {
 
         const loadUserData = async () => {
 
-            // const Userprofile = await axios.post(`/${UserType}/profile`,Memberid)
-            // const Storeprofile = await axios.post(`/Store/profile`,Storeid)
+            const UserRes = await axios.post(`/${UserType}/profile`,Memberid)
+            const StoreRes = await axios.post(`/Store/profile`,Storeid)
 
-            // setuserImg(Userprofile.memberimg)
-            // setuserName(Userprfile.name)
-            // setphoneNumber(Userprofile.phonenumber)
+            const Userprofile = UserRes.data
+            const Storeprofile = StoreRes.data
 
-            // setcompanyName(Storeprofile.companyName)
-            // setcompanyNumber(Storeprofile.companyNumber)
-            // setcompanyImg(Stroeprofile.companyImg)
+            setuserImg(Userprofile.memberimg)
+            setuserName(Userprofile.name)
+            setphoneNumber(Userprofile.phonenumber)
+
+            setcompanyName(Storeprofile.companyName)
+            setcompanyNumber(Storeprofile.companyNumber)
+            setcompanyImg(Storeprofile.companyImg)
            
         }
 
         loadUserData()
     },[])
+
+    const [modalOpenis, setmodalOpenis] = useState(false)
+
+    const editProfle = () => {
+        setmodalOpenis(true)
+    }
 
     return (
         <div>
@@ -47,6 +60,19 @@ export default function Profile () {
                 :
             <></>
             }
+            
+            <button type="button" onClick={(e)=>{editProfle()}}>프로필수정</button>
+            <ReactModal
+            ///// modal 설정
+             isOpen={modalOpenis}
+             onRequestClose={()=>setmodalOpenis(false)}
+             ariaHideApp={false}
+             shouldCloseOnOverlayClick={true}
+            >
+            <ProfileModal></ProfileModal>
+            </ReactModal>  
+
+            <NaviCon></NaviCon>
         </div>
     )
 }

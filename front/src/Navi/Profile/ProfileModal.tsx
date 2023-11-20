@@ -1,5 +1,5 @@
 import axios from "axios"
-import UserTypeState from "../../Store/Store"
+import UserTypeState, { URLstate, UserDataState } from "../../Store/Store"
 import React, { useCallback, useState, useRef, useEffect } from "react"
 
 
@@ -18,33 +18,44 @@ interface UserData {
 
 export default function ProfileModal() {
     const {UserType} = UserTypeState(state => state)
-    
+    const {Memberid, Storeid} = UserDataState(state=>state)
+
     const[userImg, setuserImg] =useState<string>()
     const[companyImg, setcompanyImg] =useState<string>()
 
     const[userPw, setUserpw]=useState<string>()
-
     const[userName, setuserName] = useState<string>()
     const[phoneNumber, setphoneNumber] =useState<string>()
+    
     const[companyName, setcompanyName] =useState<string>()
     const[companyNumber, setcompanyNumber] =useState<string>()
+    const[companyAddress, setcompanyAddress] =useState<string>()
+    const[companyToken, setcompanyToken] =useState<string>()
+    const[CEO, setCEO] =useState<string>()
+
 
     useEffect(()=> {
-
+        ///// 유저데이터 로드
         const loadUserData = async () => {
 
-            // const Userprofile = await axios.post(`/${UserType}/profile`,Memberid)
-            // const Storeprofile = await axios.post(`/Store/profile`,Storeid)
+            const UserRes = await axios.post(`/${UserType}/profile`,Memberid)
+            const StoreRes = await axios.post(`/Store/profile`,Storeid)
 
-            // setUserpw(Userprofile.password)
+            const Userprofile = UserRes.data
+            const Storeprofile = StoreRes.data
 
-            // setuserImg(Userprofile.memberimg)
-            // setuserName(Userprfile.name)
-            // setphoneNumber(Userprofile.phonenumber)
+            setUserpw(Userprofile.password)
 
-            // setcompanyName(Storeprofile.companyName)
-            // setcompanyNumber(Storeprofile.companyNumber)
-            // setcompanyImg(Stroeprofile.companyImg)
+            setuserImg(Userprofile.memberimg)
+            setuserName(Userprofile.name)
+            setphoneNumber(Userprofile.phonenumber)
+
+            setcompanyName(Storeprofile.companyName)
+            setCEO(Storeprofile.CEO)
+            setcompanyNumber(Storeprofile.companyNumber)
+            setcompanyAddress(Storeprofile.companyAddress)
+            setcompanyImg(Storeprofile.companyImg)
+            setcompanyToken(Storeprofile.companToken)
            
         }
 
@@ -69,8 +80,6 @@ export default function ProfileModal() {
     const editData = () => {
         setreadOnly(!readOnly)
     }
-
-  
 
     ///// 인풋 통합핸들러
     const InputHandle = (e : React.ChangeEvent<HTMLInputElement>) => {
@@ -175,7 +184,16 @@ export default function ProfileModal() {
             console.log("비밀번호검사")
             return;
         }
+
+        const updateUserdata = await axios.post(`${URLstate}/update`,userForm)
+        console.log(updateUserdata)
         console.log(userForm)
+
+    }
+
+    const DeleteMemberData = async () => {
+        const deleteMember = axios.delete(`${URLstate}/delete/${Memberid}`)
+        console.log(deleteMember)
 
     }
 
@@ -185,10 +203,10 @@ export default function ProfileModal() {
             <img src={UserType=="admin" ? companyImg : userImg} alt='Img'/>
 
             <label htmlFor="id"> 아이디 : </label>
-            <input name="memberid" id="id" placeholder="아이디" readOnly/>
+            <input name="memberid" value={Memberid} id="id" placeholder="아이디" readOnly/>
 
             <label htmlFor="pw"> 비밀번호 : </label>
-            {/* <input name="password" type="password" id="pw" placeholder="비밀번호" onClick={editData()} ref={pwInputRef} onChange={e=>handlePassWordVail(e)}/> */}
+            <input name="password" type="password" id="pw" value={userPw} placeholder="비밀번호" ref={pwInputRef} onChange={e=>handlePassWordVail(e)}/>
             <div style={{ color: pwIs ? 'green' : 'red' }}>{pwMes}</div>
 
             <label htmlFor="PWre"> 비밀번호 확인 : </label>
@@ -196,34 +214,35 @@ export default function ProfileModal() {
             <div style={{ color: repwIs ? 'green' : 'red'}}>{repwMes}</div>
 
             <label htmlFor="name"> 이름 : </label>
-            <input name="name" id="name" placeholder="이름" ref={nameInputRef} onChange={InputHandle}/>
+            <input name="name" id="name" placeholder="이름" value={userName} ref={nameInputRef} onChange={InputHandle}/>
 
             <label htmlFor="phoneNumber"> 휴대전화 번호 : </label>
-            <input name="phonenumber" id="phoneNumber" placeholder="휴대전화 번호" ref={phoneNumberInputRef} onChange={InputHandle}/>
+            <input name="phonenumber" id="phoneNumber" value={phoneNumber} placeholder="휴대전화 번호" ref={phoneNumberInputRef} onChange={InputHandle}/>
 
             {UserType === "admin" ? 
             /////// 유저타입이 사업자 일때 추가되는 input
                 <>
             <label htmlFor="companyName"> 사업자 상호명 : </label>
-            <input name="companyName" id="companyName" placeholder="사업자 상호명" ref={companyNameInputRef} onChange={InputHandle}/>
+            <input name="companyName" id="companyName" value={companyName} placeholder="사업자 상호명" ref={companyNameInputRef} onChange={InputHandle}/>
 
             <label htmlFor="CEO"> 대표자 : </label>
-            <input name="CEO" id="CEO" placeholder="대표자" ref={CEOInputRef} onChange={InputHandle}/>
+            <input name="CEO" id="CEO" placeholder="대표자" value={CEO} ref={CEOInputRef} onChange={InputHandle}/>
 
             <label htmlFor="companyNumber"> 사업자 번호 : </label>
-            <input name="companyNumber" id="companyNumber" placeholder="000-00-00000 형식으로 입력하세요" readOnly/>
+            <input name="companyNumber" id="companyNumber" value={companyNumber} placeholder="000-00-00000 형식으로 입력하세요" readOnly/>
 
             <label htmlFor="companyAddress"> 사업자 주소 : </label>
-            <input name="companyAddress" id="companyAddress" ref={companyAddressInputRef} onChange={InputHandle}/>
+            <input name="companyAddress" id="companyAddress" value={companyAddress} ref={companyAddressInputRef} onChange={InputHandle}/>
                 </> 
                 :
             /////// 유저타입이 근로자 일때 추가되는 input
                 <>
             <label htmlFor="companyToken"> 사업장 인증번호 </label>
-            <input name="companyToken" id="companyToken" placeholder="사업장 인증번호" readOnly/>
+            <input name="companyToken" id="companyToken" value={companyToken} placeholder="사업장 인증번호" readOnly/>
                 </>
             }
-            <button type="button" onClick={(e)=>{UpdateMemberData()}}>수정하기</button>
+            <button type="button" onClick={(e)=>{UpdateMemberData()}}>정보수정</button>
+            <button type="button" onClick={(e)=>{DeleteMemberData()}}>회원탈퇴</button>
         </form>
     )
 }
