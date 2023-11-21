@@ -12,7 +12,7 @@ export default function Login({type, img} : props) {
   const [memberId, setMemberId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const {UserType,setUserTypeAdmin, setUserTypeWorker} = UserTypeState(state => state)
-  const { setMemberid, setStoreid, setToken } = UserDataState(state => state); 
+  const { setMemberid, setStoreid, setToken , setName} = UserDataState(state => state); 
 
 
   const handleLogin = async () => {
@@ -29,7 +29,8 @@ export default function Login({type, img} : props) {
         setMemberid(response.data.member.memberid);
         setStoreid(response.data.member.storeid);
         setToken(response.data.token);
-      }
+        setName(response.data.member.name)
+      }   
     } catch (error) {
       alert('로그인 실패. 아이디와 비밀번호를 확인하세요.');
     }

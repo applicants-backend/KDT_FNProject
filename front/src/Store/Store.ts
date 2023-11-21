@@ -28,19 +28,23 @@ export default UserTypeState;
 interface UserDatainterface{
     Memberid : string,
     Storeid : string,
-    Token : string
+    Token : string,
+    Name : string,
     setMemberid : (res:string) => void;
     setStoreid : (res:string) => void;
     setToken : (res:string) => void;
+    setName : (res:string) => void;
 }
 
 const UserDataState = create<UserDatainterface>(set=>({
     Memberid : "none",
     Storeid :"none",
     Token : "none",
+    Name : "none",
     setMemberid : res => set({Memberid: res}),
     setStoreid : res => set({Storeid : res}),
-    setToken : res =>set({Token : res})
+    setToken : res =>set({Token : res}),
+    setName : res => set({Name : res})
 }))
 export {UserDataState};
 
@@ -61,6 +65,7 @@ interface ScheduleStore {
   }));
 
 ///// WorkList
+
 interface WorkListinterface {
     workId : BigInt ;
     setWorkId : (res : BigInt) => void;
@@ -70,17 +75,22 @@ interface WorkListinterface {
 export const WorkState = create<WorkListinterface> ((set) => ({
     workId : BigInt(0) ,
     setWorkId : res => set({workId : res}),
-  workList : [],
-  setWorkList : res => set({workList:res})
+    workList : [],
+    setWorkList : res => set({workList:res})
 
 }))
 
 ///// TodoList
+interface Contentinterface {
+    contentId : BigInt,
+    contents : string,
+    checked : string
+  }
 interface TodoListinterface {
     contentId : BigInt;
     setContentId : (res : BigInt) => void;
-    todoList : [];
-    setTodoList : (res : []) => void;
+    todoList : Contentinterface[];
+    setTodoList : (res : Contentinterface[]) => void;
 }
 export const TodoState = create<TodoListinterface> ((set)=>({
     contentId : BigInt(0),
@@ -90,11 +100,16 @@ export const TodoState = create<TodoListinterface> ((set)=>({
 }))
 
 ///// CommentList
+interface Cominterface {
+    commentid : BigInt,
+    name : string,
+    comment : string
+}
 interface CommentListinterface {
-    commentList : [];
-    setCommnetList : (res : []) => void;
+    commentList : Cominterface[];
+    setCommentList : (res : Cominterface[]) => void;
 }
 export const CommentState = create<CommentListinterface> ((set)=>({
     commentList : [],
-    setCommnetList : res => set({commentList : res})
+    setCommentList : res => set({commentList : res})
 }))
