@@ -5,12 +5,12 @@ import React, { useRef, useState } from "react"
 
 
 export default function WorkAddModal() {
-    const {Memberid,Storeid} = UserDataState(state=>state)
+    const {Storeid} = UserDataState(state=>state)
     const {workList,setWorkList} = WorkState(state=>state)
     const [title,setTitle] = useState<String>()
     const AddRef = useRef<HTMLInputElement>(null)
 
-    const AddData = {Memberid, Storeid, title, date:Date()}
+    const AddData = {Storeid, title, date: new Date().toString()}
     
     const WorkAdd = async () => {
 
