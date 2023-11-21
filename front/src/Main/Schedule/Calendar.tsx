@@ -1,53 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction"
-import axios from 'axios'
-import Modal from "react-modal";
+import interactionPlugin from "@fullcalendar/interaction";
+import CalendarModal from "./CalendarModal"; // Import your custom ModalContainer
+import styled from 'styled-components';
+import CalendarModaltest from "./CalendarModaltest";
+import axios from "axios";
+import UserTypeState, { UserDataState } from "../../Store/Store";
 
-interface CalendarEvent {
-  title: string;
-  start: Date;
-  allDay?: boolean;
-}
+export default function Calendar() {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [isModalOpen, setModalOpen] = useState(false);
 
-export default function Calendar () {
-  const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const {UserType} = UserTypeState(state=>state)
+  const {Memberid} = UserDataState(state=>state)
 
   const handleDateClick = (arg: any) => {
-    const title = prompt("일정의 이름을 입력하세요:");
-    if (title) {
-      const newEvent: CalendarEvent = {
-        title: title,
-        start: arg.date,
-        allDay: true,
-      };
-
-      setEvents((prevEvents) => [...prevEvents, newEvent]);
-      console.log([newEvent])
-
-      // axios.post("/schedule/events", [newEvent])
-      // .then(response => {
-      //   console.log("응답합니다." , response)
-      // })
-      // .catch(error => {
-      //   console.error("에러 발생:", error);
-      // });
-    }
+    setSelectedDate(arg.date);
+    openModal();
   };
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+  useEffect(()=> {
+    const loadCalenderData = async () => {
+        const UserRes = await axios.post(`/${UserType}/calendar/${Memberid}`)
+        
+    }
+})
+
 
   return (
     <>
+    <div>
       <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        dayMaxEvents={true}
-        events={events}
-        eventDisplay="list-item"
-        height={"800px"}
-        editable={true}
-        dateClick={handleDateClick}
-      />
+          plugins={[dayGridPlugin, interactionPlugin]}
+          initialView="dayGridMonth"
+          dayMaxEvents={true}
+          eventDisplay="list-item"
+          height={"800px"}
+          editable={true}
+          dateClick={handleDateClick}
+        />
+        
+        {isModalOpen && (
+          <CalendarModaltest
+            isOpen={isModalOpen}
+            closeModal={closeModal}
+            selectedDate={selectedDate}
+          />
+        )}
+    </div>
+      
     </>
   );
-};
+}
