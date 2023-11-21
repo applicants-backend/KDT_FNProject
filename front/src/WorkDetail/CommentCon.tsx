@@ -1,4 +1,4 @@
-export default function WorkComment () {
+export default function CommentCon () {
     return 
         <>
             <div>WorkComment</div>

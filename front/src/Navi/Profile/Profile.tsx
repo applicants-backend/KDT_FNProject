@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import UserTypeState, { UserDataState } from "../../Store/Store"
+import UserTypeState, { URLstate, UserDataState } from "../../Store/Store"
 import axios from "axios"
 import ReactModal from "react-modal"
 import ProfileModal from "./ProfileModal"
@@ -9,7 +9,7 @@ import NaviCon from "../NaviBar/NaviCon"
 export default function Profile () {
 
     const {UserType} = UserTypeState(state=>state)
-    const {Memberid, Storeid, Token } = UserDataState(state=>state)
+    const {Memberid, Storeid, Token, setToken} = UserDataState(state=>state)
 
     const[userImg, setuserImg] =useState<string>()
     const[companyImg, setcompanyImg] =useState<string>()
@@ -48,6 +48,11 @@ export default function Profile () {
         setmodalOpenis(true)
     }
 
+    const CodeGenerater = async () => {
+        const CodeRes = await axios.post(`${URLstate}/generate`,{companyNumber})
+        const Code = CodeRes.data
+        setToken(Code)
+    }
     return (
         <div>
             <img src={UserType === "admin" ? companyImg : userImg} alt='Img'/>
@@ -56,8 +61,11 @@ export default function Profile () {
             <div>{companyName}</div>
 
             {UserType === "admin" ?
+            <>
             <div>{companyNumber}</div>
-                :
+            <button onClick={(e)=>CodeGenerater()}>초대코드 발급</button>
+            <div>{Token}</div>
+            </> :
             <></>
             }
             

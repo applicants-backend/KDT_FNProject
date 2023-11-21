@@ -60,7 +60,7 @@ export default function ProfileModal() {
         }
 
         loadUserData()
-    },[])
+    })
 
     const [userForm, setuserForm] = useState<UserData>({
         memberid : "",
@@ -73,13 +73,6 @@ export default function ProfileModal() {
         companyAddress : "",
         companyToken : ""
     })
-
-
-    ///// input 클릭시 활성화
-    const [readOnly, setreadOnly] = useState<boolean>(true)
-    const editData = () => {
-        setreadOnly(!readOnly)
-    }
 
     ///// 인풋 통합핸들러
     const InputHandle = (e : React.ChangeEvent<HTMLInputElement>) => {
@@ -200,7 +193,7 @@ export default function ProfileModal() {
     
     return(
         <form name="RegisterForm">
-            <img src={UserType=="admin" ? companyImg : userImg} alt='Img'/>
+            <img src={UserType ==="admin" ? companyImg : userImg} alt='Img'/>
 
             <label htmlFor="id"> 아이디 : </label>
             <input name="memberid" value={Memberid} id="id" placeholder="아이디" readOnly/>

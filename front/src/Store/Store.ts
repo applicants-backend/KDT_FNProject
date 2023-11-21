@@ -60,3 +60,41 @@ interface ScheduleStore {
     setSchedule: (startTime, endTime, registerTime) => set({ startTime, endTime, registerTime }),
   }));
 
+///// WorkList
+interface WorkListinterface {
+    workId : BigInt ;
+    setWorkId : (res : BigInt) => void;
+    workList : [] ;
+    setWorkList : (res : []) => void;
+}
+export const WorkState = create<WorkListinterface> ((set) => ({
+    workId : BigInt(0) ,
+    setWorkId : res => set({workId : res}),
+  workList : [],
+  setWorkList : res => set({workList:res})
+
+}))
+
+///// TodoList
+interface TodoListinterface {
+    contentId : BigInt;
+    setContentId : (res : BigInt) => void;
+    todoList : [];
+    setTodoList : (res : []) => void;
+}
+export const TodoState = create<TodoListinterface> ((set)=>({
+    contentId : BigInt(0),
+    setContentId : res => set({contentId : res}),
+    todoList : [],
+    setTodoList : res => set({todoList : res})
+}))
+
+///// CommentList
+interface CommentListinterface {
+    commentList : [];
+    setCommnetList : (res : []) => void;
+}
+export const CommentState = create<CommentListinterface> ((set)=>({
+    commentList : [],
+    setCommnetList : res => set({commentList : res})
+}))
