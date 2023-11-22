@@ -9,10 +9,11 @@ interface Commentinterface {
 
 
 export default function CommentCompo (props : Commentinterface) {
+    const {URL} = URLstate(state=>state)
     const {commentList, setCommentList} = CommentState(state=>state)
     
     const DeleteComment = () => {
-        const DelRes = axios.delete(`${URLstate}/comment/delete${props.commentid}`)
+        const DelRes = axios.delete(`${URL}/comment/delete${props.commentid}`)
         const DeletedList = commentList.filter((comments : Commentinterface) => comments.commentid !== props.commentid)
         setCommentList(DeletedList)
     }

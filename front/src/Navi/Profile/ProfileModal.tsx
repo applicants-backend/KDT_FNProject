@@ -17,6 +17,7 @@ interface UserData {
 
 
 export default function ProfileModal() {
+    const {URL} = URLstate(state=>state)
     const {UserType} = UserTypeState(state => state)
     const {Memberid, Storeid} = UserDataState(state=>state)
 
@@ -178,16 +179,15 @@ export default function ProfileModal() {
             return;
         }
 
-        const updateUserdata = await axios.post(`${URLstate}/update`,userForm)
+        const updateUserdata = await axios.post(`${URL}/update`,userForm)
         console.log(updateUserdata)
         console.log(userForm)
 
     }
 
     const DeleteMemberData = async () => {
-        const deleteMember = axios.delete(`${URLstate}/delete/${Memberid}`)
+        const deleteMember = await axios.delete(UserType=="admin"? `${URL}/delete/${Memberid}/${Storeid}` :`${URL}/delete/${Memberid}` )
         console.log(deleteMember)
-
     }
 
     

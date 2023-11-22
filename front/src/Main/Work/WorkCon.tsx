@@ -13,7 +13,7 @@ interface Workdata {
 }
 
 export default function WorkCon () {
-
+    const {URL} = URLstate(state=>state)
     const {Storeid} = UserDataState(state=>state)
     const {workList, setWorkList} = WorkState(state=>state)
 
@@ -21,7 +21,7 @@ export default function WorkCon () {
 
     useEffect(()=>{
         const loadWorks = async () => {
-            const workRes = await axios.get(`${URLstate}/work/${Storeid}`)
+            const workRes = await axios.get(`${URL}/work/${Storeid}`)
             const works  = workRes.data
             setWorkList(works)
         }

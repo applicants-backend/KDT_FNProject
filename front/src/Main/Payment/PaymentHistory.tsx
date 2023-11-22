@@ -8,13 +8,13 @@ interface Paypentinterface {
 }
 
 export default function PaymentHistory () {
-    
+    const {URL} = URLstate(state=>state)
     const {Memberid} = UserDataState(state=>state)
     const [paymentList, setPaymentList]= useState([])
 
     useEffect(()=>{
         const loadData = async () => {
-            const Paymentres = await axios.get(`${URLstate}/payment/${Memberid}`)
+            const Paymentres = await axios.get(`${URL}/payment/${Memberid}`)
             const RoadedPayment = Paymentres.data
             setPaymentList(RoadedPayment)
         }

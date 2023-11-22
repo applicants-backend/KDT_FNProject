@@ -13,13 +13,13 @@ export {URLstate};
 interface UserType {
     UserType: string;
     setUserTypeAdmin: () => void;
-    setUserTypeWorker: () => void;
+    setUserTypeUser: () => void;
 }
 
 const UserTypeState = create<UserType>(set => ({
-    UserType : "Worker",
+    UserType : "user",
     setUserTypeAdmin : ()=> set({UserType:"admin"}),
-    setUserTypeWorker : () => set({UserType: "worker"})
+    setUserTypeUser : () => set({UserType: "user"})
 }))
 
 export default UserTypeState;
@@ -27,18 +27,18 @@ export default UserTypeState;
 ///// 유정정보
 interface UserDatainterface{
     Memberid : string,
-    Storeid : string,
+    Storeid : BigInt,
     Token : string,
     Name : string,
     setMemberid : (res:string) => void;
-    setStoreid : (res:string) => void;
+    setStoreid : (res:BigInt) => void;
     setToken : (res:string) => void;
     setName : (res:string) => void;
 }
 
 const UserDataState = create<UserDatainterface>(set=>({
     Memberid : "none",
-    Storeid :"none",
+    Storeid : BigInt(0),
     Token : "none",
     Name : "none",
     setMemberid : res => set({Memberid: res}),
@@ -130,4 +130,55 @@ interface CalendarEventsData {
 export const useEventsStore = create<CalendarEventsData> ((set)=> ({
     events : [],
     setEvents : res => set({events : res})
+}))
+
+////// profile
+interface Profileinterface {
+    memberid : String,
+    password : String,
+    name : String,
+    phonenumber : String,
+    userImg : string,
+    companyImg : string,
+    companyName? : String | null,
+    CEO? : String | null,
+    companyNumber? : String | null,
+    companyAddress? : String | null,
+    companyToken? : String | null
+    setmemberid : (res:string) => void;
+    setpassword : (res:string) => void;
+    setname :(res:string) => void;
+    setphonenumber :(res:string) => void;
+    setuserImg :(res:string) => void;
+    setcompanyImg :(res:string) => void;
+    setcompanyName :(res:string) => void;
+    setCEO : (res:string) => void;
+    setcompanyNumber : (res:string) => void;
+    setcompanyAddress : (res:string) => void;
+    setcompanyToken? : (res:string) => void;
+}
+
+export const ProfileState = create<Profileinterface>((set)=>({
+    memberid : "",
+    password : "",
+    name : "",
+    phonenumber : "",
+    userImg : "",
+    companyImg : "",    
+    companyName : "",
+    CEO : "",
+    companyNumber : "",
+    companyAddress : "",
+    companyToken : "",
+    setmemberid : res => set({memberid : res}),
+    setpassword : res => set({password : res}),
+    setname :res => set({name : res}),
+    setphonenumber : res => set({phonenumber : res}),
+    setuserImg : res => set({userImg : res}),
+    setcompanyImg : res => set({companyImg : res}),
+    setcompanyName :res => set({companyName : res}),
+    setCEO : res => set({CEO : res}),
+    setcompanyNumber :res => set({companyNumber : res}),
+    setcompanyAddress :res => set({companyAddress : res}),
+    setcompanyToken : res => set({companyToken : res})
 }))
