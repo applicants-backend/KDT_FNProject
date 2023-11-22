@@ -1,16 +1,16 @@
 import axios from "axios"
 import UserTypeState, { URLstate } from "../../Store/Store"
-import React, { useCallback, useState, useRef, useEffect } from "react"
+import React, { useCallback, useState, useRef } from "react"
 
 interface UserData {
     memberid : String,
     password : String,
     name : String,
     phonenumber : String,
-    companyName? : String | null,
-    CEO? : String | null,
-    companyNumber? : String | null,
-    companyAddress? : String | null,
+    companyname? : String | null,
+    ceo? : String | null,
+    companynumber? : String | null,
+    // companyAddress? : String | null,
     companyToken? : String | null
 }
 
@@ -24,10 +24,10 @@ export default function RegiInformation () {
         password : "",
         name : "",
         phonenumber : "",
-        companyName : "",
-        CEO : "",
-        companyNumber : "",
-        companyAddress : "",
+        companyname : "",
+        ceo : "",
+        companynumber : "",
+        // companyAddress : "",
         companyToken : ""
     })
 
@@ -54,15 +54,13 @@ export default function RegiInformation () {
     const [companyNum,setcompanyNum] = useState<String>()
     const [companyNumIs, setcompanyNumIs] = useState<boolean>(false)
 
-    const [duliComNumber, setDuliComNumber] = useState<boolean>()
-    const [duliComNumberMsg, setDuliComNumberMsg] = useState<String>()
 
     const checkDuplicatedId = async () => {
 
     //    const duplicate = await axios.post(`/duplicate/${UserType}`,userForm.memberid)
     //    if(duplicate){
             setDuplicate(true)
-    //         setDuplimessage("사용가능한 아이디입니다.")
+            setDuplimessage("사용가능한 아이디입니다.")
     //    } else{
     //         setDuplicate(false)
             // setDuplimessage("중복되는 아이디입니다.")
@@ -166,22 +164,22 @@ export default function RegiInformation () {
             }
         } else if (UserType === "admin") {
             ////// 사업자일때
-            if (!userForm.companyName) {
+            if (!userForm.companyname) {
                 companyNameInputRef.current && companyNameInputRef.current.focus();
                 return;
             }
-            if (!userForm.CEO) {
+            if (!userForm.ceo) {
                 CEOInputRef.current && CEOInputRef.current.focus();
                 return;
             }
-            if (!userForm.companyNumber) {
+            if (!userForm.companynumber) {
                 companyNumberInputRef.current && companyNumberInputRef.current.focus();
                 return;
             }
-            if (!userForm.companyAddress) {
-                companyAddressInputRef.current && companyAddressInputRef.current.focus();
-                return;
-            }
+            // if (!userForm.companyAddress) {
+            //     companyAddressInputRef.current && companyAddressInputRef.current.focus();
+            //     return;
+            // }
         }      
         ///// 유효성 통과검사
         if(!duplicate){
@@ -201,12 +199,6 @@ export default function RegiInformation () {
             }
         }
         console.log(userForm)
-        // const dupliComNum = await axios.post(`/duplicate/campanynumber`,userForm.companyNumber)
-        // if(!dupliComNum){
-        //     companyNumberInputRef.current && companyNumberInputRef.current.focus();
-        //     setDuliComNumberMsg("중복된 사업자번호입니다.")
-        //     return ;
-        // }
         const res = await axios.post(`${URL}/${UserType}/join`,userForm)
         console.log(res.data)
     }
@@ -237,15 +229,14 @@ export default function RegiInformation () {
             /////// 유저타입이 사업자 일때 추가되는 input
                 <>
             <label htmlFor="companyName"> 사업자 상호명 : </label>
-            <input name="companyName" id="companyName" placeholder="사업자 상호명" ref={companyNameInputRef} onChange={InputHandle}/>
+            <input name="companyname" id="companyName" placeholder="사업자 상호명" ref={companyNameInputRef} onChange={InputHandle}/>
 
             <label htmlFor="CEO"> 대표자 : </label>
-            <input name="CEO" id="CEO" placeholder="대표자" ref={CEOInputRef} onChange={InputHandle}/>
+            <input name="ceo" id="CEO" placeholder="대표자" ref={CEOInputRef} onChange={InputHandle}/>
 
             <label htmlFor="companyNumber"> 사업자 번호 : </label>
-            <input name="companyNumber" id="companyNumber" placeholder="000-00-00000 형식으로 입력하세요" ref={companyNumberInputRef} onChange={e=>handleCompanyNumber(e)}/>
+            <input name="companynumber" id="companyNumber" placeholder="000-00-00000 형식으로 입력하세요" ref={companyNumberInputRef} onChange={e=>handleCompanyNumber(e)}/>
             <div style={{ color: companyNumIs ? 'green' : 'red' }}>{companyNum}</div>
-            <div style={{ color: duliComNumber ? 'green' : 'red' }}>{duliComNumberMsg}</div>
 
             <label htmlFor="companyAddress"> 사업자 주소 : </label>
             <input name="companyAddress" id="companyAddress" ref={companyAddressInputRef} onChange={InputHandle}/>

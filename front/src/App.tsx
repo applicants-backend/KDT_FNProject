@@ -1,11 +1,16 @@
-import Work from "./Main/Work/Work";
+import Loginpage from "./Login/Loginpage";
+import Profile from "./Navi/Profile/Profile";
+import RegiInformation from "./Register/RegiInformation/RegiInformation";
+
 
 
 
 function App() {
   return (
       <>
-      <Work></Work>
+        <RegiInformation></RegiInformation>
+        <Loginpage></Loginpage>
+        <Profile></Profile>
       </>
   );
 }

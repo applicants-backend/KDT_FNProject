@@ -10,14 +10,14 @@ interface Datainterface {
 }
 
 export default function PaymentCon () {
-
+    const {URL} = URLstate(state=>state)
     const [PaymentData, setPaymentData] = useState<Datainterface>()
     const {Memberid} = UserDataState(state=>state)
     const [Color,setColor] = useState(true)
 
     useEffect(()=>{
         const loadData = async () =>{
-            const PaymentdataRes = await axios.get(`${URLstate}/paymentdata/${Memberid}`)
+            const PaymentdataRes = await axios.get(`${URL}/paymentdata/${Memberid}`)
             const PaymentDatares = PaymentdataRes.data
             setPaymentData(PaymentDatares)
             if (PaymentDatares?.comparemonth.includes('-')){

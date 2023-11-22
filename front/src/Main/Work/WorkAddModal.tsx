@@ -9,7 +9,7 @@ export default function WorkAddModal() {
     const {workList,setWorkList} = WorkState(state=>state)
     const [title,setTitle] = useState<String>()
     const AddRef = useRef<HTMLInputElement>(null)
-
+    const {URL} = URLstate(state=>state)
     const AddData = {Storeid, title, date: new Date().toString()}
     
     const WorkAdd = async () => {
@@ -19,7 +19,7 @@ export default function WorkAddModal() {
             return;
         }
 
-        const AddRes = await axios.post(`${URLstate}/work/add`,AddData)
+        const AddRes = await axios.post(`${URL}/work/add`,AddData)
         const Add = AddRes.data
         setWorkList(...workList,Add)
 

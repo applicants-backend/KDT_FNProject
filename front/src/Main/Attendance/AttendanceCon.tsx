@@ -10,14 +10,14 @@ interface Datainterface {
 }
 
 export default function AttendanceCon () {
-
+    const {URL} = URLstate(state=>state)
     const {Memberid} = UserDataState(state=>state)
     const [AttendData, setAttendData] = useState<Datainterface>()
     const [Color,setColor] = useState(true)
 
     useEffect(()=>{
         const loadData = async () =>{
-            const AttenddataRes = await axios.get(`${URLstate}/attendance/data/${Memberid}`)
+            const AttenddataRes = await axios.get(`${URL}/attendance/data/${Memberid}`)
             const AttendDatares = AttenddataRes.data
             setAttendData(AttendDatares)
             if (AttendData?.comparemonth.includes('-')){
