@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import timeGridPlugin from "@fullcalendar/timegrid"
 import CalendarModal from "./CalendarModal"; // Import your custom ModalContainer
 import styled from 'styled-components';
 import CalendarModaltest from "./CalendarModaltest";
@@ -40,13 +41,19 @@ export default function Calendar() {
     <>
     <div>
       <FullCalendar
-          plugins={[dayGridPlugin, interactionPlugin]}
+          plugins={[dayGridPlugin,timeGridPlugin,interactionPlugin]}
           initialView="dayGridMonth"
           dayMaxEvents={true}
           eventDisplay="list-item"
-          height={"800px"}
+          height={"80vh"}
           editable={true}
           dateClick={handleDateClick}
+          weekends={true}
+          headerToolbar={{
+            left: "prev,next today",
+            center: "title",
+            right: "dayGridMonth,timeGridWeek,timeGridDay"
+          }}
         />
         
         {isModalOpen && (

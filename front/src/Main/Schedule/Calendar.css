@@ -2,3 +2,7 @@
     /* 모달이 FullCalendar 위에 렌더링되도록 z-index를 조정합니다. */
     z-index: 1000;
   } 
+
+  html {
+    white-space: pre-line;
+  }

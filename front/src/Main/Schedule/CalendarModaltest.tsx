@@ -11,8 +11,9 @@ interface CalendarModaltestProps {
 }
 
 interface CalenderData {
-    memberid : String,
+    memberid : String, 
     registerTime : String,
+    worker : String,
     start? : String | null,
     end? : String | null,
     startwork? : String | null,
@@ -56,7 +57,9 @@ export default function CalendarModaltest({
 
     const {UserType} = UserTypeState(state=>state)
     const {Memberid} = UserDataState(state=>state)
+
     const[registerTime, setRegisterTime] = useState<string>();
+    const[worker, setworker] = useState<string>();
 
     const[start, setStart] = useState<string>();
     const[end, setEnd] = useState<string>();
@@ -65,24 +68,26 @@ export default function CalendarModaltest({
     const[leavework, setLeaveWork] = useState<string>();
     
     // form 만들기
-    const [calenderForm, setCalendarForm] = useState<CalenderData>({
+    const [calendarForm, setCalendarForm] = useState<CalenderData>({
         memberid : "",
+        worker: "",
         registerTime : "",
         start : "",
         end : "",
         startwork : "",
         leavework : "",
-        registertime : "",
     })
 
     const InputHandler = (e : React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target
-        setCalendarForm((prevForm) => ({...prevForm, [Memberid]:value}))
+        const {id,value} = e.target
+        setCalendarForm((prevForm) => ({...prevForm, [id]:value}))
+        // console.log(InputHandler)
     }
 
     const Register = async () => {
-        const res = await axios.post(`${UserType}/calendar/`, calenderForm)
-        console.log(res.data)
+        // const res = await axios.post(`${UserType}/calendar/`, calenderForm)
+        console.log(calendarForm)
+        // console.log(res.data)
     }
 
 
@@ -91,7 +96,29 @@ export default function CalendarModaltest({
     isOpen ? (
       <ModalContainer>
         <ModalHeader>모달</ModalHeader>
-        <ModalContent>선택된 날짜: {selectedDate?.toString()}</ModalContent>
+        <ModalContent>
+            선택된 날짜: {selectedDate?.toString()}
+            <form name="RegisterForm">
+              <label htmlFor="worker">근무자 : </label>
+              <input type="text" id="worker" onChange={InputHandler}/>
+                {UserType === "admin" ? 
+                <>
+                    <label htmlFor="start">출근 시간 : </label>
+                    <input type="datetime-local" id="start" onChange={InputHandler} value={start}/>
+                    <label htmlFor="end">퇴근 시간 : </label>
+                    <input type="datetime-local" id="end" onChange={InputHandler} value={end}/>
+                </>
+                :
+                <>
+                    <label htmlFor="startwork">출근 시간 : </label>
+                    <input type="datetime-local" id="startwork" onChange={InputHandler} value={startwork}/>
+                    <label htmlFor="leavework">퇴근 시간 : </label>
+                    <input type="datetime-local" id="leavework" onChange={InputHandler} value={leavework}/>
+                </>
+                }
+                <button type="button" onClick={(e)=> {Register()}}>저장하기</button>
+            </form>
+            </ModalContent>
         <CloseButton onClick={closeModal}>Close Modal</CloseButton>
       </ModalContainer>
     ) : null
