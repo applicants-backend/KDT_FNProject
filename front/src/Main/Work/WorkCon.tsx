@@ -26,7 +26,7 @@ export default function WorkCon () {
             setWorkList(works)
         }
         loadWorks()
-    },[])
+    })
 
     const WriteAdd =() => {
         setmodalOpenis(true)

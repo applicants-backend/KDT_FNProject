@@ -1,4 +1,4 @@
-import { TodoState, WorkState } from "../../Store/Store";
+import { WorkState } from "../../Store/Store";
 
 interface Workdata {
     workid : BigInt ;
