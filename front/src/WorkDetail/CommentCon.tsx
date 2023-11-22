@@ -1,6 +1,6 @@
 import { useState } from "react"
 import CommentCompo from "./CommentCompo"
-import UserTypeState, { CommentState, URLstate, UserDataState } from "../Store/Store"
+import { CommentState, URLstate, UserDataState } from "../Store/Store"
 import axios from "axios"
 
 
