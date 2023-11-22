@@ -1,4 +1,4 @@
-import {create} from 'zustand'
+import create from 'zustand'
 
 ///// EC2 URL
 interface url {
@@ -112,4 +112,22 @@ interface CommentListinterface {
 export const CommentState = create<CommentListinterface> ((set)=>({
     commentList : [],
     setCommentList : res => set({commentList : res})
+}))
+
+
+// Calendar
+interface CalendarData {
+    worker : String,
+    start : String,
+    end : String,
+}
+
+interface CalendarEventsData {
+    events : CalendarData[];
+    setEvents : (res : CalendarData[]) => void;
+}
+
+export const useEventsStore = create<CalendarEventsData> ((set)=> ({
+    events : [],
+    setEvents : res => set({events : res})
 }))
