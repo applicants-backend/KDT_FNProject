@@ -57,14 +57,15 @@ export default function RegiInformation () {
 
     const checkDuplicatedId = async () => {
 
-    //    const duplicate = await axios.post(`/duplicate/${UserType}`,userForm.memberid)
-    //    if(duplicate){
+       const duplicate = await axios.post(`${URL}/doublecheck`,{memberid : userForm.memberid})
+       const mes = duplicate.data.message
+       if(mes === "사용가능한 아이디입니다."){
             setDuplicate(true)
             setDuplimessage("사용가능한 아이디입니다.")
-    //    } else{
-    //         setDuplicate(false)
-            // setDuplimessage("중복되는 아이디입니다.")
-    //    }
+       } else{
+            setDuplicate(false)
+            setDuplimessage("중복되는 아이디입니다.")
+       }
     }
 
 

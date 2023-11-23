@@ -6,12 +6,6 @@ import WorkSearch from "./WorkSearch";
 import WorkAddModal from "./WorkAddModal";
 import ReactModal from "react-modal";
 
-interface Workdata {
-    workid : BigInt ;
-    title : string ; 
-    date : string ;
-}
-
 export default function WorkCon () {
     const {URL} = URLstate(state=>state)
     const {Storeid} = UserDataState(state=>state)
@@ -26,7 +20,7 @@ export default function WorkCon () {
             setWorkList(works)
         }
         loadWorks()
-    })
+    },[])
 
     const WriteAdd =() => {
         setmodalOpenis(true)
@@ -49,7 +43,7 @@ export default function WorkCon () {
             <WorkAddModal></WorkAddModal>
             </ReactModal>  
   
-            {workList.map((value : Workdata)=>{
+            {workList.map((value)=>{
                 return <WorkCompo key={value.workid.toString()} title={value.title} date={value.date} workid={value.workid}></WorkCompo>
             })}
         </div>

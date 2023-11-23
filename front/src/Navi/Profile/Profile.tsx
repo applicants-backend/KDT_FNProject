@@ -10,29 +10,26 @@ export default function Profile () {
 
     const {URL} = URLstate(state=>state)
     const {UserType} = UserTypeState(state=>state)
-    const {Memberid, Storeid, Token, setToken} = UserDataState(state=>state)
+    const {Memberid, Token, setToken} = UserDataState(state=>state)
     const {userImg,companyImg,name,phonenumber,companyNumber,companyName, setuserImg, setcompanyImg, setname, setphonenumber, setcompanyName, setcompanyNumber} = ProfileState(state=>state)
 
     useEffect(()=> {
         const loadUserData = async () => {
-
-            const UserRes = await axios.post(`/${URL}/profile`,Memberid)
-            const StoreRes = await axios.post(`/Store/profile`,Storeid)
-
-            const Userprofile = UserRes.data
-            const Storeprofile = StoreRes.data
+            const UserRes = await axios.post(`${URL}/detail`,{memberid :Memberid})
+            const Userprofile = UserRes.data.data.member
+            const Storeprofile = UserRes.data.data.store
 
             setuserImg(Userprofile.memberimg)
             setname(Userprofile.name)
             setphonenumber(Userprofile.phonenumber)
 
-            setcompanyName(Storeprofile.companyName)
-            setcompanyNumber(Storeprofile.companyNumber)
+            setcompanyName(Storeprofile.companyname)
+            setcompanyNumber(Storeprofile.companynumber)
             setcompanyImg(Storeprofile.companyImg)
            
         }
         loadUserData()
-    },[userImg,companyImg,name,phonenumber,companyName,companyNumber])
+    },[Memberid])
 
     const [modalOpenis, setmodalOpenis] = useState(false)
 
