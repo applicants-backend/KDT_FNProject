@@ -116,18 +116,26 @@ export const CommentState = create<CommentListinterface> ((set)=>({
 
 
 // Calendar
-interface CalendarData {
-    worker : String,
-    start : String,
-    end : String,
-}
+export interface CalendarData {
+    memberid: string;
+    registerTime: string;
+    worker: string;
+    title : string;
+    start?: string | null;
+    end?: string | null;
+    startwork?: string | null;
+    leavework?: string | null;
+    registertime?: string;
+  }
 
-interface CalendarEventsData {
-    events : CalendarData[];
-    setEvents : (res : CalendarData[]) => void;
-}
-
-export const useEventsStore = create<CalendarEventsData> ((set)=> ({
-    events : [],
-    setEvents : res => set({events : res})
-}))
+// CalendarData와 함께 사용할 Store
+export interface EventsStore {
+    events: CalendarData[];
+    setEvents: (events: CalendarData[]) => void;
+  }
+  
+  // Zustand를 사용하여 Store를 생성
+  export const useEventsStore = create<EventsStore>((set) => ({
+    events: [],
+    setEvents: (events) => set({ events }),
+  }));
