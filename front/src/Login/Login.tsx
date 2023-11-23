@@ -44,7 +44,7 @@ export default function Login({type, img} : props) {
             <button >{type}</button>
             <div>{UserType}</div>
         </div>
-    <div>
+    <form>
       <label>
         Username:
         <input type="text" value={memberid} onChange={(e) => setMemberId(e.target.value)} />
@@ -52,12 +52,12 @@ export default function Login({type, img} : props) {
       <br />
       <label>
         Password:
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input type="password" value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} />
       </label>
       <br />
-      <button onClick={handleLogin}>Login</button>
+      <button type='button' onClick={handleLogin}>Login</button>
       <button>회원가입</button>
-    </div>
+    </form>
     </>
   );
 }

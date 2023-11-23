@@ -2,8 +2,8 @@ import { WorkState } from "../../Store/Store";
 
 interface Workdata {
     workid : BigInt ;
-    title : String ; 
-    date : String ;
+    title : string ; 
+    date : string ;
 }
 
 export default function WorkCompo (props : Workdata) {

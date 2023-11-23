@@ -1,4 +1,4 @@
-import create from 'zustand'
+import {create} from 'zustand'
 
 ///// EC2 URL
 interface url {
@@ -65,18 +65,24 @@ interface ScheduleStore {
   }));
 
 ///// WorkList
-
+interface workinterface {
+    workid : BigInt,
+    memberid : string,
+    storeid : BigInt,
+    title : string,
+    date : string
+}
 interface WorkListinterface {
     workId : BigInt ;
     setWorkId : (res : BigInt) => void;
-    workList : [] ;
-    setWorkList : (res : []) => void;
+    workList : workinterface[] ;
+    setWorkList : (res : workinterface[]) => void;
 }
 export const WorkState = create<WorkListinterface> ((set) => ({
     workId : BigInt(0) ,
     setWorkId : res => set({workId : res}),
     workList : [],
-    setWorkList : res => set({workList:res})
+    setWorkList : res => set({workList : res})
 
 }))
 
@@ -140,7 +146,7 @@ interface Profileinterface {
     phonenumber : String,
     userImg : string,
     companyImg : string,
-    companyName? : String | null,
+    companyName? : string | null,
     CEO? : String | null,
     companyNumber? : String | null,
     companyAddress? : String | null,
