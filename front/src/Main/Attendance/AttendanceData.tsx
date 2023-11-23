@@ -9,13 +9,13 @@ interface Datainterface {
 
 export default function AttendanceData () {
 
-
+    const {URL} = URLstate(state=>state)
     const [AttendData, setAttendData] = useState<Datainterface>()
     const {Memberid} = UserDataState(state=>state)
 
     useEffect(()=>{
         const loadData = async () =>{
-            const AttenddataRes = await axios.get(`${URLstate}/attendance/chart/${Memberid}`)
+            const AttenddataRes = await axios.get(`${URL}/attendance/chart/${Memberid}`)
             const AttendDatares = AttenddataRes.data
             setAttendData(AttendDatares)
         }

@@ -8,7 +8,7 @@ interface Contentinterface {
 }
 
 export default function WorkTodo (props : Contentinterface) {
-
+  const {URL} = URLstate(state=>state)
   const {todoList,setTodoList} = TodoState(state=>state)
   const {Name} = UserDataState(state=>state)
 
@@ -23,7 +23,7 @@ export default function WorkTodo (props : Contentinterface) {
   }
 
   const editTodo = async() => {
-    const editTodo = await axios.patch(`${URLstate}/todo/edit/content/${props.contentId}`,{contentId : props.contentId ,contents : content})
+    const editTodo = await axios.patch(`${URL}/todo/edit/content/${props.contentId}`,{contentId : props.contentId ,contents : content})
   }
 
   const handleKeyDown = (event : React.KeyboardEvent) => {
@@ -34,11 +34,11 @@ export default function WorkTodo (props : Contentinterface) {
   const editChecked = async () => {
     const editcheck = checked ? "" : Name
     setCheckMsg(checked ? "" : Name)
-    const editchecked = await axios.patch(`${URLstate}/todo/edit/check/${props.contentId}`,{contentId : props.contentId ,checked : editcheck })
+    const editchecked = await axios.patch(`${URL}/todo/edit/check/${props.contentId}`,{contentId : props.contentId ,checked : editcheck })
   }
 
   const DeleteTodo = async () => {
-    const deleteRes = await axios.delete(`/${URLstate}/todo/delete/${props.contentId}`)
+    const deleteRes = await axios.delete(`/${URL}/todo/delete/${props.contentId}`)
     const deletedList : Contentinterface[] = todoList.filter((todo : Contentinterface) => todo.contentId !== props.contentId)
     setTodoList(deletedList)
   }

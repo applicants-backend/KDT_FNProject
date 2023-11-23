@@ -2,15 +2,21 @@ import axios from "axios"
 import { URLstate, UserDataState, WorkState } from "../../Store/Store"
 import React, { useRef, useState } from "react"
 
-
+interface Workinterface {
+    workid : BigInt,
+    memberid : string,
+    storeid : BigInt,
+    title : string,
+    date : string
+}
 
 export default function WorkAddModal() {
-    const {Storeid} = UserDataState(state=>state)
+    const {Storeid,Memberid} = UserDataState(state=>state)
     const {workList,setWorkList} = WorkState(state=>state)
     const [title,setTitle] = useState<String>()
     const AddRef = useRef<HTMLInputElement>(null)
-
-    const AddData = {Storeid, title, date: new Date().toString()}
+    const {URL} = URLstate(state=>state)
+    const AddData = {storeid :Storeid.toString(), memberid : Memberid, title, date: new Date().toString()}
     
     const WorkAdd = async () => {
 
@@ -19,9 +25,10 @@ export default function WorkAddModal() {
             return;
         }
 
-        const AddRes = await axios.post(`${URLstate}/work/add`,AddData)
-        const Add = AddRes.data
-        setWorkList(...workList,Add)
+        const AddRes = await axios.post(`${URL}/work/board/create`,AddData)
+        console.log(AddRes.data.data)
+        const Add: Workinterface = AddRes.data.data;
+        setWorkList([...workList, Add]);
 
     }
     const handleKeyDown = (event : React.KeyboardEvent) => {

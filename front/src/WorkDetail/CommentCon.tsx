@@ -11,14 +11,14 @@ interface Commentinterface {
 }
 
 export default function CommentCon () {
-
+    const {URL} = URLstate(state=>state)
     const {commentList,setCommentList} = CommentState(state=>state)
 
     const {Name} = UserDataState(state=>state)
     const [inpustComment, setInputComment] = useState<string>()
 
     const ADDComment =  async() => {
-        const AddComRes = await axios.post(`${URLstate}/comment/add`,{Name,comment : inpustComment})
+        const AddComRes = await axios.post(`${URL}/comment/add`,{Name,comment : inpustComment})
         const Addcomment = AddComRes.data
         setCommentList([...commentList,Addcomment])
     }

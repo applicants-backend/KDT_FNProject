@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import UserTypeState, { URLstate, UserDataState } from "../../Store/Store"
+import UserTypeState, { ProfileState, URLstate, UserDataState } from "../../Store/Store"
 import axios from "axios"
 import ReactModal from "react-modal"
 import ProfileModal from "./ProfileModal"
@@ -8,39 +8,28 @@ import NaviCon from "../NaviBar/NaviCon"
 
 export default function Profile () {
 
+    const {URL} = URLstate(state=>state)
     const {UserType} = UserTypeState(state=>state)
-    const {Memberid, Storeid, Token, setToken} = UserDataState(state=>state)
-
-    const[userImg, setuserImg] =useState<string>()
-    const[companyImg, setcompanyImg] =useState<string>()
-
-    const[userName, setuserName] = useState<string>()
-    const[phoneNumber, setphoneNumber] =useState<string>()
-    const[companyName, setcompanyName] =useState<string>()
-    const[companyNumber, setcompanyNumber] =useState<string>()
+    const {Memberid, Token, setToken} = UserDataState(state=>state)
+    const {userImg,companyImg,name,phonenumber,companyNumber,companyName, setuserImg, setcompanyImg, setname, setphonenumber, setcompanyName, setcompanyNumber} = ProfileState(state=>state)
 
     useEffect(()=> {
-
         const loadUserData = async () => {
-
-            const UserRes = await axios.post(`/${UserType}/profile`,Memberid)
-            const StoreRes = await axios.post(`/Store/profile`,Storeid)
-
-            const Userprofile = UserRes.data
-            const Storeprofile = StoreRes.data
+            const UserRes = await axios.post(`${URL}/detail`,{memberid :Memberid})
+            const Userprofile = UserRes.data.data.member
+            const Storeprofile = UserRes.data.data.store
 
             setuserImg(Userprofile.memberimg)
-            setuserName(Userprofile.name)
-            setphoneNumber(Userprofile.phonenumber)
+            setname(Userprofile.name)
+            setphonenumber(Userprofile.phonenumber)
 
-            setcompanyName(Storeprofile.companyName)
-            setcompanyNumber(Storeprofile.companyNumber)
+            setcompanyName(Storeprofile.companyname)
+            setcompanyNumber(Storeprofile.companynumber)
             setcompanyImg(Storeprofile.companyImg)
            
         }
-
         loadUserData()
-    },[])
+    },[Memberid])
 
     const [modalOpenis, setmodalOpenis] = useState(false)
 
@@ -49,15 +38,15 @@ export default function Profile () {
     }
 
     const CodeGenerater = async () => {
-        const CodeRes = await axios.post(`${URLstate}/generate`,{companyNumber})
+        const CodeRes = await axios.post(`${URL}/generate`,{companynumber : companyNumber})
         const Code = CodeRes.data
         setToken(Code)
     }
     return (
         <div>
             <img src={UserType === "admin" ? companyImg : userImg} alt='Img'/>
-            <div>{userName}</div>
-            <div>{phoneNumber}</div>
+            <div>{name}</div>
+            <div>{phonenumber}</div>
             <div>{companyName}</div>
 
             {UserType === "admin" ?

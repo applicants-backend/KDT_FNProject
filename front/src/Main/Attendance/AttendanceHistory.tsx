@@ -8,13 +8,13 @@ interface Attendinterface {
 }
 
 export default function AttendanceHistory () {
-    
+    const {URL} = URLstate(state=>state)
     const {Memberid} = UserDataState(state=>state)
     const [AttendList, setAttendList]= useState([])
 
     useEffect(()=>{
         const loadData = async () => {
-            const Attendres = await axios.get(`${URLstate}/attendance/${Memberid}`)
+            const Attendres = await axios.get(`${URL}/attendance/${Memberid}`)
             const RoadedAttend = Attendres.data
             setAttendList(RoadedAttend)
         }

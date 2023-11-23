@@ -10,12 +10,13 @@ interface Contentinterface {
 }
 
 export default function WorkTodoCon () {
+    const {URL} = URLstate(state=>state)
     const {todoList,setTodoList} = TodoState(state=>state)
     const {workId} = WorkState(state=>state)
 
     const [inputTodo,setInputTodo]= useState<string>()
     const AddTodo = async () => {
-        const addTodoRes = await axios.post(`${URLstate}/todo/add`,{contents : inputTodo, workId})
+        const addTodoRes = await axios.post(`${URL}/todo/add`,{contents : inputTodo, workId})
         const addTodo = addTodoRes.data
         setTodoList([...todoList,addTodo])
     }
@@ -28,7 +29,7 @@ export default function WorkTodoCon () {
 
     useEffect(()=>{
         const loadTodo = async () => {
-            const loadRes = await axios.get(`${URLstate}/todo/${workId}`)
+            const loadRes = await axios.get(`${URL}/todo/${workId}`)
             const loadTodo = loadRes.data
             setTodoList(loadTodo)
         }

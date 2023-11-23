@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import UserTypeState from "../Store/Store";
+import UserTypeState, { URLstate } from "../Store/Store";
 import {UserDataState} from "../Store/Store";
 
 interface props {
@@ -9,9 +9,10 @@ interface props {
 }
 
 export default function Login({type, img} : props) {
-  const [memberId, setMemberId] = useState<string>('');
+  const [memberid, setMemberId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const {UserType,setUserTypeAdmin, setUserTypeWorker} = UserTypeState(state => state)
+  const {URL} =URLstate(state=>state)
+  const {UserType,setUserTypeAdmin, setUserTypeUser} = UserTypeState(state => state)
   const { setMemberid, setStoreid, setToken , setName} = UserDataState(state => state); 
 
 
@@ -20,16 +21,14 @@ export default function Login({type, img} : props) {
       if (type === "사업자") {
         setUserTypeAdmin();
       } else {
-        setUserTypeWorker();
+        setUserTypeUser();
       }
-      console.log(memberId,password,{UserType})
-      const response = await axios.post(`/${UserType}/login`, { memberId, password });
-      console.log('로그인', response.data);
-      if(response.data.result){
-        setMemberid(response.data.member.memberid);
-        setStoreid(response.data.member.storeid);
-        setToken(response.data.token);
-        setName(response.data.member.name)
+      const response = await axios.post(`${URL}/login`, { memberid, password });
+      console.log('로그인', response);
+      if(response.data){
+        setMemberid(response.data.data.memberid);
+        setStoreid(response.data.data.storeid);
+        setToken(response.data.data.token);
       }   
     } catch (error) {
       alert('로그인 실패. 아이디와 비밀번호를 확인하세요.');
@@ -39,26 +38,26 @@ export default function Login({type, img} : props) {
 
   return (
     <>
-    <div onClick={type ===  "사업자"? setUserTypeAdmin : setUserTypeWorker}>
+    <div onClick={type ===  "사업자"? setUserTypeAdmin : setUserTypeUser}>
             <div>{type}</div>
             <img src={img} alt={`${type} 이미지`}/>
             <button >{type}</button>
             <div>{UserType}</div>
         </div>
-    <div>
+    <form>
       <label>
         Username:
-        <input type="text" value={memberId} onChange={(e) => setMemberId(e.target.value)} />
+        <input type="text" value={memberid} onChange={(e) => setMemberId(e.target.value)} />
       </label>
       <br />
       <label>
         Password:
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input type="password" value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} />
       </label>
       <br />
-      <button onClick={handleLogin}>Login</button>
+      <button type='button' onClick={handleLogin}>Login</button>
       <button>회원가입</button>
-    </div>
+    </form>
     </>
   );
 }
