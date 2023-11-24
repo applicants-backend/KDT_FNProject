@@ -6,9 +6,10 @@ import {UserDataState} from "../Store/Store";
 interface props {
   type : String;
   img : string;
+  onLoginSuccess: () => void;
 }
 
-export default function Login({type, img} : props) {
+export default function Login({type, img, onLoginSuccess} : props) {
   const [memberid, setMemberId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const {URL} =URLstate(state=>state)
@@ -29,6 +30,7 @@ export default function Login({type, img} : props) {
         setMemberid(response.data.data.memberid);
         setStoreid(response.data.data.storeid);
         setToken(response.data.data.token);
+        onLoginSuccess();
       }   
     } catch (error) {
       alert('로그인 실패. 아이디와 비밀번호를 확인하세요.');
@@ -56,7 +58,6 @@ export default function Login({type, img} : props) {
       </label>
       <br />
       <button type='button' onClick={handleLogin}>Login</button>
-      <button>회원가입</button>
     </form>
     </>
   );

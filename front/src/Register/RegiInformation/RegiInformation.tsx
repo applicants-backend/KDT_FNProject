@@ -1,6 +1,7 @@
 import axios from "axios"
 import UserTypeState, { URLstate } from "../../Store/Store"
 import React, { useCallback, useState, useRef } from "react"
+import { useNavigate } from "react-router"
 
 interface UserData {
     memberid : String,
@@ -16,6 +17,7 @@ interface UserData {
 
 export default function RegiInformation () {
     const {UserType} = UserTypeState(state => state)
+    const navigate = useNavigate();
     const {URL} = URLstate(state=>state)
 
     ///// sever로 전송 될 데이터들
@@ -202,6 +204,7 @@ export default function RegiInformation () {
         console.log(userForm)
         const res = await axios.post(`${URL}/${UserType}/join`,userForm)
         console.log(res.data)
+        navigate('/main')
     }
 
 
