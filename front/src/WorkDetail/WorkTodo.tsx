@@ -2,7 +2,7 @@ import axios from "axios"
 import { TodoState, URLstate, UserDataState } from "../Store/Store"
 import React, { useState } from "react"
 interface Contentinterface {
-  contentId : BigInt,
+  contentsid : BigInt,
   contents : string,
   checked : string
 }
@@ -10,9 +10,9 @@ interface Contentinterface {
 export default function WorkTodo (props : Contentinterface) {
   const {URL} = URLstate(state=>state)
   const {todoList,setTodoList} = TodoState(state=>state)
-  const {Name} = UserDataState(state=>state)
+  const {Name,Memberid} = UserDataState(state=>state)
 
-  const [checked,setChecked] = useState<boolean>(props.checked.trim() ? false : true )
+  const [checked, setChecked] = useState<boolean>(props.checked && props.checked.trim() !== '' ?  true : false);
   const [CheckMsg,setCheckMsg] = useState(props.checked)
   const [readOnly, setReadOnly] =useState<boolean>(true)
   const [content, setContent] =useState<string>("")
@@ -23,7 +23,8 @@ export default function WorkTodo (props : Contentinterface) {
   }
 
   const editTodo = async() => {
-    const editTodo = await axios.patch(`${URL}/todo/edit/content/${props.contentId}`,{contentId : props.contentId ,contents : content})
+    const editTodo = await axios.patch(`${URL}/work/content/update`,{contentsid : props.contentsid ,contents : content})
+    console.log(editTodo)
   }
 
   const handleKeyDown = (event : React.KeyboardEvent) => {
@@ -34,12 +35,13 @@ export default function WorkTodo (props : Contentinterface) {
   const editChecked = async () => {
     const editcheck = checked ? "" : Name
     setCheckMsg(checked ? "" : Name)
-    const editchecked = await axios.patch(`${URL}/todo/edit/check/${props.contentId}`,{contentId : props.contentId ,checked : editcheck })
+    const editchecked = await axios.patch(`${URL}/work/content/checked`,{memberid : Memberid, contentsid : props.contentsid ,checked : editcheck })
+    console.log(editchecked)
   }
 
   const DeleteTodo = async () => {
-    const deleteRes = await axios.delete(`/${URL}/todo/delete/${props.contentId}`)
-    const deletedList : Contentinterface[] = todoList.filter((todo : Contentinterface) => todo.contentId !== props.contentId)
+    const deleteRes = await axios.delete(`${URL}/work/content/delete/${props.contentsid}`)
+    const deletedList : Contentinterface[] = todoList.filter((todo : Contentinterface) => todo.contentsid !== props.contentsid)
     setTodoList(deletedList)
   }
 

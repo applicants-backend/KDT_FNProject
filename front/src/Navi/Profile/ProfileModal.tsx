@@ -7,7 +7,7 @@ export default function ProfileModal() {
 
     const {URL} = URLstate(state=>state)
     const {UserType} = UserTypeState(state => state)
-    const {Memberid, Storeid} = UserDataState(state=>state)
+    const {Memberid, Storeid,setName} = UserDataState(state=>state)
 
 
     const[userImg, setUserImg] =useState<string>()
@@ -125,6 +125,7 @@ export default function ProfileModal() {
 
         const updateUserdata = await axios.patch(`${URL}/update`,{memberid : Memberid, password : userPw, phonenumber :phoneNumber, name : userName, role : UserType, memberimg :""})
         setname(userName)
+        setName(userName)
         setphonenumber(phoneNumber)
         
         console.log(updateUserdata)

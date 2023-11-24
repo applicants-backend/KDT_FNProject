@@ -16,8 +16,16 @@ export default function WorkAddModal() {
     const [title,setTitle] = useState<String>()
     const AddRef = useRef<HTMLInputElement>(null)
     const {URL} = URLstate(state=>state)
-    const AddData = {storeid :Storeid.toString(), memberid : Memberid, title, date: new Date().toString()}
     
+    const now = new Date();
+    const year = now.getFullYear()
+    const month = now.getMonth()+1;
+    const day = now.getDate();
+    const hour = now.getHours();
+    const min = now.getMinutes();
+
+    const AddData = {storeid :Storeid.toString(), memberid : Memberid, title, date:`${year}년 ${month}월 ${day}일 ${hour}:${min}`}
+
     const WorkAdd = async () => {
 
         if(!title) {
@@ -28,7 +36,7 @@ export default function WorkAddModal() {
         const AddRes = await axios.post(`${URL}/work/board/create`,AddData)
         console.log(AddRes.data.data)
         const Add: Workinterface = AddRes.data.data;
-        setWorkList([...workList, Add]);
+        setWorkList([Add,...workList]);
 
     }
     const handleKeyDown = (event : React.KeyboardEvent) => {
@@ -37,8 +45,6 @@ export default function WorkAddModal() {
         }
     };
     
-
-
     return(
        <form name="WorkAddForm">
         <input name="title" type="text" id="title" placeholder="제목을 입력해주세요"

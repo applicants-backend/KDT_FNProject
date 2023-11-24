@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import CommentCompo from "./CommentCompo"
-import { CommentState, URLstate, UserDataState } from "../Store/Store"
+import { CommentState, URLstate, UserDataState, WorkState } from "../Store/Store"
 import axios from "axios"
 
 
@@ -17,10 +17,18 @@ export default function CommentCon () {
     const {Name} = UserDataState(state=>state)
     const [inpustComment, setInputComment] = useState<string>()
 
+    const {workId} = WorkState(state=>state)
+    const {Memberid} =UserDataState(state=>state)
+
     const ADDComment =  async() => {
-        const AddComRes = await axios.post(`${URL}/comment/add`,{Name,comment : inpustComment})
-        const Addcomment = AddComRes.data
-        setCommentList([...commentList,Addcomment])
+        try {
+            const AddComRes = await axios.post(`${URL}/work/commnet/create`,{workid : workId, memberid : Memberid, contents : inpustComment})
+            const Addcomment = AddComRes.data.data
+            console.log(AddComRes)
+            // setCommentList([...commentList,Addcomment])    
+        } catch (error) {
+            console.log(error)
+        }
     }
     const handleKeyDown = (event : React.KeyboardEvent) => {
         if (event.key === "Enter") {
@@ -28,10 +36,27 @@ export default function CommentCon () {
         }
     };
 
+    useEffect(()=>{
+        const loadComment = async () => {
+        try{
+            const loadedCommentRes = await axios.get(`${URL}/work/boards/detail/${workId}`)
+            const loadedComment = loadedCommentRes.data.data.comment
+
+            if (loadedComment && Array.isArray(loadedComment)) {
+                setCommentList(loadedComment);
+                console.log(loadComment)
+            } 
+        } catch (error) {
+            // 오류 처리
+            console.error("Error loading contents:", error);
+        }
+        }
+    },[])
+
     return (
         <div>
             {commentList.map((value : Commentinterface)=>{
-                return <CommentCompo key={value.commentid.toString()} name={value.name} comment={value.comment} commentid={value.commentid}></CommentCompo>
+                return <CommentCompo key={value.commentid?.toString()} name={value.name} comment={value.comment} commentid={value.commentid}></CommentCompo>
             })}
 
             <input type="text" onChange={e=>setInputComment(e.target.value)} onKeyDown={handleKeyDown}/>

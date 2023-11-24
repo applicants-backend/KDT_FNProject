@@ -88,7 +88,7 @@ export const WorkState = create<WorkListinterface> ((set) => ({
 
 ///// TodoList
 interface Contentinterface {
-    contentId : BigInt,
+    contentsid : BigInt,
     contents : string,
     checked : string
   }
