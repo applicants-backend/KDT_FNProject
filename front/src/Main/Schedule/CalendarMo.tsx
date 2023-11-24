@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { CalendarData, URLstate } from '../../Store/Store';
+import UserTypeState, { CalendarData, URLstate } from '../../Store/Store';
 import axios from 'axios';
 
 interface CalendarMoProps {
@@ -41,21 +41,34 @@ const CloseButton = styled.button`
 
 function CalendarMo({ isOpen, closeModal, sendData, selectedEvent, selectedDate }: CalendarMoProps) {
   const [worker, setWorker] = useState<string>('');
+  const [start, setStart] = useState<string>('');
+  const [end, setEnd] = useState<string>('');
   const [startwork, setStartWork] = useState<string>('');
   const [leavework, setLeaveWork] = useState<string>('');
+  const [wage, setWage] = useState<string>('');
   const [additionalContent, setAdditionalContent] = useState<string>('');
 
+  const {UserType} = UserTypeState(state=>state)
+
+  const {URL} = URLstate(state=>state)
+
   function handleAdditionalAction() {
-    // const response = axios.post(`${URLstate}/admin/attendance`)
+    // axios.post(`${URL}/admin/attendance`)
     console.log('Data sent from CalendarMo:', {
       worker: worker,
       startwork: startwork,
       leavework: leavework,
+      start : start,
+      end : end,
+      wage : wage,
     });
     sendData({
       worker: worker,
+      start: start,
+      end: end,
       startwork: startwork,
       leavework: leavework,
+      wage:wage,
     });
     setAdditionalContent('추가 작업이 수행되었습니다.');
   }
@@ -75,6 +88,30 @@ function CalendarMo({ isOpen, closeModal, sendData, selectedEvent, selectedDate 
   function handleDelete() {
     // 삭제 로직 추가
   }
+  const renderAdminForm = () => (
+    <>
+      <label htmlFor="worker">근무자 : </label>
+      <input type="text" id="worker" onChange={(e) => setWorker(e.target.value)} />
+      <label htmlFor="start">출근 시간 : </label>
+      <input type="datetime-local" id="start" onChange={(e) => setStart(e.target.value)} />
+      <label htmlFor="end">퇴근 시간 : </label>
+      <input type="datetime-local" id="end" onChange={(e) => setEnd(e.target.value)} />
+      <label htmlFor="wage">급여 : </label>
+      <input type="text" id="wage" onChange={(e) => setWage(e.target.value)} />
+      <button type="button" onClick={handleAdditionalAction}>추가 작업 수행</button>
+    </>
+  );
+  const renderUserForm = () => (
+    <>
+      <label htmlFor="worker">근무자 : </label>
+      <input type="text" id="worker" onChange={(e) => setWorker(e.target.value)} />
+      <label htmlFor="startwork">출근 시간 : </label>
+      <input type="datetime-local" id="startwork" onChange={(e) => setStartWork(e.target.value)} />
+      <label htmlFor="leavework">퇴근 시간 : </label>
+      <input type="datetime-local" id="leavework" onChange={(e) => setLeaveWork(e.target.value)} />
+      <button type="button" onClick={handleAdditionalAction}>추가 작업 수행</button>
+    </>
+  );
 
   return (
     <>
@@ -82,13 +119,8 @@ function CalendarMo({ isOpen, closeModal, sendData, selectedEvent, selectedDate 
         <ModalContainer>
           <ModalHeader>선택된 날짜</ModalHeader>
           <form name="RegisterForm">
-            <label htmlFor="worker">근무자 : </label>
-            <input type="text" id="worker" onChange={(e) => setWorker(e.target.value)} />
-            <label htmlFor="startwork">출근 시간 : </label>
-            <input type="datetime-local" id="startwork" onChange={(e) => setStartWork(e.target.value)} />
-            <label htmlFor="leavework">퇴근 시간 : </label>
-            <input type="datetime-local" id="leavework" onChange={(e) => setLeaveWork(e.target.value)} />
-            <button type="button" onClick={handleAdditionalAction}>추가 작업 수행</button>
+            {UserType === "admin" ? renderAdminForm() : renderUserForm()}
+
           </form>
           <CloseButton onClick={closeModal}>닫기</CloseButton>
         </ModalContainer>

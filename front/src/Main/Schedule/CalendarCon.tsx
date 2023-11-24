@@ -4,6 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import CalendarMo from './CalendarMo';
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import UserTypeState from '../../Store/Store';
 
 
 
@@ -16,6 +17,8 @@ function CalendarCon(props: CalendarConProps) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [events, setEvents] = useState<any[]>([]); 
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
+
+  const {UserType} = UserTypeState(state=>state)
 
   // modal open 두개로 쪼개기
   const [isDateModalOpen, setDateModalOpen] = useState(false);
@@ -45,14 +48,22 @@ function CalendarCon(props: CalendarConProps) {
 
   function sendData(data: any) {
     console.log('Data received in CalendarCon:', data);
-    // 여기서 데이터를 사용하거나 다른 처리를 수행할 수 있습니다.
-    // 예를 들어 서버에 전송하거나 다른 로직 수행 가능
-
+  
+    // 근무자 이름을 이벤트 제목으로 사용
+    const title = data.worker;
+  
+    // 출근 시간을 이벤트 시작 시간으로 사용
+    const start = UserType === "admin" ? new Date(data.start) : new Date(data.startwork);
+  
+    // 퇴근 시간을 이벤트 종료 시간으로 사용
+    const end = UserType === "admin" ? new Date(data.work) : new Date(data.leavework);
+  
     const newEvent = {
-        title: data.worker, // 근무자 이름을 이벤트 제목으로 사용
-        start: new Date(data.startwork), // 출근 시간을 이벤트 시작 시간으로 사용
-        end: new Date(data.leavework), // 퇴근 시간을 이벤트 종료 시간으로 사용
-      };
+      title: title,
+      start: start,
+      end: end,
+    };
+  
     setEvents([...events, newEvent]);
   }
 
