@@ -13,7 +13,7 @@ export default function Login({type, img} : props) {
   const [password, setPassword] = useState<string>('');
   const {URL} =URLstate(state=>state)
   const {UserType,setUserTypeAdmin, setUserTypeUser} = UserTypeState(state => state)
-  const { setMemberid, setStoreid, setToken , setName} = UserDataState(state => state); 
+  const { setMemberid, setStoreid, setToken } = UserDataState(state => state); 
 
 
   const handleLogin = async () => {

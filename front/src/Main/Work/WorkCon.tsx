@@ -6,26 +6,34 @@ import WorkSearch from "./WorkSearch";
 import WorkAddModal from "./WorkAddModal";
 import ReactModal from "react-modal";
 
+interface workinterface {
+    workid : BigInt,
+    memberid : string,
+    storeid : BigInt,
+    title : string,
+    date : string
+}
+
 export default function WorkCon () {
     const {URL} = URLstate(state=>state)
-    const {Storeid} = UserDataState(state=>state)
+    const {Storeid,Memberid} = UserDataState(state=>state)
     const {workList, setWorkList} = WorkState(state=>state)
 
     const [modalOpenis, setmodalOpenis] = useState(false)
 
     useEffect(()=>{
         const loadWorks = async () => {
-            const workRes = await axios.get(`${URL}/work/${Storeid}`)
-            const works  = workRes.data
+            const workRes = await axios.get(`${URL}/work/boards/${Storeid}/0`)
+            const works  = workRes.data.data.content
+            console.log(works)
             setWorkList(works)
         }
         loadWorks()
-    },[])
+    },[Memberid])
 
     const WriteAdd =() => {
         setmodalOpenis(true)
     }
-
 
     return (
         <div>
@@ -43,9 +51,9 @@ export default function WorkCon () {
             <WorkAddModal></WorkAddModal>
             </ReactModal>  
   
-            {workList.map((value)=>{
-                return <WorkCompo key={value.workid.toString()} title={value.title} date={value.date} workid={value.workid}></WorkCompo>
-            })}
+            {workList && workList.map((value : workinterface)=>{
+            return <WorkCompo key={value.workid?.toString()} title={value.title} date={value.date} workid={value.workid}></WorkCompo>
+        })}
         </div>
     )
 }
