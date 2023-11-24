@@ -88,7 +88,7 @@ export const WorkState = create<WorkListinterface> ((set) => ({
 
 ///// TodoList
 interface Contentinterface {
-    contentId : BigInt,
+    contentsid : BigInt,
     contents : string,
     checked : string
   }
@@ -145,10 +145,6 @@ export interface EventsStore {
     events: [],
     setEvents: (events) => set({ events }),
   }));
-export const useEventsStore = create<CalendarEventsData> ((set)=> ({
-    events : [],
-    setEvents : res => set({events : res})
-}))
 
 ////// profile
 interface Profileinterface {

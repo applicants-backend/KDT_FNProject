@@ -10,7 +10,7 @@ export default function Profile () {
 
     const {URL} = URLstate(state=>state)
     const {UserType} = UserTypeState(state=>state)
-    const {Memberid, Token, setToken} = UserDataState(state=>state)
+    const {Memberid, Token, setToken, setName} = UserDataState(state=>state)
     const {userImg,companyImg,name,phonenumber,companyNumber,companyName, setuserImg, setcompanyImg, setname, setphonenumber, setcompanyName, setcompanyNumber} = ProfileState(state=>state)
 
     useEffect(()=> {
@@ -21,6 +21,7 @@ export default function Profile () {
 
             setuserImg(Userprofile.memberimg)
             setname(Userprofile.name)
+            setName(Userprofile.name)
             setphonenumber(Userprofile.phonenumber)
 
             setcompanyName(Storeprofile.companyname)

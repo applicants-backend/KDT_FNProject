@@ -9,8 +9,9 @@ interface Workdata {
 export default function WorkCompo (props : Workdata) {
    const {setWorkId} = WorkState(state=>state)
     
-    const enterTodo = () => { 
+    const enterTodo = () => {
         setWorkId(props.workid)
+        console.log(props.workid)
     }
 
     return (
