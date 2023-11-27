@@ -48,11 +48,11 @@ export default function WorkTodo (props : Contentinterface) {
 
   return (
     <div>
-    <input type = "checkbox" checked={checked} onChange={e=>setChecked(e.target.checked)} onClick={editChecked}/>
-    <div>{CheckMsg}</div>
-    <input readOnly={readOnly} value={readOnly ? props.contents : content} 
-    onClick={TodoReadOnly} onChange={e=>setContent(e.target.value)} onKeyDown={handleKeyDown} />
-    <button onClick={DeleteTodo}>delete</button>
-</div>
+      <input type = "checkbox" checked={checked} onChange={e=>setChecked(e.target.checked)} onClick={editChecked}/>
+      {CheckMsg? <div>{CheckMsg}님이 체크하셨습니다.</div> : <div></div>}
+      <input readOnly={readOnly} value={readOnly ? props.contents : content} 
+      onClick={TodoReadOnly} onChange={e=>setContent(e.target.value)} onKeyDown={handleKeyDown} />
+      <button onClick={DeleteTodo}>delete</button>
+  </div>
   )
 }

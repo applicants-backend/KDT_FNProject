@@ -7,7 +7,7 @@ export default function Loginpage() {
 
   const navigate = useNavigate();
   const LoginSuccess = () => {
-    navigate('/main')
+    navigate('/app')
   }
   const handleRegister = () => {
     // 회원가입 버튼 클릭 시에 '/register' 페이지로 이동
