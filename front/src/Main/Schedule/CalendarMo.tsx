@@ -52,7 +52,28 @@ function CalendarMo({ isOpen, closeModal, sendData, selectedEvent, selectedDate 
 
   const {URL} = URLstate(state=>state)
 
-  function handleAdditionalAction() {
+  function adminAdditonalPost() {
+    // axios.post(`${URL}/admin/attendance`)
+    console.log('Data sent from CalendarMo:', {
+      worker: worker,
+      startwork: startwork,
+      leavework: leavework,
+      start : start,
+      end : end,
+      wage : wage,
+    });
+    sendData({
+      worker: worker,
+      start: start,
+      end: end,
+      startwork: startwork,
+      leavework: leavework,
+      wage:wage,
+    });
+    setAdditionalContent('추가 작업이 수행되었습니다.');
+  }
+
+  function userAdditonalPost() {
     // axios.post(`${URL}/admin/attendance`)
     console.log('Data sent from CalendarMo:', {
       worker: worker,
@@ -98,7 +119,7 @@ function CalendarMo({ isOpen, closeModal, sendData, selectedEvent, selectedDate 
       <input type="datetime-local" id="end" onChange={(e) => setEnd(e.target.value)} />
       <label htmlFor="wage">급여 : </label>
       <input type="text" id="wage" onChange={(e) => setWage(e.target.value)} />
-      <button type="button" onClick={handleAdditionalAction}>추가 작업 수행</button>
+      <button type="button" onClick={adminAdditonalPost}>저장하기</button>
     </>
   );
   const renderUserForm = () => (
@@ -109,7 +130,7 @@ function CalendarMo({ isOpen, closeModal, sendData, selectedEvent, selectedDate 
       <input type="datetime-local" id="startwork" onChange={(e) => setStartWork(e.target.value)} />
       <label htmlFor="leavework">퇴근 시간 : </label>
       <input type="datetime-local" id="leavework" onChange={(e) => setLeaveWork(e.target.value)} />
-      <button type="button" onClick={handleAdditionalAction}>추가 작업 수행</button>
+      <button type="button" onClick={userAdditonalPost}>저장하기</button>
     </>
   );
 

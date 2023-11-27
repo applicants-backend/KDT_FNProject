@@ -70,7 +70,7 @@ export default function Profile () {
             <ProfileModal></ProfileModal>
             </ReactModal>  
 
-            <NaviCon></NaviCon>
+            {/* <NaviCon></NaviCon> */}
         </div>
     )
 }
