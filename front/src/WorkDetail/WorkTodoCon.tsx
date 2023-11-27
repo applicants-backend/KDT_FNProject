@@ -14,9 +14,12 @@ export default function WorkTodoCon () {
     const {Memberid} = UserDataState(state=>state)
     const {URL} = URLstate(state=>state)
     const {todoList,setTodoList} = TodoState(state=>state)
-    const {workId} = WorkState(state=>state)
+    const {workId,workList,setWorkList} = WorkState(state=>state)
 
     const [inputTodo,setInputTodo]= useState<string>()
+
+    const [titleIs, setTitleIs] =useState<boolean>(true)
+    const [title,setTitle] = useState<string>()
 
     const AddTodo = async () => {
         const addTodoRes = await axios.post(`${URL}/work/content/create`,{memberid : Memberid ,contents : inputTodo, workid:workId})
@@ -30,18 +33,37 @@ export default function WorkTodoCon () {
             AddTodo();
         }
     };
+
     const deleteWork = async() => {
         const deletedWork = await axios.delete(`${URL}/work/board/delete/${workId}`)
         console.log(deletedWork)
+        const deletedList = workList.filter((works)=>works.workid !== workId)
+        setWorkList(deletedList)
     }
+    const EditTitleIs = () => {
+        setTitleIs(false)
+    }
+    const EditTitle = async () => {
+        const EditedTitleRes = await axios.patch(`${URL}/work/board/update`,{workid : workId, title})
+        console.log(EditedTitleRes)
+        const EditedTitle = EditedTitleRes.data.data.title
+        setTitle(EditedTitle)
+    }
+    const EditKeyDown = (event : React.KeyboardEvent) => {
+        if (event.key === "Enter") {
+            EditTitle();
+            setTitleIs(true)
+        }
+    };
 
 
     useEffect(()=>{
         const loadTodo = async () => {
             try {
                 const loadRes = await axios.get(`${URL}/work/boards/detail/${workId}`);
+                const WorkTitle = loadRes.data.data.title
+                setTitle(WorkTitle)
                 const loadedContents : Contentinterface[] = loadRes.data.data.contents;
-    
                 if (loadedContents && Array.isArray(loadedContents)) {
                     setTodoList(loadedContents);
                     console.log(loadedContents)
@@ -55,9 +77,10 @@ export default function WorkTodoCon () {
     },[workId])
 
 
-
     return (
         <div>
+            {titleIs ? <div>{title}</div> : <input type="text" value={title} onChange={e=>setTitle(e.target.value)} onKeyDown={EditKeyDown}/> }
+            <button type="button" onClick={EditTitleIs}>제목 수정</button>
             <button type="button" onClick={deleteWork}>글 삭제</button>
             <input type="text" onChange={e=>setInputTodo(e.target.value)} onKeyDown={handleKeyDown}/> 
             <button type="button" onClick={AddTodo}>생성하기</button>
