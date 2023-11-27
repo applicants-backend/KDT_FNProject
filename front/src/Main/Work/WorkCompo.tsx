@@ -2,7 +2,7 @@ import { WorkState } from "../../Store/Store";
 import { useNavigate } from "react-router";
 
 interface Workdata {
-    workid : BigInt ;
+    workid : number ;
     title : string ; 
     date : string ;
 }

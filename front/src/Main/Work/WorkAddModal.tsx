@@ -3,9 +3,9 @@ import { URLstate, UserDataState, WorkState } from "../../Store/Store"
 import React, { useRef, useState } from "react"
 
 interface Workinterface {
-    workid : BigInt,
+    workid : number,
     memberid : string,
-    storeid : BigInt,
+    storeid : number,
     title : string,
     date : string
 }

@@ -6,9 +6,9 @@ import WorkSearch from "./WorkSearch";
 import WorkAddModal from "./WorkAddModal";
 import ReactModal from "react-modal";
 interface workinterface {
-    workid : BigInt,
-    memberid : string,
-    storeid : BigInt,
+    workid : number,
+    memberid : string, 
+    storeid : number,
     title : string,
     date : string
 }
