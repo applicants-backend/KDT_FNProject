@@ -63,6 +63,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-js-pagination": "^3.0.7",
     "eslint-plugin-prettier": "^5.0.1",
     "prettier": "^3.1.0"
   }

@@ -8,7 +8,6 @@ import WorkDetail from "./WorkDetail/WorkDetail";
 function App() {
   return (
       <>
-        <CalendarCon></CalendarCon>
         <Loginpage></Loginpage>
         <Profile></Profile>
         <Work></Work>

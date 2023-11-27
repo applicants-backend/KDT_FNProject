@@ -5,7 +5,7 @@ import axios from "axios"
 
 
 interface Commentinterface {
-    commentid : BigInt,
+    commentid : number,
     name : string,
     comment : string
 }
@@ -22,14 +22,15 @@ export default function CommentCon () {
 
     const ADDComment =  async() => {
         try {
-            const AddComRes = await axios.post(`${URL}/work/commnet/create`,{workid : workId, memberid : Memberid, contents : inpustComment})
+            const AddComRes = await axios.post(`${URL}/work/comment/create`,{workid : workId, memberid : Memberid, comment : inpustComment, name :Name})
             const Addcomment = AddComRes.data.data
             console.log(AddComRes)
-            // setCommentList([...commentList,Addcomment])    
+            setCommentList([...commentList,Addcomment])    
         } catch (error) {
             console.log(error)
         }
     }
+    
     const handleKeyDown = (event : React.KeyboardEvent) => {
         if (event.key === "Enter") {
             ADDComment();
@@ -40,18 +41,14 @@ export default function CommentCon () {
         const loadComment = async () => {
         try{
             const loadedCommentRes = await axios.get(`${URL}/work/boards/detail/${workId}`)
-            const loadedComment = loadedCommentRes.data.data.comment
-
-            if (loadedComment && Array.isArray(loadedComment)) {
+                const loadedComment = loadedCommentRes.data.data.comment
                 setCommentList(loadedComment);
-                console.log(loadComment)
-            } 
         } catch (error) {
             // 오류 처리
             console.error("Error loading contents:", error);
-        }
-        }
-    },[])
+        }}
+        loadComment()
+    },[workId])
 
     return (
         <div>

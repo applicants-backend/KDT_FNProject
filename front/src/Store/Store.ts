@@ -107,7 +107,7 @@ export const TodoState = create<TodoListinterface> ((set)=>({
 
 ///// CommentList
 interface Cominterface {
-    commentid : BigInt,
+    commentid : number,
     name : string,
     comment : string
 }
