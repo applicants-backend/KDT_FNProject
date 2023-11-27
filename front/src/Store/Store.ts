@@ -1,4 +1,5 @@
 import {create} from 'zustand'
+import {persist} from 'zustand/middleware'
 
 ///// EC2 URL
 interface url {
@@ -9,43 +10,60 @@ const URLstate = create<url>(set=>({
 }))
 export {URLstate};
 
-///// 유저타입 상태
+//// 유저타입 상태
 interface UserType {
     UserType: string;
     setUserTypeAdmin: () => void;
     setUserTypeUser: () => void;
 }
+// 초기 상태를 생성하는 함수
+const initialUserTypeState: UserType = {
+    UserType: 'admin',
+    setUserTypeAdmin: () => UserTypeState.setState({ UserType: 'admin' }),
+    setUserTypeUser: () => UserTypeState.setState({ UserType: 'user' }),
+};
+  
+  // Zustand의 create 함수를 사용하여 상태와 업데이트 함수를 생성
+  const UserTypeState = create(
+    persist<UserType>((set) => initialUserTypeState, {
+      name: 'userTypeState', // 보존할 상태의 이름
+      getStorage: () => sessionStorage, // 저장소 선택 (sessionStorage, localStorage 등)
+    })
+  );
 
-const UserTypeState = create<UserType>(set => ({
-    UserType : "user",
-    setUserTypeAdmin : ()=> set({UserType:"admin"}),
-    setUserTypeUser : () => set({UserType: "user"})
-}))
 
+  
 export default UserTypeState;
 
 ///// 유정정보
 interface UserDatainterface{
     Memberid : string,
-    Storeid : BigInt,
+    Storeid : bigint,
     Token : string,
     Name : string,
     setMemberid : (res:string) => void;
-    setStoreid : (res:BigInt) => void;
+    setStoreid : (res:bigint) => void;
     setToken : (res:string) => void;
     setName : (res:string) => void;
 }
 
-const UserDataState = create<UserDatainterface>(set=>({
-    Memberid : "none",
-    Storeid : BigInt(0),
-    Token : "none",
-    Name : "none",
-    setMemberid : res => set({Memberid: res}),
-    setStoreid : res => set({Storeid : res}),
-    setToken : res =>set({Token : res}),
-    setName : res => set({Name : res})
-}))
+const UserDataState = create(
+  persist<UserDatainterface>((set) => ({
+    Memberid: 'none',
+    Storeid: BigInt(0),
+    Token: 'none',
+    Name: 'none',
+    setMemberid: (res: string) => set({ Memberid: res }),
+    setStoreid: (res: bigint) => set({ Storeid: res }),
+    setToken: (res: string) => set({ Token: res }),
+    setName: (res: string) => set({ Name: res }),
+  }), {
+    name: 'userDataState', // 보존할 상태의 이름
+    getStorage: () => sessionStorage, // 저장소 선택 (sessionStorage, localStorage 등)
+  })
+);
+
+
 export {UserDataState};
 
 ////// 스케쥴러 

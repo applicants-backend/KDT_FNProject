@@ -1,36 +1,25 @@
-import { useNavigate } from "react-router";
-import NaviCompo from "./NaviCompo"
+import { Link, NavLink } from "react-router-dom";
 
 export default function NaviCon () {
 
-    const navigate =useNavigate();
-    const handleCalendar = () => {
-        // 회원가입 버튼 클릭 시에 '/register' 페이지로 이동
-        navigate('/calendar');
-    };
-    const handleWork = () => {
-        // 회원가입 버튼 클릭 시에 '/register' 페이지로 이동
-        navigate('/work');
-    };
-    const handlePayment = () => {
-        // 회원가입 버튼 클릭 시에 '/register' 페이지로 이동
-        navigate('/payment');
-    };
-    
-
     return (
         <>
-            <div>네비게이션.</div>
-            <button type="button" onClick={handleCalendar}>캘린더</button>
-            <button type="button" onClick={handleWork}>업무 관리</button>
-            <button type="button" onClick={handlePayment}>급여 관리</button>
+            <li>
+                <Link to='/calendar'>
+                    <button>캘린더</button>
+                </Link>
+            </li>
+            <li>
+                <Link to='/work'>
+                    <button>근태 관리</button>
+                </Link>
+            </li>
+            <li>
+                <Link to='/payment'>
+                    <button>급여 관리</button>
+                </Link>
+            </li>
+            
         </>
     )
-    // return (
-    //     <div>
-    //         <NaviCompo name="업무" root="work"></NaviCompo>
-    //         <NaviCompo name="근태" root="attendance"></NaviCompo>
-    //         <NaviCompo name="급여" root="payment"></NaviCompo>
-    //     </div>
-    // )
 }
