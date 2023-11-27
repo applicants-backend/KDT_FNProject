@@ -12,7 +12,7 @@ interface Workinterface {
 
 export default function WorkAddModal() {
     const {Storeid,Memberid} = UserDataState(state=>state)
-    const {workList,setWorkList} = WorkState(state=>state)
+    const {workList,setWorkList, add, setAdd} = WorkState(state=>state)
     const [title,setTitle] = useState<String>()
     const AddRef = useRef<HTMLInputElement>(null)
     const {URL} = URLstate(state=>state)
@@ -37,6 +37,7 @@ export default function WorkAddModal() {
         console.log(AddRes.data.data)
         const Add: Workinterface = AddRes.data.data;
         setWorkList([Add,...workList]);
+        setAdd(add)
 
     }
     const handleKeyDown = (event : React.KeyboardEvent) => {

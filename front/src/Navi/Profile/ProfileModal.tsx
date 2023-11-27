@@ -7,7 +7,7 @@ export default function ProfileModal() {
 
     const {URL} = URLstate(state=>state)
     const {UserType} = UserTypeState(state => state)
-    const {Memberid, Storeid,setName} = UserDataState(state=>state)
+    const {Memberid, Storeid, setName} = UserDataState(state=>state)
 
 
     const[userImg, setUserImg] =useState<string>()
@@ -24,8 +24,6 @@ export default function ProfileModal() {
     const[companyAddress, setcompanyAddress] =useState<string>()
     const[companyToken, setcompanyToken] =useState<string>()
     const[CEO, setCEO] =useState<string>()
-
-    const [file,setFile] = useState<File>()
 
     useMemo(()=> {
         ///// 유저데이터 로드
@@ -139,9 +137,10 @@ export default function ProfileModal() {
     const ALLOW_FILE_EXTENSION = "jpg,jpeg,png";
     const FILE_SIZE_MAX_LIMIT = 5 * 1024 * 1024; 
 
-    const uploadImg = async(e:React.ChangeEvent<HTMLInputElement>) =>{
+    const uploadImg = async(e:any) =>{
         const target = e.currentTarget
-        const Imgfile =( target.files as FileList)[0]
+        const Imgfile : any = target.files[0]
+        console.log(Imgfile)
 
         if(Imgfile === undefined) {
             return ;
@@ -156,24 +155,25 @@ export default function ProfileModal() {
             target.value ='';
             return
         }
-
-        setFile(Imgfile)
-
-        if(file ! === undefined) {
             try {
                 const formData = new FormData();
-                formData.append('file',file as unknown as File)
-                const uploadRes : string = await axios.post(`${URL}/member/image/upload`,formData)
+                formData.append('file',Imgfile as any)
+                formData.append('role',UserType)
+                formData.append('memberid',Memberid)
+                formData.append('storeid',Storeid as unknown as string)
+                  console.log(formData)
+                const uploadRes = await axios.post(`${URL}/member/image/upload`,formData)
                 console.log(uploadRes)
+                const imgUrl = uploadRes.data.data.imgurl
+                console.log(imgUrl)
                 if(UserType === "admin") {
-                    setcompanyImg(uploadRes)
+                    setcompanyImg(imgUrl)
                 } else {
-                    setuserImg(uploadRes)
+                    setuserImg(imgUrl)
                 }
             } catch (error) {
                 console.log(error)
             }
-        }
         
     }
 

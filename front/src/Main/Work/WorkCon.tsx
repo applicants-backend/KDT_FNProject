@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { URLstate, UserDataState, WorkState } from "../../Store/Store"
 import axios from "axios"
 import WorkCompo from "./WorkCompo"
@@ -16,7 +16,7 @@ interface workinterface {
 export default function WorkCon () {
     const {URL} = URLstate(state=>state)
     const {Storeid,Memberid} = UserDataState(state=>state)
-    const {workList, setWorkList} = WorkState(state=>state)
+    const {workList, setWorkList,add} = WorkState(state=>state)
 
     const [modalOpenis, setmodalOpenis] = useState(false)
     const [totalPage,setTotalPage] =useState<number>()
@@ -40,7 +40,7 @@ export default function WorkCon () {
             }
         }
         loadWorks()
-    },[Memberid,page])
+    },[Memberid,add,page])
 
     const WriteAdd =() => {
         setmodalOpenis(true)
@@ -52,11 +52,10 @@ export default function WorkCon () {
     function createArray(length : number) {
         return Array.from({ length }, (_,index : number) => index + 1);
     }
-
-    const renderPaginationButtons = () => {
+      const renderPaginationButtons = () => {
         if (!pageList) return null;
 
-        const BUTTONS_AROUND_CURRENT = 2;
+        const BUTTONS_AROUND_CURRENT = 5;
 
         return pageList.map((pageNumber) => {
           const isCurrentPage = pageNumber === page + 1;
@@ -85,6 +84,8 @@ export default function WorkCon () {
           }
         });
       };
+ 
+    
 
     return (
         <div>

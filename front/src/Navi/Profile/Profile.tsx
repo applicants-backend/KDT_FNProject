@@ -26,11 +26,11 @@ export default function Profile () {
 
             setcompanyName(Storeprofile.companyname)
             setcompanyNumber(Storeprofile.companynumber)
-            setcompanyImg(Storeprofile.companyImg)
+            setcompanyImg(Storeprofile.companyimg)
            
         }
         loadUserData()
-    },[Memberid])
+    },[Memberid,URL])
 
     const [modalOpenis, setmodalOpenis] = useState(false)
 
@@ -45,7 +45,7 @@ export default function Profile () {
     }
     return (
         <div>
-            <img src={UserType === "admin" ? companyImg : userImg} alt='Img'/>
+            <img src={UserType ==="admin" ? companyImg : userImg} alt='Img'/>
             <div>{name}</div>
             <div>{phonenumber}</div>
             <div>{companyName}</div>

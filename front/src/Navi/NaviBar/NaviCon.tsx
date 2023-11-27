@@ -1,5 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 
+
 export default function NaviCon () {
 
     return (
@@ -19,7 +20,6 @@ export default function NaviCon () {
                     <button>급여 관리</button>
                 </Link>
             </li>
-            
         </>
     )
 }

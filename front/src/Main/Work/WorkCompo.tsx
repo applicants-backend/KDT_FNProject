@@ -1,4 +1,5 @@
 import { WorkState } from "../../Store/Store";
+import { useNavigate } from "react-router";
 
 interface Workdata {
     workid : BigInt ;
@@ -9,8 +10,10 @@ interface Workdata {
 export default function WorkCompo (props : Workdata) {
    const {setWorkId} = WorkState(state=>state)
     
+   const navigate = useNavigate();
     const enterTodo = () => {
         setWorkId(props.workid)
+        navigate('/workdetail')
         console.log(props.workid)
     }
 

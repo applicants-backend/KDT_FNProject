@@ -3,6 +3,7 @@ import LeftPage from "./LeftPage";
 import MiddlePage from "./MiddlePage";
 import RightPage from "./RightPage";
 
+
 export default function MainPage () {
 
     return (
