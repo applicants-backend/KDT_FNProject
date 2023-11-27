@@ -7,6 +7,7 @@ import WorkCon from './Main/Work/WorkCon'
 import RegiContainer from './Register/RegiSelect/RegiContainer'
 import MainPage from './Main/page/MainPage'
 import RegiInformation from './Register/RegiInformation/RegiInformation'
+import WorkDetail from './WorkDetail/WorkDetail'
 
 export default function AppRouter() {
     return (
@@ -21,6 +22,7 @@ export default function AppRouter() {
                     <Route path='/calendar' element={<CalendarCon/>} />
                     <Route path='/payment' element={<PaymentCon/>} />
                     <Route path='/work' element={<WorkCon/>} />
+                    <Route path='/workdetail' element={<WorkDetail/>} />
                 </Routes>
             </BrowserRouter>
         </>
