@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import NaviCompo from "./NaviCompo"
+import Profile from "../Profile/Profile";
 
 export default function NaviCon () {
 
@@ -20,7 +21,6 @@ export default function NaviCon () {
 
     return (
         <>
-            <div>네비게이션.</div>
             <button type="button" onClick={handleCalendar}>캘린더</button>
             <button type="button" onClick={handleWork}>업무 관리</button>
             <button type="button" onClick={handlePayment}>급여 관리</button>

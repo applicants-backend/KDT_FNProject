@@ -19,7 +19,7 @@ export default function Login({type, img, onLoginSuccess} : props) {
 
   const handleLogin = async () => {
     try {
-      if (type === "사업자") {
+      if (type === "admin") {
         setUserTypeAdmin();
       } else {
         setUserTypeUser();
@@ -36,7 +36,6 @@ export default function Login({type, img, onLoginSuccess} : props) {
       alert('로그인 실패. 아이디와 비밀번호를 확인하세요.');
     }
   };
-
 
   return (
     <>

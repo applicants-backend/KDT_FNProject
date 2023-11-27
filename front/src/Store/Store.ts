@@ -27,18 +27,18 @@ export default UserTypeState;
 ///// 유정정보
 interface UserDatainterface{
     Memberid : string,
-    Storeid : BigInt,
+    Storeid : number,
     Token : string,
     Name : string,
     setMemberid : (res:string) => void;
-    setStoreid : (res:BigInt) => void;
+    setStoreid : (res:number) => void;
     setToken : (res:string) => void;
     setName : (res:string) => void;
 }
 
 const UserDataState = create<UserDatainterface>(set=>({
     Memberid : "none",
-    Storeid : BigInt(0),
+    Storeid : 0,
     Token : "none",
     Name : "none",
     setMemberid : res => set({Memberid: res}),
@@ -70,19 +70,23 @@ interface workinterface {
     memberid : string,
     storeid : BigInt,
     title : string,
-    date : string
+    date : string,
 }
 interface WorkListinterface {
     workId : BigInt ;
     setWorkId : (res : BigInt) => void;
     workList : workinterface[] ;
     setWorkList : (res : workinterface[]) => void;
+    add : boolean,
+    setAdd : (res : boolean) => void
 }
 export const WorkState = create<WorkListinterface> ((set) => ({
     workId : BigInt(0) ,
     setWorkId : res => set({workId : res}),
     workList : [],
-    setWorkList : res => set({workList : res})
+    setWorkList : res => set({workList : res}),
+    add : false,
+    setAdd : res => set({add : !res})
 
 }))
 
