@@ -3,6 +3,8 @@ import axios from 'axios';
 import UserTypeState, { URLstate } from "../Store/Store";
 import {UserDataState} from "../Store/Store";
 
+import { Cookies } from 'react-cookie';
+
 interface props {
   type : String;
   img : string;
@@ -10,11 +12,15 @@ interface props {
 }
 
 export default function Login({type, img, onLoginSuccess} : props) {
+
+
   const [memberid, setMemberId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const {URL} =URLstate(state=>state)
   const {UserType,setUserTypeAdmin, setUserTypeUser} = UserTypeState(state => state)
   const { setMemberid, setStoreid, setToken, setName } = UserDataState(state => state); 
+
+  const cookies = new Cookies();
 
   const handleLogin = async () => {
     try {
@@ -28,10 +34,14 @@ export default function Login({type, img, onLoginSuccess} : props) {
   
       // 여기서 실제 성공 여부 확인
       if (response.status === 200 && response.data && response.data.data) {
+
+
         setMemberid(response.data.data.memberid);
         setStoreid(response.data.data.storeid);
         setToken(response.data.data.token);
         setName(response.data.data.name)
+        cookies.set("token",response.data.data.token);
+
         onLoginSuccess();
       } else {
         // 성공하지 않았을 때 에러 콘솔 출력
