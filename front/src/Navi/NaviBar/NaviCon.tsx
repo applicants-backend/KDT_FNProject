@@ -12,12 +12,17 @@ export default function NaviCon () {
             </li>
             <li>
                 <Link to='/work'>
-                    <button>근태 관리</button>
+                    <button>업무 관리</button>
                 </Link>
             </li>
             <li>
                 <Link to='/payment'>
                     <button>급여 관리</button>
+                </Link>
+            </li>
+            <li>
+                <Link to='/attendance'>
+                    <button>근태 관리</button>
                 </Link>
             </li>
         </>

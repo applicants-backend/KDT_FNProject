@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react'
 import { BrowserRouter , Route, Routes } from 'react-router-dom'
 import Loginpage from './Login/Loginpage'
@@ -11,6 +10,7 @@ import RegiInformation from './Register/RegiInformation/RegiInformation'
 import WorkDetail from './WorkDetail/WorkDetail'
 import Payment from './Main/Payment/Payment'
 import App from './App'
+import Attendance from './Main/Attendance/Attendance'
 
 import {Cookies} from 'react-cookie';
 
@@ -47,6 +47,7 @@ export default function AppRouter() {
                     <Route path='/'  element={<MainPage/>} />
                     <Route path='/profile' element={<Profile/>} />
                     <Route path='/calendar' element={<CalendarCon/>} />
+                    <Route path='/attendance' element={<Attendance/>} />
                     <Route path='/payment' element={<Payment/>} />
                     <Route path='/work' element={<WorkCon/>} />
                     <Route path='/workdetail' element={<WorkDetail/>} />
