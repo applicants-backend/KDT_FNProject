@@ -9,6 +9,7 @@ import RegiInformation from './Register/RegiInformation/RegiInformation'
 import WorkDetail from './WorkDetail/WorkDetail'
 import Payment from './Main/Payment/Payment'
 import App from './App'
+import AttendanceCon from './Main/Attendance/AttendanceCon'
 
 export default function AppRouter() {
     return (
@@ -25,6 +26,7 @@ export default function AppRouter() {
                     <Route path='/work' element={<WorkCon/>} />
                     <Route path='/workdetail' element={<WorkDetail/>} />
                     <Route path='/app' element={<App/>} />
+                    <Route path='/attendance' element={<AttendanceCon/>} />
                 </Routes>
             </BrowserRouter>
         </>

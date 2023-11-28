@@ -54,7 +54,7 @@ const UserDataState = create(
     Token: 'none',
     Name: 'none',
     setMemberid: (res: string) => set({ Memberid: res }),
-    setStoreid: (res: bigint) => set({ Storeid: res }),
+    setStoreid: (res: number) => set({ Storeid: res }),
     setToken: (res: string) => set({ Token: res }),
     setName: (res: string) => set({ Name: res }),
   }), {
@@ -145,14 +145,14 @@ export const CommentState = create<CommentListinterface> ((set)=>({
 // Calendar
 export interface CalendarData {
     memberid: string;
-    registerTime: string;
+    registerTime?: string;
     worker: string;
     title : string;
-    start?: string | null;
-    end?: string | null;
-    startwork?: string | null;
-    leavework?: string | null;
-    registertime?: string;
+    start?: string | Date | null;
+    end?: string | Date | null;
+    startwork?: string | Date | null;
+    leavework?: string | Date | null;
+    registertime?: string | Date | null;
   }
 
 // CalendarData와 함께 사용할 Store

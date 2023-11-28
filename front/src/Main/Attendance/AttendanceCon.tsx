@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { URLstate, UserDataState } from "../../Store/Store"
 import axios from "axios"
+import UserTypeState from "../../Store/Store"
 
 interface Datainterface {
     thisweek : string,
@@ -10,21 +11,36 @@ interface Datainterface {
 }
 
 export default function AttendanceCon () {
+    const {UserType} = UserTypeState(state=>state)
     const {URL} = URLstate(state=>state)
     const {Memberid} = UserDataState(state=>state)
+    const {Storeid} = UserDataState(state=>state)
     const [AttendData, setAttendData] = useState<Datainterface>()
     const [Color,setColor] = useState(true)
 
     useEffect(()=>{
-        const loadData = async () =>{
-            const AttenddataRes = await axios.get(`${URL}/attendance/data/${Memberid}`)
-            const AttendDatares = AttenddataRes.data
-            setAttendData(AttendDatares)
-            if (AttendData?.comparemonth.includes('-')){
-                setColor(false)
+        if (UserType === 'admin') {
+            const adminLoadData = async () =>{
+                const AttenddataRes = await axios.get(`${URL}/admin/attendance/${Memberid}/${Storeid}`)
+                const AttendDatares = AttenddataRes.data
+                setAttendData(AttendDatares)
+                if (AttendData?.comparemonth.includes('-')){
+                    setColor(false)
+                }
             }
+            adminLoadData()
+        } else {
+            const userLoadData = async () =>{
+                const AttenddataRes = await axios.get(`${URL}/attendance/data/${Memberid}`)
+                const AttendDatares = AttenddataRes.data
+                setAttendData(AttendDatares)
+                if (AttendData?.comparemonth.includes('-')){
+                    setColor(false)
+                }
+            }
+            userLoadData()
         }
-        loadData()
+        
     },[])
 
 
