@@ -10,8 +10,8 @@ import RegiInformation from './Register/RegiInformation/RegiInformation'
 import WorkDetail from './WorkDetail/WorkDetail'
 import Payment from './Main/Payment/Payment'
 import App from './App'
-import AttendanceCon from './Main/Attendance/AttendanceCon'
 
+import Attendance from './Main/Attendance/Attendance'
 import {Cookies} from 'react-cookie';
 
 export default function AppRouter() {
@@ -47,12 +47,11 @@ export default function AppRouter() {
                     <Route path='/'  element={<MainPage/>} />
                     <Route path='/profile' element={<Profile/>} />
                     <Route path='/calendar' element={<CalendarCon/>} />
-                    <Route path='/attendance' element={<Attendance/>} />
                     <Route path='/payment' element={<Payment/>} />
                     <Route path='/work' element={<WorkCon/>} />
                     <Route path='/workdetail' element={<WorkDetail/>} />
                     <Route path='/app' element={<App/>} />
-                    <Route path='/attendance' element={<AttendanceCon/>} />
+                    <Route path='/attendance' element={<Attendance/>} />
                 </Routes>
             }
 
