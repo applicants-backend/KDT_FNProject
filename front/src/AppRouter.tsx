@@ -1,4 +1,6 @@
-import {BrowserRouter , Route,Routes ,Navigate} from 'react-router-dom'
+
+import { useEffect, useState } from 'react'
+import { BrowserRouter , Route, Routes } from 'react-router-dom'
 import Loginpage from './Login/Loginpage'
 import Profile from './Navi/Profile/Profile'
 import CalendarCon from './Main/Schedule/CalendarCon'
@@ -10,15 +12,39 @@ import WorkDetail from './WorkDetail/WorkDetail'
 import Payment from './Main/Payment/Payment'
 import App from './App'
 
+import {Cookies} from 'react-cookie';
+
 export default function AppRouter() {
+
+    const [isLogin, setIslogin] = useState<boolean>(false);
+    const cookies = new Cookies();
+
+    useEffect(() => {
+        islogin();
+    },[])
+
+    const islogin = () => {
+
+       const token = cookies.get("token");
+       if (token !== undefined) {
+            // TOKEN 검증 API 필요
+            setIslogin(true);
+       }
+    }
+
     return (
         <>
             <BrowserRouter>
+                {!isLogin ? 
                 <Routes>
                     <Route path='/' element={<Loginpage/>} />
-                    <Route path='/main' element={<MainPage/>} />
-                    <Route path='/register' element={<RegiContainer/>} />
+                    <Route path='/register'  element={<RegiContainer/>} />
                     <Route path='/register/information' element={<RegiInformation/>} />
+                </Routes>
+                :   
+                    
+                <Routes>
+                    <Route path='/'  element={<MainPage/>} />
                     <Route path='/profile' element={<Profile/>} />
                     <Route path='/calendar' element={<CalendarCon/>} />
                     <Route path='/payment' element={<Payment/>} />
@@ -26,6 +52,8 @@ export default function AppRouter() {
                     <Route path='/workdetail' element={<WorkDetail/>} />
                     <Route path='/app' element={<App/>} />
                 </Routes>
+            }
+
             </BrowserRouter>
         </>
 
