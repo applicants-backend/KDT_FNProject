@@ -5,7 +5,7 @@ import WorkTodo from "./WorkTodo"
 
 
 interface Contentinterface {
-    contentsid : BigInt,
+    contentsid : number,
     contents : string,
     checked : string
 }

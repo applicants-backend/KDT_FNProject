@@ -5,13 +5,14 @@ import CalendarCon from "../Schedule/CalendarCon";
 import WorkDetail from "../../WorkDetail/WorkDetail";
 import PaymentCon from "../Payment/PaymentCon";
 import AttendanceCon from "../Attendance/AttendanceCon";
+import WorkCon from "../Work/WorkCon";
 
 export default function MiddlePage () {
 
     return (
         <>
             <CalendarCon/>
-            <WorkDetail/>
+            <WorkCon></WorkCon>
             {/* <Payment/> */}
             {/* <AttendanceCon/> */}
         </>

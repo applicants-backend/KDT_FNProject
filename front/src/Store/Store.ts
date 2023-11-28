@@ -83,44 +83,49 @@ interface ScheduleStore {
 
 ///// WorkList
 interface workinterface {
-    workid : BigInt,
+    workid : number,
     memberid : string,
-    storeid : BigInt,
+    storeid : number,
     title : string,
     date : string,
 }
 interface WorkListinterface {
-    workId : BigInt ;
-    setWorkId : (res : BigInt) => void;
+    workId : number;
+    setWorkId : (res : number) => void;
     workList : workinterface[] ;
     setWorkList : (res : workinterface[]) => void;
     add : boolean,
     setAdd : (res : boolean) => void
 }
-export const WorkState = create<WorkListinterface> ((set) => ({
-    workId : BigInt(0) ,
-    setWorkId : res => set({workId : res}),
-    workList : [],
-    setWorkList : res => set({workList : res}),
-    add : false,
-    setAdd : res => set({add : !res})
+export const WorkState = create(
+  persist<WorkListinterface> ((set) => ({
+      workId : 0 ,
+      setWorkId : res => set({workId : res}),
+      workList : [],
+      setWorkList : res => set({workList : res}),
+      add : false,
+      setAdd : res => set({add : !res})
+  }),{
+    name : 'workListState',
+    getStorage : () => sessionStorage,
+  })
 
-}))
+)
 
 ///// TodoList
 interface Contentinterface {
-    contentsid : BigInt,
+    contentsid : number,
     contents : string,
     checked : string
   }
 interface TodoListinterface {
-    contentId : BigInt;
-    setContentId : (res : BigInt) => void;
+    contentId : number;
+    setContentId : (res : number) => void;
     todoList : Contentinterface[];
     setTodoList : (res : Contentinterface[]) => void;
 }
 export const TodoState = create<TodoListinterface> ((set)=>({
-    contentId : BigInt(0),
+    contentId : 0,
     setContentId : res => set({contentId : res}),
     todoList : [],
     setTodoList : res => set({todoList : res})

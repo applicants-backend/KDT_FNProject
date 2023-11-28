@@ -2,7 +2,7 @@ import axios from "axios"
 import { TodoState, URLstate, UserDataState } from "../Store/Store"
 import React, { useState } from "react"
 interface Contentinterface {
-  contentsid : BigInt,
+  contentsid : number,
   contents : string,
   checked : string
 }

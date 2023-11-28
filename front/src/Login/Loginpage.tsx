@@ -1,8 +1,9 @@
+import { FC } from "react";
 import Login from "./Login";
 import UserTypeState from '../Store/Store';
 import { useNavigate } from "react-router";
 
-export default function Loginpage() {
+export default function Loginpage (): ReturnType<FC> {
   const {UserType,setUserTypeAdmin, setUserTypeUser} = UserTypeState(state => state)
 
   const navigate = useNavigate();
