@@ -204,7 +204,7 @@ export default function RegiInformation () {
         console.log(userForm)
         const res = await axios.post(`${URL}/${UserType}/join`,userForm)
         console.log(res.data)
-        navigate('/main')
+        navigate('/')
     }
 
 
