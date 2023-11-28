@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react"
 import { URLstate, UserDataState, WorkState } from "../../Store/Store"
 import axios from "axios"
 import WorkCompo from "./WorkCompo"
-import WorkSearch from "./WorkSearch";
 import WorkAddModal from "./WorkAddModal";
 import ReactModal from "react-modal";
 interface workinterface {
@@ -23,24 +22,38 @@ export default function WorkCon () {
     const [page,setPage] = useState<number>(0)
     const [pageList,setpageList] =useState<number[]>()
 
+    const [keyword, setKeyword] = useState<String>()
+
     useEffect(()=>{
         const loadWorks = async () => {
             try {
+              if(keyword){
+                const workRes = await axios.get(`${URL}/work/boards/${Storeid}/${keyword}/${page}`)
+                const works  = workRes.data.data.content
+                const totalPage = workRes.data.data.totalPages
+                  setTotalPage(totalPage)
+                  setpageList(createArray(totalPage))
+                  if(works && Array.isArray(works)){
+                      console.log(works)
+                      setWorkList(works)
+                  }
+              } else {
                 const workRes = await axios.get(`${URL}/work/boards/${Storeid}/${page}`)
                 const works  = workRes.data.data.content
                 const totalPage = workRes.data.data.totalPages
-                setTotalPage(totalPage)
-                setpageList(createArray(totalPage))
-                if(works && Array.isArray(works)){
-                    console.log(works)
-                    setWorkList(works)
-                }
+                  setTotalPage(totalPage)
+                  setpageList(createArray(totalPage))
+                  if(works && Array.isArray(works)){
+                      console.log(works)
+                      setWorkList(works)
+                  }
+              }
             } catch (error) {
                 console.log(error)
             }
         }
         loadWorks()
-    },[Memberid,add,page])
+    },[Memberid,add,page,keyword])
 
     const WriteAdd =() => {
         setmodalOpenis(true)
@@ -60,8 +73,8 @@ export default function WorkCon () {
         return pageList.map((pageNumber) => {
           const isCurrentPage = pageNumber === page + 1;
           const shouldRenderButton =
-            pageNumber <= page + BUTTONS_AROUND_CURRENT &&
-            pageNumber >= page - BUTTONS_AROUND_CURRENT;
+            pageNumber <= page +1 + BUTTONS_AROUND_CURRENT &&
+            pageNumber >= page +1 - BUTTONS_AROUND_CURRENT;
     
           if (shouldRenderButton) {
             return (
@@ -84,12 +97,13 @@ export default function WorkCon () {
           }
         });
       };
- 
-    
+
 
     return (
         <div>
-            <WorkSearch></WorkSearch>
+          <form name="SearchForm">
+            <input onChange={(e)=>{setKeyword(e.target.value)}}/>
+          </form>
 
             <button type="button" onClick={(e)=>{WriteAdd()}}>작성</button>
 

@@ -8,8 +8,8 @@ export default function Payment() {
     return(
         <div>
             <PaymentCon></PaymentCon>
-            {/* <PaymentHistory></PaymentHistory> */}
-            {/* <PaymentData></PaymentData> */}
+            <PaymentHistory></PaymentHistory>
+            <PaymentData></PaymentData>
         </div>
     )
 }

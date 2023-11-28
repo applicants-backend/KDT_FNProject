@@ -1,4 +1,4 @@
-import {BrowserRouter , Route,Routes ,Navigate} from 'react-router-dom'
+import {BrowserRouter , Route,Routes} from 'react-router-dom'
 import Loginpage from './Login/Loginpage'
 import Profile from './Navi/Profile/Profile'
 import CalendarCon from './Main/Schedule/CalendarCon'
@@ -9,6 +9,7 @@ import RegiInformation from './Register/RegiInformation/RegiInformation'
 import WorkDetail from './WorkDetail/WorkDetail'
 import Payment from './Main/Payment/Payment'
 import App from './App'
+import Attendance from './Main/Attendance/Attendance'
 
 export default function AppRouter() {
     return (
@@ -21,6 +22,7 @@ export default function AppRouter() {
                     <Route path='/register/information' element={<RegiInformation/>} />
                     <Route path='/profile' element={<Profile/>} />
                     <Route path='/calendar' element={<CalendarCon/>} />
+                    <Route path='/attendance' element={<Attendance/>} />
                     <Route path='/payment' element={<Payment/>} />
                     <Route path='/work' element={<WorkCon/>} />
                     <Route path='/workdetail' element={<WorkDetail/>} />
