@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react"
 import UserTypeState, { URLstate, UserDataState } from "../../Store/Store"
 import axios from "axios"
+import UserTypeState from "../../Store/Store"
 
 export default function AttendanceCon () {
+    const {UserType} = UserTypeState(state=>state)
     const {URL} = URLstate(state=>state)
+    
     const {Memberid,Storeid} = UserDataState(state=>state)
     const {UserType} = UserTypeState(state=>state)
 
@@ -26,10 +29,20 @@ export default function AttendanceCon () {
             if (AttendPercentRes.data.data< 0){
                 setColor(false)
             }
+            adminLoadData()
+        } else {
+            const userLoadData = async () =>{
+                const AttenddataRes = await axios.get(`${URL}/attendance/data/${Memberid}`)
+                const AttendDatares = AttenddataRes.data
+                setAttendData(AttendDatares)
+                if (AttendData?.comparemonth.includes('-')){
+                    setColor(false)
+                }
+            }
+            userLoadData()
         }
         loadData()
     })
-
 
     return (
         <div>
