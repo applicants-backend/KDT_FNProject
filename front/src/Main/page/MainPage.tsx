@@ -7,10 +7,10 @@ import RightPage from "./RightPage";
 export default function MainPage () {
 
     return (
-        <>
+        <div>
             <LeftPage/>
             <MiddlePage/>
             <RightPage/>
-        </>
+        </div>
     )
 }

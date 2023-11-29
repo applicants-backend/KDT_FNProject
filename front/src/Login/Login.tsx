@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, FocusEvent } from 'react';
 import axios from 'axios';
 import UserTypeState, { URLstate } from "../Store/Store";
 import {UserDataState} from "../Store/Store";
 
 import { Cookies } from 'react-cookie';
-
+import "./scss/Login.scss"
 interface props {
   type : String;
   img : string;
@@ -54,28 +54,38 @@ export default function Login({type, img, onLoginSuccess} : props) {
       alert('로그인 실패. 아이디와 비밀번호를 확인하세요.');
     }
   };
+  
+  const onfocusBluer = (e:FocusEvent<HTMLInputElement>, type:string) => {
+
+    if (type === "focus" && e.target.parentElement) {
+        e.target.parentElement.style.borderColor = "rgb(94, 53, 177)";
+    }
+    if (type === "blur" && e.target.parentElement) {
+        e.target.parentElement.style.borderColor = "#ccc";
+    }
+  }
+
+ 
 
   return (
     <>
-    <div onClick={type ===  "사업자"? setUserTypeAdmin : setUserTypeUser}>
-            <div>{type}</div>
-            <img src={img} alt={`${type} 이미지`}/>
-            <button >{type}</button>
-            <div>{UserType}</div>
-        </div>
-    <form>
-      <label>
-        Username:
-        <input type="text" value={memberid} onChange={(e) => setMemberId(e.target.value)} />
-      </label>
-      <br />
-      <label>
-        Password:
-        <input type="password" value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} />
-      </label>
-      <br />
-      <button type='button' onClick={handleLogin}>Login</button>
-    </form>
+        <form className='login-form-box'>
+            <div>
+                <label>Username :</label>
+                <input type="text" 
+                    onFocus={(e) =>onfocusBluer(e,"focus")}
+                    onBlur={(e) =>onfocusBluer(e,"blur")}
+                    value={memberid} onChange={(e) => setMemberId(e.target.value)} />
+            </div>
+            <div>   
+                <label>Password :</label>
+                <input type="password" 
+                        onFocus={(e) =>onfocusBluer(e,"focus")}
+                        onBlur={(e) =>onfocusBluer(e,"blur")}
+                        value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} />
+            </div>
+        </form>
+        <button className='login-button' type='button' onClick={handleLogin}>로그인</button>
     </>
   );
 }
