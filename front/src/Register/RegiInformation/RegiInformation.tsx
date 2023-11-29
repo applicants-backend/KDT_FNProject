@@ -13,6 +13,7 @@ interface UserData {
     companynumber? : String | null,
     // companyAddress? : String | null,
     companyToken? : String | null
+    invitecode? : String | null
 }
 
 export default function RegiInformation () {
@@ -30,7 +31,7 @@ export default function RegiInformation () {
         ceo : "",
         companynumber : "",
         // companyAddress : "",
-        companyToken : ""
+        invitecode : ""
     })
 
     ///// 인풋 통합핸들러
@@ -161,7 +162,7 @@ export default function RegiInformation () {
 
         if (UserType === "user") {
             ///// 근로자일때
-            if (!userForm.companyToken) {
+            if (!userForm.invitecode) {
                 companyTokenInputRef.current && companyTokenInputRef.current.focus();
                 return;
             }
@@ -248,8 +249,8 @@ export default function RegiInformation () {
                 :
             /////// 유저타입이 근로자 일때 추가되는 input
                 <>
-            <label htmlFor="companyToken"> 사업장 인증번호 </label>
-            <input name="companyToken" id="companyToken" placeholder="사업장 인증번호" ref={companyTokenInputRef} onChange={InputHandle}/>
+            <label htmlFor="invitecode"> 사업장 인증번호 </label>
+            <input name="invitecode" id="companyToken" placeholder="사업장 인증번호" ref={companyTokenInputRef} onChange={InputHandle}/>
                 </>
             }
             <input type="checkbox"/>
