@@ -13,6 +13,7 @@ import App from './App'
 
 import Attendance from './Main/Attendance/Attendance'
 import {Cookies} from 'react-cookie';
+import "./App.css"
 
 export default function AppRouter() {
 
@@ -35,6 +36,7 @@ export default function AppRouter() {
     return (
         <>
             <BrowserRouter>
+            <div id='wrap'>
                 {!isLogin ? 
                 <Routes>
                     <Route path='/' element={<Loginpage/>} />
@@ -54,7 +56,7 @@ export default function AppRouter() {
                     <Route path='/attendance' element={<Attendance/>} />
                 </Routes>
             }
-
+            </div>
             </BrowserRouter>
         </>
 

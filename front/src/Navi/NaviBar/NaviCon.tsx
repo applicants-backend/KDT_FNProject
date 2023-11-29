@@ -4,27 +4,20 @@ import { Link, NavLink } from "react-router-dom";
 export default function NaviCon () {
 
     return (
-        <>
-            <li>
+        <>     <div className="navicon">
                 <Link to='/calendar'>
-                    <button>캘린더</button>
+                    <div>캘린더</div>
                 </Link>
-            </li>
-            <li>
                 <Link to='/work'>
-                    <button>업무 관리</button>
+                    <div>업무 관리</div>
                 </Link>
-            </li>
-            <li>
                 <Link to='/payment'>
-                    <button>급여 관리</button>
+                    <div>급여 관리</div>
                 </Link>
-            </li>
-            <li>
                 <Link to='/attendance'>
-                    <button>근태 관리</button>
+                    <div>근태 관리</div>
                 </Link>
-            </li>
+                </div>
         </>
     )
 }
