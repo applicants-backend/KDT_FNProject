@@ -339,9 +339,10 @@ export default function RegiInformation (): ReturnType<FC> {
                     :
                 /////// 유저타입이 근로자 일때 추가되는 input
                     (
+
                     <div className="input-label">
                         <label htmlFor="companyToken"> 사업장 인증번호 </label>
-                        <input name="companyToken" id="companyToken" placeholder="사업장 인증번호" 
+                        <input name="invitecode" id="companyToken" placeholder="사업장 인증번호" 
                             onFocus={(e) =>onfocusBluer(e,"focus")}
                             onBlur={(e) =>onfocusBluer(e,"blur")}
                             ref={companyTokenInputRef} onChange={InputHandle}/>
