@@ -10,10 +10,10 @@ import MainPage from './Main/page/MainPage'
 import WorkDetail from './WorkDetail/WorkDetail'
 import Payment from './Main/Payment/Payment'
 import App from './App'
-import Attendance from './Main/Attendance/Attendance';
 
-import { Cookies } from 'react-cookie';
-import './App.css';
+import Attendance from './Main/Attendance/Attendance'
+import {Cookies} from 'react-cookie';
+import "./App.css"
 
 export default function AppRouter() {
 
