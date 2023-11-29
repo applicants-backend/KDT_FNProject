@@ -6,6 +6,8 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import UserTypeState, {CalendarData, UserDataState,URLstate} from '../../Store/Store';
 import axios from 'axios';
+import Calendar from './Calendar';
+import { CalendarImpl } from '@fullcalendar/core/internal';
 
 
 
@@ -19,6 +21,10 @@ function CalendarCon(props: CalendarConProps) {
   const [events, setEvents] = useState<any[]>([]); 
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
 
+  // 시간 데이터 갖고오기
+  const [nowDate, setNowDate] = useState<string | null>('');
+  const [monthData, setMonthData] = useState<string | null>('');
+
   const [worker, setWorker] = useState<string>('');
   const [startwork, setStartWork] = useState<string>('');
   const [leavework, setLeaveWork] = useState<string>('');
@@ -26,10 +32,14 @@ function CalendarCon(props: CalendarConProps) {
   const {UserType} = UserTypeState(state=>state)
   const {URL} = URLstate(state=>state)
   const {Storeid,Memberid,Name} = UserDataState(state=>state)
+
   const memberid = Memberid
   const storeid = Storeid
+  // const month = monthData
+  const month = nowDate
+
   const data={
-    memberid,storeid
+    memberid,storeid,month
   }
 
   // modal open 두개로 쪼개기
@@ -53,10 +63,26 @@ function CalendarCon(props: CalendarConProps) {
 
   useEffect(() => {
     const loadCalendarData = async () => {
+      // 현재 시간 갖고오기
+
+      function getCurrentLocalDateTime(): string {
+        const currentDateTime = new Date();
+        const isoString = `${currentDateTime.toISOString().slice(0, 16)}:00`;
+
+        return isoString;
+      }
+      
+      // 함수 호출 후 콘솔에 출력
+      const localDateTimeString = getCurrentLocalDateTime();
+
+      console.log('Current LocalDateTime:', localDateTimeString);
+      setNowDate(localDateTimeString);
+      
       try {
         const calendarData = UserType === "admin" ?
-         await axios.post<{ data: CalendarData[] }>(`${URL}/admin/attendance/findAll`, data)
-         : await axios.post<{ data: CalendarData[] }>(`${URL}/user/attendance/findAll`, data)  
+        // await axios.post<{ data: CalendarData[] }>(`${URL}/admin/attendance/findAll`, data)
+        await axios.get<{ data: CalendarData[] }>(`${URL}/admin/schedule/${memberid}/${storeid}/2023-11-29T16:11:00`)
+        : await axios.get<{ data: CalendarData[] }>(`${URL}/user/schedule/${memberid}/${storeid}/${month}`)  
         // map 으로 돌려서 배열 데이터 풀어내기
         const eventsArray = calendarData.data.data.map((item: CalendarData) => {
           // admin 과 user 에 따라서 값을 다르게 나눠주기
@@ -68,11 +94,12 @@ function CalendarCon(props: CalendarConProps) {
             start: start,
             end: end,
           };
-        });
+        },[handleDatesSet]);
   
         // Set the events array
         setEvents(eventsArray);
         console.log(calendarData.data.data);
+        console.log("monnth : ",month)
   
       } catch (error) {
         console.log('에러', error);
@@ -181,7 +208,40 @@ function handleEventClick(arg: any) {
     
   }
 
+  // 해당 달 정보 보내기
+  // 달 변경 확인하기
 
+  const handleDatesSet = (arg:any) => {
+    
+    const startDate = new Date(arg.startStr);
+
+    // arg.startStr이 유효한 날짜 형식인지 확인
+    if (isNaN(startDate.getTime())) {
+      console.error('Invalid start date:', arg.startStr);
+      return;
+    }
+
+    // 한 달을 더함
+    startDate.setMonth(startDate.getMonth() + 1);
+
+    // 12월에서 1월로 갈 때 연도를 늘림
+    if (startDate.getMonth() === 0) {
+      startDate.setFullYear(startDate.getFullYear() + 1);
+    }
+
+    const formattedDate = `${startDate.toISOString().slice(0, 16)}:00`;
+
+    // monthData 업데이트
+    setMonthData(formattedDate);
+
+    console.log('백엔드에 보낼 날짜:', formattedDate);
+    // console.log(monthData)
+  };
+
+  
+
+
+  /// return 시작
   return (
     <>
       <div>
@@ -198,9 +258,14 @@ function handleEventClick(arg: any) {
           headerToolbar={{
             left: "prev,next today",
             center: "title",
-            right: "dayGridMonth,timeGridWeek,timeGridDay"
+            right: "dayGridMonth,timeGridWeek"
           }}
           events={events}
+          eventChange={() => {
+            console.log("dkssud")
+          }}
+          // customButtons={CustomButtons}
+          datesSet={handleDatesSet}
         />
         {isDateModalOpen && (
         <CalendarMo
