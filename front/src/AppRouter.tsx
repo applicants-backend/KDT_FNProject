@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useLayoutEffect, useEffect, useState } from 'react'
 import { BrowserRouter , Route, Routes } from 'react-router-dom'
 import Loginpage from './Login/Loginpage'
 import Register from './Register/Register'
@@ -20,7 +20,7 @@ export default function AppRouter() {
     const [isLogin, setIslogin] = useState<boolean>(false);
     const cookies = new Cookies();
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         islogin();
     },[])
 
