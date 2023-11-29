@@ -118,7 +118,7 @@ export default function WorkCon () {
             </ReactModal>  
   
             {workList && workList.map((value : workinterface)=>{
-                return <WorkCompo key={value.workid?.toString()} title={value.title} date={value.date} workid={value.workid}></WorkCompo>
+                return <WorkCompo key={value.workid} title={value.title} date={value.date} workid={value.workid}></WorkCompo>
             })}
             {renderPaginationButtons()}
         </div>

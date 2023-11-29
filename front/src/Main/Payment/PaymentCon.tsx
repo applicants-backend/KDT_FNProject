@@ -44,9 +44,12 @@ export default function PaymentCon () {
                 const month =  new Date().getMonth()+1;
                 const adminMonthRes = await axios.post(`${URL}/admin/allpayment`,{memberid: Memberid,month})
                 const adminEachRes = await axios.get(`${URL}/admin/each/${Memberid}/${month}`)
+                const CompareDataRes = await axios.post(`${URL}/admin/percent`, {memberid: Memberid,month})
                 console.log(adminEachRes.data.data)
                 setAdminEach(adminEachRes.data.data)
                 setAdminMonth(adminMonthRes.data.data)
+                setPercentData(CompareDataRes.data.data)
+
             }
         
         }

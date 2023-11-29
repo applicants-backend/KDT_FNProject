@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import UserTypeState, { URLstate, UserDataState } from "../../Store/Store"
 import axios from "axios"
+import HistoryCompo from "./HistoryCompo"
 
 interface Attendinterface {
    attendid : number,
@@ -79,22 +80,16 @@ export default function AttendanceHistory () {
         return Array.from({ length }, (_,index : number) => index + 1);
     }
 
-    const AttendanceComfirm = async (attendid:number) => {
-        const ComfirmRes = axios.patch(`${URL}/admin/attendance/comfirm`,{attendid})
-    }
+
 
     return (
       <div>
       {AttendList.map((value: Attendinterface, index) => {
         if (value.gowork && value.leavework) {
           return (
-            <div key={index}>
-              <div>{value.worker}</div>
-              <div>{value.gowork}</div>
-              <div>{value.leavework}</div>
-              <div>{value.wage}</div>
-              {value.comfirm === 0 ?  <button onClick={()=>AttendanceComfirm(value.attendid)}>승인</button> : <div> 승인완료 </div>}
-            </div>
+            <HistoryCompo attendid={value.attendid} worker={value.worker} gowork={value.worker} 
+                          leavework={value.leavework} wage={value.wage} comfirm={value.comfirm}
+            ></HistoryCompo>
           );
         }
         return null; // 조건을 만족하지 않으면 null 반환

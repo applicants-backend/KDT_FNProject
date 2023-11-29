@@ -12,7 +12,6 @@ export default function MiddlePage () {
     return (
         <>
             <CalendarCon/>
-            <WorkCon></WorkCon>
             {/* <Payment/> */}
             {/* <AttendanceCon/> */}
         </>

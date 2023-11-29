@@ -44,7 +44,7 @@ export default function Profile () {
         setToken(Code)
     }
     return (
-        <div>
+        <div className="profile">
             <img src={UserType ==="admin" ? companyImg : userImg} alt='Img'/>
             <div>{name}</div>
             <div>{phonenumber}</div>
@@ -54,7 +54,7 @@ export default function Profile () {
             <>
             <div>{companyNumber}</div>
             <button onClick={(e)=>CodeGenerater()}>초대코드 발급</button>
-            <div>{Token}</div>
+            <div style={{display:"none"}}>{Token}</div>
             </> :
             <></>
             }
