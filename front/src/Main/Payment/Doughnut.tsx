@@ -30,7 +30,29 @@ export const data = {
     },
   ],
 };
+const options = {
+  // 옵션 (1)
+  responsive: true,
+  // 옵션 (2)
+  interaction: {
+    mode: "index" as const,
+    intersect: false,
+  },
+  // 옵션 (3)
+  scales: {
+    x: {
+      grid: {
+        display: false,
+      },
+    },
+    y: {
+      grid: {
+        color: "#E3E3E3",
+      },
+    },
+  },
+};
 
 export function ChartDoughut(props : any) {
-  return <Doughnut data={props.data} />;
+  return <Doughnut data={props.data} options={options}/>;
 }
