@@ -12,6 +12,7 @@ export default function Loginpage (): ReturnType<FC> {
   const navigate = useNavigate();
   const LoginSuccess = () => {
     navigate('/')
+    window.location.reload();
   }
   const handleRegister = () => {
     // 회원가입 버튼 클릭 시에 '/register' 페이지로 이동

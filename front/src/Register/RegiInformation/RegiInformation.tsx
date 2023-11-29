@@ -15,6 +15,7 @@ interface UserData {
     companynumber? : String | null,
     // companyAddress? : String | null,
     companyToken? : String | null
+    invitecode? : String | null
 }
 
 
@@ -36,7 +37,7 @@ export default function RegiInformation (): ReturnType<FC> {
         ceo : "",
         companynumber : "",
         // companyAddress : "",
-        companyToken : ""
+        invitecode : ""
     })
  
 
@@ -168,7 +169,7 @@ export default function RegiInformation (): ReturnType<FC> {
 
         if (usertype === "user") {
             ///// 근로자일때
-            if (!userForm.companyToken) {
+            if (!userForm.invitecode) {
                 companyTokenInputRef.current && companyTokenInputRef.current.focus();
                 return;
             }
