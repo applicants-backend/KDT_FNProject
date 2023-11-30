@@ -1,23 +1,25 @@
 
+@import "../../common/style/style.scss"; 
+
 .login-wrap {
     width: 100%;  min-height: 100vh;
-    background-color: rgb(238, 242, 246);
+    background-color: $mainBackgroundColor;
     display: flex; justify-content: center; align-items: center;
 
     .login-logo {
-        font-size: 2.5em; font-weight: bold; color: #000;
+        font-size: 2.5em; font-weight: bold; color: $titleColor;
         text-align: center; padding: 0; margin: 0;
         a {
-           text-decoration: none; color: #000;
+           text-decoration: none; color: $titleColor;
         }
     }
     .login-contents-box {
-        width: 500px; height: 620px; background-color: rgb(255, 255, 255);
-        padding: 2em; color: rgb(54, 65, 82);
+        width: 500px; height: 620px; background-color:$contentsBackgroundColor;
+        padding: 2em; color: $mainColor;
         transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
         box-shadow: none; background-image: none;
         border-radius: 12px; overflow: hidden;
-        border: 1px solid rgba(144, 202, 249, 0.145);
+        border: 1px solid $contentsBorderColor;
     }   
 
     .login-type-image {
@@ -33,7 +35,7 @@
         display: flex; align-items: center; margin-bottom: 15px;
         div {
             width: 50%; 
-            height: 50px; text-align: center; border: 1px solid #eee;
+            height: 50px; text-align: center; border: 1px solid $bordercolor1;
             line-height: 50px; cursor: pointer; border-radius: 3px;
             &.on {
                 background-color: #eee; font-weight: bold;
@@ -49,7 +51,8 @@
         width: 100%; height: 50px; border: 0; 
         margin-top: 0.8em;
         margin-bottom: 0.8em;
-        background-color:rgb(144, 202, 249); color: #fff;
+        background-color:$buttonColor0; 
+        color: #fff;
         border-radius: 3px;
         &:hover {
             opacity: 0.9;
@@ -58,7 +61,8 @@
 
     .join-button {
         width: 100%; height: 50px; border: 0;
-        background-color:rgb(94, 53, 177); color: #fff;
+        background-color:$buttonColor1; 
+        color: #fff;
         border-radius: 3px;
         &:hover {
             opacity: 0.9;

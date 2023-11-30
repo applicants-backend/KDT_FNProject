@@ -49,7 +49,6 @@ export default function PaymentCon () {
                 setAdminEach(adminEachRes.data.data)
                 setAdminMonth(adminMonthRes.data.data)
                 setPercentData(CompareDataRes.data.data)
-
             }
         
         }

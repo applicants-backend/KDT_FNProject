@@ -30,11 +30,9 @@ export default function Login({type, img, onLoginSuccess} : props) {
         setUserTypeUser();
       }
       const response = await axios.post(`${URL}/login`, { memberid, password });
-      console.log('로그인', response);
   
       // 여기서 실제 성공 여부 확인
       if (response.status === 200 && response.data && response.data.data) {
-
 
         setMemberid(response.data.data.memberid);
         setStoreid(response.data.data.storeid);
@@ -73,15 +71,15 @@ export default function Login({type, img, onLoginSuccess} : props) {
             <div>
                 <label>Username :</label>
                 <input type="text" 
-                    onFocus={(e) =>onfocusBluer(e,"focus")}
-                    onBlur={(e) =>onfocusBluer(e,"blur")}
+                    onFocus={(e) => onfocusBluer(e,"focus")}
+                    onBlur={(e) => onfocusBluer(e,"blur")}
                     value={memberid} onChange={(e) => setMemberId(e.target.value)} />
             </div>
             <div>   
                 <label>Password :</label>
                 <input type="password" 
-                        onFocus={(e) =>onfocusBluer(e,"focus")}
-                        onBlur={(e) =>onfocusBluer(e,"blur")}
+                        onFocus={(e) => onfocusBluer(e,"focus")}
+                        onBlur={(e) => onfocusBluer(e,"blur")}
                         value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} />
             </div>
         </form>
