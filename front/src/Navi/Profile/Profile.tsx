@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react"
-import UserTypeState, { ProfileState, URLstate, UserDataState } from "../../Store/Store"
+import UserTypeState, { ProfileState, URLstate, UserDataState, WorkerListState } from "../../Store/Store"
 import axios from "axios"
 import ReactModal from "react-modal"
 import ProfileModal from "./ProfileModal"
-import NaviCon from "../NaviBar/NaviCon"
-
 
 export default function Profile () {
 
     const {URL} = URLstate(state=>state)
     const {UserType} = UserTypeState(state=>state)
-    const {Memberid, Token, setToken, setName} = UserDataState(state=>state)
+    const {Memberid, Token, Storeid, setToken, setName} = UserDataState(state=>state)
     const {userImg,companyImg,name,phonenumber,companyNumber,companyName, setuserImg, setcompanyImg, setname, setphonenumber, setcompanyName, setcompanyNumber} = ProfileState(state=>state)
+    const {setWorkList} = WorkerListState(state=>state)
+
 
     useEffect(()=> {
         const loadUserData = async () => {
@@ -27,7 +27,11 @@ export default function Profile () {
             setcompanyName(Storeprofile.companyname)
             setcompanyNumber(Storeprofile.companynumber)
             setcompanyImg(Storeprofile.companyimg)
-           
+            if(UserType === 'admin'){
+                const WorkerList = await axios.get(`${URL}/admin/attendance/workerlist/${Memberid}/${Storeid}`)
+                console.log(WorkerList.data.data)
+                setWorkList(WorkerList.data.data)
+            }     
         }
         loadUserData()
     },[Memberid,URL])
@@ -42,6 +46,7 @@ export default function Profile () {
         const CodeRes = await axios.post(`${URL}/generate`,{companynumber : companyNumber})
         const Code = CodeRes.data
         setToken(Code)
+        console.log(Code)
     }
     return (
         <div className="profile">
@@ -69,8 +74,6 @@ export default function Profile () {
             >
                  <ProfileModal></ProfileModal>
             </ReactModal>  
-
-            {/* <NaviCon></NaviCon> */}
         </div>
     )
 }

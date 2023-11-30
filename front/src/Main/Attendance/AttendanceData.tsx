@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import UserTypeState, { URLstate, UserDataState } from "../../Store/Store"
 import axios from "axios"
 import { ChartPolar } from "./ChartPoloar"
+import { Chartex } from "../Payment/Chart"
 
 export default function AttendanceData () {
 
@@ -28,7 +29,7 @@ export default function AttendanceData () {
         datasets: [
           {
             label: '알바별 출결',
-            data: [12, 19, 3, 5, 2, 3],
+            data: Data,
             backgroundColor: [
               'rgba(255, 99, 132, 0.5)',
               'rgba(54, 162, 235, 0.5)',
@@ -41,6 +42,28 @@ export default function AttendanceData () {
           },
         ],
       };
+
+      const Userdata = {
+        labels : Label,
+        datasets: [
+          {
+            type: 'line' as const,
+            label: '급여 추이',
+            borderColor: 'rgb(255, 99, 132)',
+            borderWidth: 2,
+            fill: false,
+            data: Data,
+          },
+          {
+            type: 'bar' as const,
+            label: '월별 급여',
+            backgroundColor: 'rgb(75, 192, 192)',
+            data: Data,
+            borderColor: 'white',
+            borderWidth: 2,
+          }
+        ],
+      };
       
     return(
         UserType === 'admin' ? (
@@ -48,7 +71,7 @@ export default function AttendanceData () {
           <ChartPolar data={AdminEachData}/>
         </div> ) : (
          <div>
-            
+            <Chartex data={Userdata}/>
          </div>
         )
      )

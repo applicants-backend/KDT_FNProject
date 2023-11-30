@@ -5,6 +5,7 @@ import Attendance from "../Attendance/Attendance";
 import WorkCon from "../Work/WorkCon";
 import CalendarCon from "../Schedule/CalendarCon";
 import WorkDetail from "../../WorkDetail/WorkDetail";
+import Error from '../../404/Error'
 
 export default function MiddlePage () {
 
@@ -17,6 +18,7 @@ export default function MiddlePage () {
                 <Route path='/work' element={<WorkCon/>} />
                 <Route path='/workdetail' element={<WorkDetail/>} />
                 <Route path='/attendance' element={<Attendance/>} />
+                <Route path='*'  element={<Error/>} />
             </Routes>
             {/* <Payment/> */}
             {/* <AttendanceCon/> */}

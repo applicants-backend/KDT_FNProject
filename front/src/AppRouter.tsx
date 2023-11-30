@@ -10,7 +10,7 @@ import MainPage from './Main/page/MainPage'
 import WorkDetail from './WorkDetail/WorkDetail'
 import Payment from './Main/Payment/Payment'
 import App from './App'
-import Error from './404/Error'
+
 import Attendance from './Main/Attendance/Attendance'
 import {Cookies} from 'react-cookie';
 import "./App.css"
@@ -45,7 +45,7 @@ export default function AppRouter() {
                         <Routes>
                             <Route path='/'  element={<MainPage/>} />
                             <Route path='/profile' element={<Profile/>} />
-                            <Route path='*'  element={<Error/>} />
+                            <Route path='*'  element={<MainPage/>} />
                         </Routes>
                     }   
                 </div>
