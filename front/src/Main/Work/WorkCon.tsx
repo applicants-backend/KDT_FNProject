@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react"
-import { URLstate, UserDataState, WorkState } from "../../Store/Store"
+import UserTypeState, { URLstate, UserDataState, WorkState } from "../../Store/Store"
 import axios from "axios"
 import WorkCompo from "./WorkCompo"
 import WorkAddModal from "./WorkAddModal";
 import ReactModal from "react-modal";
+import './scss/WorkCon.scss'
 interface workinterface {
     workid : number,
     memberid : string, 
@@ -15,6 +16,7 @@ interface workinterface {
 export default function WorkCon () {
     const {URL} = URLstate(state=>state)
     const {Storeid,Memberid} = UserDataState(state=>state)
+    const {UserType} = UserTypeState(state=>state)
     const {workList, setWorkList,add} = WorkState(state=>state)
 
     const [modalOpenis, setmodalOpenis] = useState(false)
@@ -100,12 +102,22 @@ export default function WorkCon () {
 
 
     return (
-        <div>
-          <form name="SearchForm">
+        <div className="WorkConCon">
+          <div className="searchform">
+            <div>업무일지</div>
             <input onChange={(e)=>{setKeyword(e.target.value)}}/>
-          </form>
+          </div>
 
+          <div className="moccha">
+            <div className="date">작성시간</div>
+            <div className="title">제목</div>
+            <div className="todo">업무 현황</div>
+          </div>
+
+            {UserType === 'admin' ? 
             <button type="button" onClick={(e)=>{WriteAdd()}}>작성</button>
+            : <></>
+            }
 
             <ReactModal
             ///// modal 설정
@@ -117,7 +129,13 @@ export default function WorkCon () {
             <WorkAddModal></WorkAddModal>
             </ReactModal>  
   
-            {workList && workList.map((value : workinterface)=>{
+            {workList.length === 0 ?(
+              <div>업무일지가 없습니다.</div>
+            )
+            : workList.map((value : workinterface)=>{
+              if (!value) {
+                return null; // 또는 다른 처리를 수행하고 싶은 로직 추가
+              }
                 return <WorkCompo key={value.workid} title={value.title} date={value.date} workid={value.workid}></WorkCompo>
             })}
             {renderPaginationButtons()}

@@ -1,92 +1,31 @@
 
 @import "../../../common/style/style.scss"; 
 
-
 .main-wrap {
     display: flex; 
     flex: 1 3; justify-content: space-around;  
     align-items: center; height: 100vh;
-    .LeftPage {
+    .left-page {
         display: flex; flex-grow: 1; flex-direction: column;
         align-items: center; 
         height: 100%; background-color: $mainSideBackgroundColor;
         width: 380px; min-width: 380px;
-        .profile {
-            display: flex; flex-direction: column; align-items: center;
-            margin-bottom: 5%; 
-            padding: 10%;
-            border-radius: 10%;
-            background-color: rgba(255, 255, 255, 0.3); 
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            border: 1px solid transparent; 
-        }
-        .profile div{
-            margin-top: 5%;
-        }
-        .profile button{
-            width: 200px;
-            margin-top: 5%;
-            background-color:white;
-            border: 2px solid black;
-        }
-       .navicon{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .navicon div {
-            width: 200px;
-            margin-top: 5%; 
-            border: 2px solid black;
-            text-align: center;
-            color: black;
-            padding: 1%;
-        }
-        .navicon a{
-            text-decoration: none;
-        }
-        @media (max-width:768px) {
-            .container{
-                position: absolute;
-                left: 5%;
-                top: 5%;
-                z-index: 99;
-                background-color: #fff;
+        .main-logo {
+            text-align: center; padding: 0; margin: 0;
+            width: 90px; height: 78px; margin: auto;
+            a {
+                text-decoration: none; color: $titleColor;
+                img {
+                    width: 100%; height: 100%; 
+                    object-fit: contain;
+                }
             }
-            .profile {
-                position: absolute;
-                right: 5%;
-                top: 2%;
-                padding: 0;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                box-shadow: none;
-                border: none;
-              }
-            
-              .profile img {
-                display: inline-block;
-                width: 50px; 
-                height: 50px; 
-                margin-right: 10px; 
-                border-radius: 50%; 
-              }
-              .profile div{
-                display: none;
-              }
-              .profile button {
-                display: inline-block;
-                margin-right: 10px;
-                width: 50px;
-              }    
         }
     }
-        
-    .MiddlePage {
+    .middle-page {
         display: flex; flex-direction: column;align-items: center; flex-grow: 3;
         height: 100vh; width: 1540px; overflow: auto; padding-top: 3rem;
-        div{
+        div {
             width: 90%;
         }
     }
@@ -95,10 +34,10 @@
 @media (max-width: 768px) {
     .main-wrap {
         display: block; 
-        .LeftPage {
+        .left-page {
             width: 100%; min-width: 0; height: 100px;
         }
-        .MiddlePage {
+        .middle-page {
             margin-top: 2%; width: 100%;
         }
     }

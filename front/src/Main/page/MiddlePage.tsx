@@ -6,13 +6,14 @@ import WorkCon from "../Work/WorkCon";
 import CalendarCon from "../Schedule/CalendarCon";
 import WorkDetail from "../../WorkDetail/WorkDetail";
 import Error from '../../404/Error'
+import HomeSchedule from "../Home/HomeSchedule";
 
 export default function MiddlePage () {
 
     return (
         <>
             <Routes>
-                <Route path="/" element={<CalendarCon />} />
+                <Route path="/" element={<HomeSchedule />} />
                 <Route path='/calendar' element={<CalendarCon/>} />
                 <Route path='/payment' element={<Payment/>} />
                 <Route path='/work' element={<WorkCon/>} />

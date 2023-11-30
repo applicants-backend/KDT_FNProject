@@ -1,0 +1,58 @@
+// WorkCompo.scss
+
+@import "../../../common/style/style.scss";
+
+.CompoCon {
+    display: flex;
+    align-items: center;
+
+    background-color:#fff;
+    height: 70px;
+
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    box-shadow: none;
+
+    cursor: pointer;
+
+    &:hover{
+        background-color: #aaa;
+        opacity: 0.5;
+    }
+
+    div {
+        display: flex;
+        flex-direction: column;
+        margin-right: 1rem;
+    }
+
+    .date {
+        font-size: 14px;
+        color: $mainColor;
+    }
+
+    .title {
+        font-size: 18px;
+        color: $titleColor;
+        font-weight: bold;
+    }
+
+    .todo {
+        font-size: 14px;
+        color: $mainColor;
+        margin-top: 0.5rem;
+        align-items: end;
+    }
+}
+
+@media (max-width: 768px) {
+    .CompoCon {
+        background-color: #fff;
+        .date,
+        .title,
+        .todo {
+            color: $mainColor;
+        }
+    }
+}

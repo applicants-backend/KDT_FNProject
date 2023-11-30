@@ -16,10 +16,18 @@ export default function AttendanceData () {
 
     useEffect(()=>{
         const loadData = async () =>{
-            const AttenddataRes = await axios.get( UserType === "admin" ? `${URL}/admin/attendance/data/${Memberid}/${Storeid}` : `${URL}/attendance/data/${Memberid}/${Storeid}`)
+            const AttenddataRes = await axios.get( UserType === "admin" ? `${URL}/admin/attendance/data/${Memberid}/${Storeid}` : `${URL}/user/attendance/data/${Memberid}/${Storeid}`)
             console.log(AttenddataRes.data.data)
-            setLabel(Object.keys(AttenddataRes.data.data))
-            setData(Object.values(AttenddataRes.data.data))
+            if(UserType === 'user') {
+              setLabel(Object.keys(AttenddataRes.data.data).reverse().map(value=>{
+                const yearMonth = value.toString().slice(0, 6);
+                const formattedKey = `${yearMonth.substring(0, 4)}년 ${yearMonth.substring(4)}월`;
+                return formattedKey;}))
+              setData(Object.values(AttenddataRes.data.data).reverse() as number[])
+            } else {
+              setLabel(Object.keys(AttenddataRes.data.data))
+              setData(Object.values(AttenddataRes.data.data))  
+            }
         }
         loadData()
     },[])

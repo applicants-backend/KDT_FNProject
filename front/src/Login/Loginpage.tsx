@@ -23,7 +23,9 @@ export default function Loginpage (): ReturnType<FC> {
     <div className="login-wrap">
       <div className="login-contents-box">
             <h2 className="login-logo">
-                <Link to={"/"}> Albaon </Link>
+                <Link to={"/"}> 
+                  <img src="https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/logo_black_small.png" alt="logo"/>
+                </Link>
             </h2>
             <div className='login-type-image'>
                 {UserType === "user"? 
