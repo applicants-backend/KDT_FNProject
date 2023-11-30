@@ -1,0 +1,52 @@
+@import "../../../common/style/style.scss";
+
+
+
+.WorkConCon {
+    background-color: rgb(238, 242, 246);
+    margin-bottom: 36px;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    border-radius: 10px;
+
+    .searchform {
+        display: flex;
+        font-size: x-large;
+        margin-top: 10px;
+        font-weight: 700;
+    }
+
+    .moccha {
+        display: flex;
+        height: 50px;
+        align-items: center;
+        padding: 1rem;
+
+        div {
+            display: flex;
+            justify-content: center;
+        }
+
+        .date {
+            font-size: 14px;
+            color: $mainColor;
+        }
+    
+        .title {
+            font-size: 18px;
+            color: $titleColor;
+            font-weight: bold;
+        }
+    
+        .todo {
+            font-size: 14px;
+            color: $mainColor;
+            margin-top: 0.5rem;
+            justify-content: flex-end;
+        }
+    }
+}

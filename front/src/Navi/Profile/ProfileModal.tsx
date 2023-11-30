@@ -3,15 +3,11 @@ import UserTypeState, {ProfileState, URLstate, UserDataState } from "../../Store
 import React, { useCallback, useState, useRef, useMemo } from "react"
 
 export default function ProfileModal() {
-    const {setuserImg, setcompanyImg, setname, setphonenumber} = ProfileState(state=>state)
+    const {userImg,companyImg,setuserImg, setcompanyImg ,setname, setphonenumber} = ProfileState(state=>state)
 
     const {URL} = URLstate(state=>state)
     const {UserType} = UserTypeState(state => state)
     const {Memberid, Storeid, setName} = UserDataState(state=>state)
-
-
-    const[userImg, setUserImg] =useState<string>()
-    const[companyImg, setCompanyImg] =useState<string>()
 
     const[userPw, setUserpw]=useState<string>()
     const[userPwre, setUserpwre]=useState<string>()
@@ -34,7 +30,7 @@ export default function ProfileModal() {
 
             setUserpw(Userprofile.password)
 
-            setUserImg(Userprofile.memberimg)
+            setuserImg(Userprofile.memberimg)
             setuserName(Userprofile.name)
             setphoneNumber(Userprofile.phonenumber)
 
@@ -42,11 +38,11 @@ export default function ProfileModal() {
             setCEO(Storeprofile.ceo)
             setCompanyNumber(Storeprofile.companynumber)
             setcompanyAddress(Storeprofile.companyAddress)
-            setCompanyImg(Storeprofile.companyimg)
+            setcompanyImg(Storeprofile.companyimg)
             setcompanyToken(Storeprofile.companToken)
         }
         loadUserData()
-    },[Memberid,URL])
+    },[Memberid,URL,])
 
     ///// 유효성 검사 메세지들
     const [pwMes,setpwMes] = useState<String>()
@@ -158,14 +154,17 @@ export default function ProfileModal() {
             try {
                 const formData = new FormData();
                 formData.append('file',Imgfile as any)
-                formData.append('role',UserType)
+                formData.append('role', UserType === 'admin' ? 'ADMIN' : 'USER')
                 formData.append('memberid',Memberid)
                 formData.append('storeid',Storeid as unknown as string)
-                  console.log(formData)
+
+                console.log(formData)
                 const uploadRes = await axios.post(`${URL}/member/image/upload`,formData)
+
                 console.log(uploadRes)
-                const imgUrl = uploadRes.data.data.imgurl
+                const imgUrl = uploadRes.data.data.imageurl
                 console.log(imgUrl)
+
                 if(UserType === "admin") {
                     setcompanyImg(imgUrl)
                 } else {
