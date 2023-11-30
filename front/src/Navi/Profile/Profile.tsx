@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, SyntheticEvent } from "react"
 import UserTypeState, { ProfileState, URLstate, UserDataState, WorkerListState } from "../../Store/Store"
 import axios from "axios"
 import ReactModal from "react-modal"
 import ProfileModal from "./ProfileModal"
+
+import "./scss/Profile.scss"
 
 export default function Profile () {
 
@@ -48,20 +50,36 @@ export default function Profile () {
         setToken(Code)
         console.log(Code)
     }
+
+
+    const defalutImg = (e:SyntheticEvent<HTMLImageElement, Event> | any) => {
+        e.currentTarget.src = "https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/defalut_image.png";
+    }
+
     return (
         <div className="profile">
-            <img src={UserType ==="admin" ? companyImg : userImg} alt='Img'/>
-            <div>{name}</div>
-            <div>{phonenumber}</div>
-            <div>{companyName}</div>
-
+            
+            <div className="profile-img">
+                <img src={UserType ==="admin" ? companyImg === null ? "" : companyImg : userImg === null ? "" : userImg } 
+                        alt='profile-image' 
+                        onError={defalutImg}/>
+            </div>
+            <div className="profile-info">
+                <p>{name}</p>
+                <p>{phonenumber}</p>
+                <p>{companyName}</p>
+            </div>
+            
             {UserType === "admin" ?
-            <>
-            <div>{companyNumber}</div>
-            <button onClick={(e)=>CodeGenerater()}>초대코드 발급</button>
-            <div style={{display:"none"}}>{Token}</div>
-            </> :
-            <></>
+                <>  
+                    <div className="profile-info">
+                         <p>{companyNumber}</p>
+                    </div>
+                    <button onClick={(e)=>CodeGenerater()}>초대코드 발급</button>
+                    <div style={{display:"none"}}>{Token}</div>
+                </> 
+                :
+                <></>
             }
             
             <button type="button" onClick={(e)=>{editProfle()}}>프로필수정</button>

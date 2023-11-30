@@ -1,10 +1,12 @@
 import { Link, NavLink } from "react-router-dom";
 
+import "./scss/NaviCon.scss"
 
 export default function NaviCon () {
 
     return (
-        <>     <div className="navicon">
+        <>     
+            <div className="navicon">
                 <Link to='/calendar'>
                     <div>캘린더</div>
                 </Link>
@@ -17,7 +19,7 @@ export default function NaviCon () {
                 <Link to='/attendance'>
                     <div>근태 관리</div>
                 </Link>
-                </div>
+            </div>
         </>
     )
 }

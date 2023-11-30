@@ -11,10 +11,10 @@ export default function MainPage () {
     return (
         <>  
             <div className="main-wrap">
-                <div className="LeftPage">
+                <div className="left-page">
                     <LeftPage/>
                 </div>
-                <div className="MiddlePage">
+                <div className="middle-page">
                     <MiddlePage/>
                 </div>
             </div>
