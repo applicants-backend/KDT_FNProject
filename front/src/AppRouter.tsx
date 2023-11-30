@@ -1,4 +1,4 @@
-import { useLayoutEffect, useEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { BrowserRouter , Route, Routes } from 'react-router-dom'
 import Loginpage from './Login/Loginpage'
 import Register from './Register/Register'
@@ -42,16 +42,10 @@ export default function AppRouter() {
                             <Route path='*'  element={<Loginpage/>} />
                         </Routes>
                         :   
-                            
                         <Routes>
                             <Route path='/'  element={<MainPage/>} />
                             <Route path='/profile' element={<Profile/>} />
-                            <Route path='/calendar' element={<CalendarCon/>} />
-                            <Route path='/payment' element={<Payment/>} />
-                            <Route path='/work' element={<WorkCon/>} />
-                            <Route path='/workdetail' element={<WorkDetail/>} />
-                            <Route path='/app' element={<App/>} />
-                            <Route path='/attendance' element={<Attendance/>} />
+                            <Route path='*'  element={<MainPage/>} />
                         </Routes>
                     }   
                 </div>

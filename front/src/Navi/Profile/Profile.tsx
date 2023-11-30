@@ -61,13 +61,13 @@ export default function Profile () {
             
             <button type="button" onClick={(e)=>{editProfle()}}>프로필수정</button>
             <ReactModal
-            ///// modal 설정
-             isOpen={modalOpenis}
-             onRequestClose={()=>setmodalOpenis(false)}
-             ariaHideApp={false}
-             shouldCloseOnOverlayClick={true}
+                ///// modal 설정
+                isOpen={modalOpenis}
+                onRequestClose={()=>setmodalOpenis(false)}
+                ariaHideApp={false}
+                shouldCloseOnOverlayClick={true}
             >
-            <ProfileModal></ProfileModal>
+                 <ProfileModal></ProfileModal>
             </ReactModal>  
 
             {/* <NaviCon></NaviCon> */}
