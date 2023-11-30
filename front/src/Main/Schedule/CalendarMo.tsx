@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import UserTypeState, { UserDataState,CalendarData, URLstate } from '../../Store/Store';
 import axios from 'axios';
@@ -51,6 +51,8 @@ function CalendarMo({ isOpen, closeModal, sendDataToCon, selectedEvent, selected
   const {UserType} = UserTypeState(state=>state)
   const {Storeid,Memberid,Name} = UserDataState(state=>state)
 
+  const [myStoreUser, setMyStoreUser] = useState<string>('');
+
   const {URL} = URLstate(state=>state)
 
   async function adminAdditonalPost() {
@@ -98,7 +100,7 @@ function CalendarMo({ isOpen, closeModal, sendDataToCon, selectedEvent, selected
     const sendUserData={
       memberid : Memberid,
       storeid : Storeid,
-      worker: Memberid,
+      worker: worker,
       start: start,
       end: end,
       startwork: startwork,
@@ -128,7 +130,7 @@ function CalendarMo({ isOpen, closeModal, sendDataToCon, selectedEvent, selected
     sendDataToCon({
       member : Memberid,
       storeid : Storeid,
-      worker: Name,
+      worker: worker,
       start: start,
       end: end,
       startwork: startwork,
@@ -154,10 +156,21 @@ function CalendarMo({ isOpen, closeModal, sendDataToCon, selectedEvent, selected
   function handleDelete() {
     // 삭제 로직 추가
   }
+  const SelectBox = () => {
+    return (
+      <select id='worker'>
+        <option key="banana" value="banana">바나나 </option>
+        <option key="apple" value="apple">사과</option>
+        <option key="orange" value="orange">오렌지</option>
+      </select>
+    );
+  }
+
   const renderAdminForm = () => (
     <>
       <label htmlFor="worker">근무자 : </label>
-      <input type="text" id="worker" onChange={(e) => setWorker(e.target.value)}/>
+      {/* <input type="select" id="worker" onChange={(e) => setWorker(e.target.value)}/> */}
+      <SelectBox/>
       <label htmlFor="start">출근 시간 : </label>
       <input type="datetime-local" id="start" onChange={(e) => setStart(e.target.value)} />
       <label htmlFor="end">퇴근 시간 : </label>
@@ -210,6 +223,25 @@ function CalendarMo({ isOpen, closeModal, sendDataToCon, selectedEvent, selected
 
     </>
   );
+
+  // select 박스 만들기.
+  useEffect(() => {
+    const loadUser = async() => {
+      try {
+        const myStoreUser  = await axios.get(`${URL}/admin/attendance/workerlist/${Memberid}/${Storeid}`)
+        // const array = myStoreUser.data
+        console.log(myStoreUser)
+        const memberid = myStoreUser.data.data.key
+        const name = myStoreUser.data.data.value
+        console.log(memberid)
+        console.log(name)
+      } catch (error) {
+        
+      }
+
+    };
+    loadUser();
+  })
 
   return (
     <>

@@ -23,7 +23,7 @@ function CalendarCon(props: CalendarConProps) {
 
   // 시간 데이터 갖고오기
   const [nowDate, setNowDate] = useState<string | null>('');
-  const [monthData, setMonthData] = useState<string | null>('');
+  const [month, setMonth] = useState<string | null>('');
 
   const [worker, setWorker] = useState<string>('');
   const [startwork, setStartWork] = useState<string>('');
@@ -35,11 +35,9 @@ function CalendarCon(props: CalendarConProps) {
 
   const memberid = Memberid
   const storeid = Storeid
-  // const month = monthData
-  const month = nowDate
 
   const data={
-    memberid,storeid,month
+    memberid,storeid
   }
 
   // modal open 두개로 쪼개기
@@ -60,54 +58,137 @@ function CalendarCon(props: CalendarConProps) {
     setDateModalOpen(false);
     setEventModalOpen(false);
   }
+  function dateClick(info:any) {
+    console.log(info)
+    console.log(info.view)
+  }
+
+  // month 값.
+  // 해당 달 정보 보내기
+  // 달 변경 확인하기
+
+  const handleDatesSet = (arg:any) => {
+    
+    const startDate = new Date(arg.startStr);
+
+    // arg.startStr이 유효한 날짜 형식인지 확인
+    if (isNaN(startDate.getTime())) {
+      console.error('Invalid start date:', arg.startStr);
+      return;
+    }
+
+    // 한 달을 더함
+    startDate.setMonth(startDate.getMonth() + 1);
+
+    // 12월에서 1월로 갈 때 연도를 늘림
+    if (startDate.getMonth() === 0) {
+      startDate.setFullYear(startDate.getFullYear() + 1);
+    }
+    const formattedDate = `${startDate.toISOString().slice(0, 16)}:00`;
+
+    // month 업데이트
+    // console.log('백엔드에 보낼 날짜:', formattedDate);
+    setMonth(formattedDate);
+    // console.log('Month Data:', month);
+  };
+  const handleDidMount = () => {
+
+  }
 
   useEffect(() => {
     const loadCalendarData = async () => {
-      // 현재 시간 갖고오기
-
-      function getCurrentLocalDateTime(): string {
-        const currentDateTime = new Date();
-        const isoString = `${currentDateTime.toISOString().slice(0, 16)}:00`;
-
-        return isoString;
+      const currentDate = new Date();
+      console.log("CurrentDate : " , currentDate)
+      const formmatDate = `${currentDate.toISOString().slice(0, 16)}:00`;
+      console.log("formmatDate : " , formmatDate)
+      console.log("month / first date : " ,month)
+      if (month !== null) {
+        try {
+          const calendarData = UserType === "admin" ?
+          // await axios.post<{ data: CalendarData[] }>(`${URL}/admin/attendance/findAll`, data)
+          await axios.get<{ data: CalendarData[] }>(`${URL}/admin/schedule/${memberid}/${storeid}/${formmatDate}`)
+          : await axios.get<{ data: CalendarData[] }>(`${URL}/user/schedule/${memberid}/${storeid}/${formmatDate}`)
+            
+          // map 으로 돌려서 배열 데이터 풀어내기
+          const eventsArray = calendarData.data.data.map((item: CalendarData) => {
+  
+            // admin 과 user 에 따라서 값을 다르게 나눠주기
+            const start: Date = UserType === "admin" ? new Date(item.start as string) : new Date(item.startwork as string);
+            const end: Date = UserType === "admin" ? new Date(item.end as string) : new Date(item.leavework as string);
+    
+            return {
+              title: item.worker,
+              start: start,
+              end: end,
+            };
+            
+          });
+    
+          // Set the events array
+          setEvents(eventsArray);
+          console.log(calendarData.data.data);
+        } catch (error) {
+          console.log('에러', error);
+        }
+      } else {
+        try {
+          const calendarData = UserType === "admin" ?
+          // await axios.post<{ data: CalendarData[] }>(`${URL}/admin/attendance/findAll`, data)
+          await axios.get<{ data: CalendarData[] }>(`${URL}/admin/schedule/${memberid}/${storeid}/${formmatDate}`)
+          : await axios.get<{ data: CalendarData[] }>(`${URL}/user/schedule/${memberid}/${storeid}/${formmatDate}`)  
+          // map 으로 돌려서 배열 데이터 풀어내기
+          const eventsArray = calendarData.data.data.map((item: CalendarData) => {
+  
+            // admin 과 user 에 따라서 값을 다르게 나눠주기
+            const start: Date = UserType === "admin" ? new Date(item.start as string) : new Date(item.startwork as string);
+            const end: Date = UserType === "admin" ? new Date(item.end as string) : new Date(item.leavework as string);
+    
+            return {
+              title: item.worker,
+              start: start,
+              end: end,
+            };
+            
+          });
+          // Set the events array
+          setEvents(eventsArray);
+          console.log(calendarData.data.data);
+        } catch (error) {
+          console.log('에러', error);
+        }
       }
-      
-      // 함수 호출 후 콘솔에 출력
-      const localDateTimeString = getCurrentLocalDateTime();
 
-      console.log('Current LocalDateTime:', localDateTimeString);
-      setNowDate(localDateTimeString);
-      
-      try {
-        const calendarData = UserType === "admin" ?
-        // await axios.post<{ data: CalendarData[] }>(`${URL}/admin/attendance/findAll`, data)
-        await axios.get<{ data: CalendarData[] }>(`${URL}/admin/schedule/${memberid}/${storeid}/2023-11-29T16:11:00`)
-        : await axios.get<{ data: CalendarData[] }>(`${URL}/user/schedule/${memberid}/${storeid}/${month}`)  
-        // map 으로 돌려서 배열 데이터 풀어내기
-        const eventsArray = calendarData.data.data.map((item: CalendarData) => {
-          // admin 과 user 에 따라서 값을 다르게 나눠주기
-          const start: Date = UserType === "admin" ? new Date(item.start as string) : new Date(item.startwork as string);
-          const end: Date = UserType === "admin" ? new Date(item.end as string) : new Date(item.leavework as string);
+      // tryCatch 미리 해놓기.
+      // try {
+      //   const calendarData = UserType === "admin" ?
+      //   // await axios.post<{ data: CalendarData[] }>(`${URL}/admin/attendance/findAll`, data)
+      //   await axios.get<{ data: CalendarData[] }>(`${URL}/admin/schedule/${memberid}/${storeid}/${month}`)
+      //   : await axios.get<{ data: CalendarData[] }>(`${URL}/user/schedule/${memberid}/${storeid}/${month}`)  
+      //   // map 으로 돌려서 배열 데이터 풀어내기
+      //   const eventsArray = calendarData.data.data.map((item: CalendarData) => {
+
+      //     // admin 과 user 에 따라서 값을 다르게 나눠주기
+      //     const start: Date = UserType === "admin" ? new Date(item.start as string) : new Date(item.startwork as string);
+      //     const end: Date = UserType === "admin" ? new Date(item.end as string) : new Date(item.leavework as string);
   
-          return {
-            title: item.worker,
-            start: start,
-            end: end,
-          };
-        },[handleDatesSet]);
+      //     return {
+      //       title: item.worker,
+      //       start: start,
+      //       end: end,
+      //     };
+          
+      //   });
   
-        // Set the events array
-        setEvents(eventsArray);
-        console.log(calendarData.data.data);
-        console.log("monnth : ",month)
-  
-      } catch (error) {
-        console.log('에러', error);
-      }
+      //   // Set the events array
+      //   setEvents(eventsArray);
+      //   console.log(calendarData.data.data);
+      // } catch (error) {
+      //   console.log('에러', error);
+      // }
     };
   
     loadCalendarData();
-  }, []); // Empty dependency array to run the effect only once
+  }, [month]); // Empty dependency array to run the effect only once
   
   
   
@@ -208,36 +289,7 @@ function handleEventClick(arg: any) {
     
   }
 
-  // 해당 달 정보 보내기
-  // 달 변경 확인하기
-
-  const handleDatesSet = (arg:any) => {
-    
-    const startDate = new Date(arg.startStr);
-
-    // arg.startStr이 유효한 날짜 형식인지 확인
-    if (isNaN(startDate.getTime())) {
-      console.error('Invalid start date:', arg.startStr);
-      return;
-    }
-
-    // 한 달을 더함
-    startDate.setMonth(startDate.getMonth() + 1);
-
-    // 12월에서 1월로 갈 때 연도를 늘림
-    if (startDate.getMonth() === 0) {
-      startDate.setFullYear(startDate.getFullYear() + 1);
-    }
-
-    const formattedDate = `${startDate.toISOString().slice(0, 16)}:00`;
-
-    // monthData 업데이트
-    setMonthData(formattedDate);
-
-    console.log('백엔드에 보낼 날짜:', formattedDate);
-    // console.log(monthData)
-  };
-
+  
   
 
 
@@ -266,6 +318,7 @@ function handleEventClick(arg: any) {
           }}
           // customButtons={CustomButtons}
           datesSet={handleDatesSet}
+          viewDidMount={handleDidMount}
         />
         {isDateModalOpen && (
         <CalendarMo
