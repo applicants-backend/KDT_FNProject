@@ -3,6 +3,7 @@ import UserTypeState, { ProfileState, URLstate, UserDataState, WorkerListState }
 import axios from "axios"
 import ReactModal from "react-modal"
 import ProfileModal from "./ProfileModal"
+import customModalStyles from "./scss/Modal"
 
 import "./scss/Profile.scss"
 
@@ -12,7 +13,7 @@ export default function Profile () {
     const {UserType} = UserTypeState(state=>state)
     const {Memberid, Token, Storeid, setToken, setName} = UserDataState(state=>state)
     const {userImg,companyImg,name,phonenumber,companyNumber,companyName, setuserImg, setcompanyImg, setname, setphonenumber, setcompanyName, setcompanyNumber} = ProfileState(state=>state)
-    const {setWorkList} = WorkerListState(state=>state)
+    const {setWorkList,WorkerList} = WorkerListState(state=>state)
 
 
     useEffect(()=> {
@@ -29,14 +30,15 @@ export default function Profile () {
             setcompanyName(Storeprofile.companyname)
             setcompanyNumber(Storeprofile.companynumber)
             setcompanyImg(Storeprofile.companyimg)
+            console.log(UserRes)
             if(UserType === 'admin'){
-                const WorkerList = await axios.get(`${URL}/admin/attendance/workerlist/${Memberid}/${Storeid}`)
-                console.log(WorkerList.data.data)
-                setWorkList(WorkerList.data.data)
+                const WorkerListRes = await axios.get(`${URL}/admin/attendance/workerlist/${Memberid}/${Storeid}`)
+                setWorkList(WorkerListRes.data.data)
+                console.log(WorkerList)
             }     
         }
         loadUserData()
-    },[Memberid,URL])
+    },[Memberid,URL,companyImg])
 
     const [modalOpenis, setmodalOpenis] = useState(false)
 
@@ -89,6 +91,7 @@ export default function Profile () {
                 onRequestClose={()=>setmodalOpenis(false)}
                 ariaHideApp={false}
                 shouldCloseOnOverlayClick={true}
+                style={customModalStyles}
             >
                  <ProfileModal></ProfileModal>
             </ReactModal>  

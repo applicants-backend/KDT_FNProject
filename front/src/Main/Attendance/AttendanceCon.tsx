@@ -32,9 +32,11 @@ export default function AttendanceCon () {
             if (AttendPercentRes.data.data < 0){
                 setColor(false)
             }
+            console.log(workerid)
+            console.log(WorkerList)
         }
         loadData()
-    },[])
+    },[workerid])
 
 
     return (
@@ -56,11 +58,14 @@ export default function AttendanceCon () {
         </div>
       ) : (
         <div>
-            <select>
-            {WorkerList && Object.entries(WorkerList).map(([key, value]: [string, string])=>{
-                return <option key={key} value={key} onChange={e=>setWorkerid(key)}>{value}</option>
-            })}
+            <select onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setWorkerid(e.target.value)}>
+            {Object.entries(WorkerList).map(([key, value]: [string, string]) => (
+                <option key={key} value={key}>
+                {value}
+                </option>
+            ))}
             </select>
+           
             <div>
                 이번주 총 출근시간
                 <div>{AttendWeek}</div>

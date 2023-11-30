@@ -224,12 +224,11 @@ export const ProfileState = create<Profileinterface>((set)=>({
 }))
 
 interface WorkerListInerface {
-  WorkerList : [string,string]
-  setWorkList : (res:[string,string]) => void;
+  WorkerList: Record<string, string>;
+  setWorkList: (res: Record<string, string>) => void;
 }
-
 ///// Worker List 
-export const WorkerListState = create<WorkerListInerface>((set)=>({
-  WorkerList : ["",""],
-  setWorkList : (res: [string,string]) => set({WorkerList : res})
-}))
+export const WorkerListState = create<WorkerListInerface>((set) => ({
+  WorkerList: {},
+  setWorkList: (res: Record<string, string>) => set({ WorkerList: res }),
+}));
