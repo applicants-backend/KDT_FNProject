@@ -98,7 +98,7 @@ function CalendarMo({ isOpen, closeModal, sendDataToCon, selectedEvent, selected
     const sendUserData={
       memberid : Memberid,
       storeid : Storeid,
-      worker: Name,
+      worker: Memberid,
       start: start,
       end: end,
       startwork: startwork,
