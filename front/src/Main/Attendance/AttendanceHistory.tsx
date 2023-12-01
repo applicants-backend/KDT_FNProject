@@ -9,7 +9,7 @@ interface Attendinterface {
    gowork : string,
    leavework : string,
    wage : string,
-   comfirm : number
+   confirm : number
 }
 
 export default function AttendanceHistory () {
@@ -86,14 +86,11 @@ export default function AttendanceHistory () {
     return (
       <div>
       {AttendList.map((value: Attendinterface) => {
-        if (value.gowork && value.leavework) {
           return (
-            <HistoryCompo attendid={value.attendid} worker={value.worker} gowork={value.worker} 
-                          leavework={value.leavework} wage={value.wage} comfirm={value.comfirm}
+            <HistoryCompo key={value.attendid} attendid={value.attendid} worker={value.worker} gowork={value.worker} 
+                          leavework={value.leavework} wage={value.wage} confirm={value.confirm}
             ></HistoryCompo>
           );
-        }
-        return null; // 조건을 만족하지 않으면 null 반환
       })}
       {renderPaginationButtons()}
     </div>

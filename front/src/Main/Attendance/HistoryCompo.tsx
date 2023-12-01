@@ -8,7 +8,7 @@ interface HistoryInterface {
     gowork : string,
     leavework : string,
     wage : string,
-    comfirm : number
+    confirm : number
 }
 
 
@@ -18,19 +18,21 @@ export default function HistoryCompo(props : HistoryInterface) {
     const {Memberid, Storeid} = UserDataState(state=>state)
     const {UserType}= UserTypeState(state=>state)
 
-    const [comfirm, setComfirm] = useState<number>(props.comfirm)
+    const [comfirm, setComfirm] = useState<number>(props.confirm)
 
     const AttendanceComfirm = async (attendid:number) => {
-        const ComfirmRes = axios.patch(`${URL}/admin/attendance/comfirm`,{attendid,memberid :Memberid, storeid : Storeid,})
+        const ComfirmRes = axios.patch(`${URL}/admin/attendance/confirm`,{attendid,memberid :Memberid, storeid : Storeid,})
         setComfirm(1)
     }
+
     return (
       <div key={props.attendid}>
+        <div>{props.attendid}</div>
         <div>{props.worker}</div>
         <div>{props.gowork}</div>
         <div>{props.leavework}</div>
         <div>{props.wage}</div>
-        { UserType === "admin" ? comfirm === 0 ? <button onClick={()=>AttendanceComfirm(props.attendid)}>승인</button> : <div> 승인완료 </div> : null}
+        { UserType === "admin" ? comfirm === 0 ? <button onClick={()=>AttendanceComfirm(props.attendid)}>승인</button> : <div> 승인완료 </div> : <div></div>}
       </div>
     )
 }
