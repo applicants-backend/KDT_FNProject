@@ -5,17 +5,15 @@ import "./scss/Attendance.scss"
 export default function Attendance() {
     return (
         <div>
+            <div className="AttendanceConWrap">
+            <AttendanceCon/>
+            </div>
+            <div className="AttendanceListAndData">
+            <AttendanceHistory/>
+            <AttendanceData/>
+            </div>
+        </div>
+       
 
-        <AttendanceCon/>
-        <div className="attend_container">
-            <div className="attend_history">
-                <div className="attend_history_wrap"><AttendanceHistory/></div>
-                </div>
-            <div className="attend_data">
-                <div className="attend_data_wrap"><AttendanceData/></div>
-                </div>
-        </div>
-           
-        </div>
     )
 }
