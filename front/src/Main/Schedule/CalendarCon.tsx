@@ -12,6 +12,7 @@ import UserTypeState, {
 import axios from "axios";
 import Calendar from "./Calendar";
 import { CalendarImpl } from "@fullcalendar/core/internal";
+import { error } from "console";
 
 interface CalendarConProps {
   // 다른 필요한 props가 있다면 추가
@@ -88,129 +89,92 @@ function CalendarCon(props: CalendarConProps) {
     }
     const formattedDate = `${startDate.toISOString().slice(0, 16)}:00`;
 
-    // month 업데이트
-    // console.log('백엔드에 보낼 날짜:', formattedDate);
     setMonth(formattedDate);
-    // console.log('Month Data:', month);
   };
   const handleDidMount = () => {};
 
   useEffect(() => {
     const loadCalendarData = async () => {
       const currentDate = new Date();
-      console.log("CurrentDate : ", currentDate);
       const formmatDate = `${currentDate.toISOString().slice(0, 16)}:00`;
-      console.log("formmatDate : ", formmatDate);
-      console.log("month / first date : ", month);
-      if (month !== null) {
-        try {
-          const calendarData =
+
+      try {
+        const calendarData =
+          UserType === "admin"
+            ? await axios.get<{ data: CalendarData[] }>(
+                `${URL}/admin/schedule/${memberid}/${storeid}/${formmatDate}`
+              )
+            : await axios.get<{ data: CalendarData[] }>(
+                `${URL}/user/schedule/${memberid}/${storeid}/${formmatDate}`
+              );
+
+        const eventsArray = calendarData.data.data.map((item: CalendarData) => {
+          const start: Date =
             UserType === "admin"
-              ? // await axios.post<{ data: CalendarData[] }>(`${URL}/admin/attendance/findAll`, data)
-                await axios.get<{ data: CalendarData[] }>(
-                  `${URL}/admin/schedule/${memberid}/${storeid}/${formmatDate}`
-                )
-              : await axios.get<{ data: CalendarData[] }>(
-                  `${URL}/user/schedule/${memberid}/${storeid}/${formmatDate}`
-                );
-
-          // map 으로 돌려서 배열 데이터 풀어내기
-          const eventsArray = calendarData.data.data.map(
-            (item: CalendarData) => {
-              // admin 과 user 에 따라서 값을 다르게 나눠주기
-              const start: Date =
-                UserType === "admin"
-                  ? new Date(item.start as string)
-                  : new Date(item.startwork as string);
-              const end: Date =
-                UserType === "admin"
-                  ? new Date(item.end as string)
-                  : new Date(item.leavework as string);
-
-              return {
-                title: item.worker,
-                start: start,
-                end: end,
-              };
-            }
-          );
-
-          // Set the events array
-          setEvents(eventsArray);
-          console.log(calendarData.data.data);
-        } catch (error) {
-          console.log("에러", error);
-        }
-      } else {
-        try {
-          const calendarData =
+              ? new Date(item.start as string)
+              : new Date(item.startwork as string);
+          const end: Date =
             UserType === "admin"
-              ? // await axios.post<{ data: CalendarData[] }>(`${URL}/admin/attendance/findAll`, data)
-                await axios.get<{ data: CalendarData[] }>(
-                  `${URL}/admin/schedule/${memberid}/${storeid}/${formmatDate}`
-                )
-              : await axios.get<{ data: CalendarData[] }>(
-                  `${URL}/user/schedule/${memberid}/${storeid}/${formmatDate}`
-                );
-          // map 으로 돌려서 배열 데이터 풀어내기
-          const eventsArray = calendarData.data.data.map(
-            (item: CalendarData) => {
-              // admin 과 user 에 따라서 값을 다르게 나눠주기
-              const start: Date =
-                UserType === "admin"
-                  ? new Date(item.start as string)
-                  : new Date(item.startwork as string);
-              const end: Date =
-                UserType === "admin"
-                  ? new Date(item.end as string)
-                  : new Date(item.leavework as string);
+              ? new Date(item.end as string)
+              : new Date(item.leavework as string);
 
-              return {
-                title: item.worker,
-                start: start,
-                end: end,
-              };
-            }
-          );
-          // Set the events array
-          setEvents(eventsArray);
-          console.log(calendarData.data.data);
-        } catch (error) {
-          console.log("에러", error);
-        }
+          return {
+            title: item.worker,
+            start: start,
+            end: end,
+          };
+        });
+
+        setEvents(eventsArray);
+        console.log(calendarData.data.data);
+      } catch (error) {
+        console.log("에러", error);
       }
-
-      // tryCatch 미리 해놓기.
-      // try {
-      //   const calendarData = UserType === "admin" ?
-      //   // await axios.post<{ data: CalendarData[] }>(`${URL}/admin/attendance/findAll`, data)
-      //   await axios.get<{ data: CalendarData[] }>(`${URL}/admin/schedule/${memberid}/${storeid}/${month}`)
-      //   : await axios.get<{ data: CalendarData[] }>(`${URL}/user/schedule/${memberid}/${storeid}/${month}`)
-      //   // map 으로 돌려서 배열 데이터 풀어내기
-      //   const eventsArray = calendarData.data.data.map((item: CalendarData) => {
-
-      //     // admin 과 user 에 따라서 값을 다르게 나눠주기
-      //     const start: Date = UserType === "admin" ? new Date(item.start as string) : new Date(item.startwork as string);
-      //     const end: Date = UserType === "admin" ? new Date(item.end as string) : new Date(item.leavework as string);
-
-      //     return {
-      //       title: item.worker,
-      //       start: start,
-      //       end: end,
-      //     };
-
-      //   });
-
-      //   // Set the events array
-      //   setEvents(eventsArray);
-      //   console.log(calendarData.data.data);
-      // } catch (error) {
-      //   console.log('에러', error);
-      // }
     };
 
+    // 페이지가 처음으로 마운트될 때만 실행
     loadCalendarData();
-  }, [month]); // Empty dependency array to run the effect only once
+  }, []); // 두 번째 인자에 빈 배열을 전달하여 페이지가 처음으로 마운트될 때만 실행
+
+  useEffect(() => {
+    const loadMonthData = async () => {
+      try {
+        const calendarData =
+          UserType === "admin"
+            ? await axios.get<{ data: CalendarData[] }>(
+                `${URL}/admin/schedule/${memberid}/${storeid}/${month}`
+              )
+            : await axios.get<{ data: CalendarData[] }>(
+                `${URL}/user/schedule/${memberid}/${storeid}/${month}`
+              );
+
+        const eventsArray = calendarData.data.data.map((item: CalendarData) => {
+          const start: Date =
+            UserType === "admin"
+              ? new Date(item.start as string)
+              : new Date(item.startwork as string);
+          const end: Date =
+            UserType === "admin"
+              ? new Date(item.end as string)
+              : new Date(item.leavework as string);
+          return {
+            title: item.worker,
+            start: start,
+            end: end,
+          };
+        });
+
+        // Set the events array
+        setEvents(eventsArray);
+        console.log(calendarData.data.data);
+      } catch (error) {
+        console.log("에러", error);
+      }
+    };
+
+    // loadMonthData 함수를 실행
+    loadMonthData();
+  }, [month]);
 
   function sendDataFromModal(data: any) {
     console.log("Data received in CalendarCon:", data);
@@ -252,12 +216,14 @@ function CalendarCon(props: CalendarConProps) {
         attendid: attendid, // attendid 추가
         // 이벤트에서 가져와야 하는 다른 속성들을 추가할 수 있습니다.
       });
-      console.log("Click Event Extended Props:", arg.event.esxtendedProps);
-      console.log("Click Event Extended Props event :", arg.event);
-
       const extendedProps = arg.event.extendedProps;
 
-      console.log("Extended Props:", extendedProps);
+      if (Object.keys(extendedProps).length > 0) {
+        console.log("Click Event Extended Props:", extendedProps);
+        console.log("Extended Props:", extendedProps);
+      } else {
+        console.log("Extended Props is an empty object.");
+      }
     } else {
       setEventModalOpen(true);
       setDateModalOpen(false); // 모달이 열릴 때 다른 모달은 닫아줍니다.)

@@ -8,23 +8,24 @@
 
     background-color:#fff;
     height: 70px;
-
+    width: 90%;
     padding: 1rem;
-    border-radius: 12px;
     margin-bottom: 10px;
     box-shadow: none;
-
+    
+    border-radius: 12px;
+    justify-content: space-between;
+    
     cursor: pointer;
-
+    
     &:hover{
-        background-color: #aaa;
-        opacity: 0.5;
+        border: groove;
+        border-color:rgb(144, 202, 249);
     }
 
     div {
         display: flex;
         flex-direction: column;
-        margin-right: 1rem;
     }
 
     .date {
@@ -43,7 +44,13 @@
         color: $mainColor;
         margin-top: 0.5rem;
         align-items: end;
+        margin-right: 1rem;
     }
+
+    .New {
+        font-size: 14px;
+        color: rgb(219, 112, 147);
+        display: contents;    }
 }
 
 @media (max-width: 768px) {
