@@ -1,13 +1,15 @@
 import PaymentCon from "./PaymentCon";
 import PaymentData from "./PaymentData";
 import PaymentHistory from "./PaymentHistory";
-
+import "./scss/PaymentAllParent.scss";
 
 
 export default function Payment() {
     return(
-        <div>
-            <PaymentCon></PaymentCon>
+        <div className="Paymentbody">
+            <div className="PaymentConWrap">
+                <PaymentCon></PaymentCon>
+            </div>
             <PaymentHistory></PaymentHistory>
             <PaymentData></PaymentData>
         </div>

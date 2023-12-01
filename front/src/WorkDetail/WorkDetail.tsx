@@ -3,7 +3,7 @@ import WorkTodoCon from "./WorkTodoCon";
 
 export default function WorkDetail () {
     return (
-        <div>
+        <div className="WorkDetail">
             <WorkTodoCon></WorkTodoCon>
             <CommentCon></CommentCon>
         </div>
