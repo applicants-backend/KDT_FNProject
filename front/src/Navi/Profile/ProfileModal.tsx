@@ -207,34 +207,35 @@ export default function ProfileModal() {
                         alt='profile-image' 
                         onError={defalutImg}/>
             </div>
+            <input type='file'  accept='image/jpg, impge/png, image/jpeg, image/gif' 
+                                    size={ 5 * 1024 * 1024 }
+                                    name='profile_img' onChange={uploadImg}/>
+  
 
-            <input type='file' accept='image/jpg, impge/png, image/jpeg, image/gif' size={ 5 * 1024 * 1024 } 
-                    name='profile_img' onChange={uploadImg}/>
-
-            <div>
+            <div className="input-box">
                 <label htmlFor="id"> 아이디 : </label>
                 <input name="memberid" value={Memberid} id="id" placeholder="아이디" readOnly/>
             </div>
 
-            <div>
+            <div className="input-box">
                 <label htmlFor="pw"> 비밀번호 : </label>
                 <input  name="password" type="password" id="pw"  
                         autoComplete="new-password" placeholder="비밀번호" ref={pwInputRef} onChange={e=>handlePassWordVail(e)}/>
                 <div style={{ color: pwIs ? 'green' : 'red' }}>{pwMes}</div>
             </div>
 
-            <div>   
+            <div className="input-box">   
                 <label htmlFor="PWre"> 비밀번호 확인 : </label>
                 <input name="pwre" type="password" id="PWre" value={userPwre} placeholder="비밀번호 확인" autoComplete="new-password" ref={repwInputRef} onChange={e=>handlePassWordConfirm(e)}/>
                 <div style={{ color: repwIs ? 'green' : 'red'}}>{repwMes}</div>
             </div>
             
-            <div>
+            <div className="input-box">
                   <label htmlFor="name"> 이름 : </label>
                   <input name="name" id="name" placeholder="이름" value={userName} ref={nameInputRef} onChange={e=>setuserName(e.target.value)}/>
             </div>
           
-            <div>
+            <div className="input-box">
                 <label htmlFor="phoneNumber"> 휴대전화 번호 : </label>
                 <input name="phonenumber" id="phoneNumber" value={phoneNumber} 
                         placeholder="휴대전화 번호" ref={phoneNumberInputRef} onChange={e=>setphoneNumber(e.target.value)}/>
@@ -244,29 +245,29 @@ export default function ProfileModal() {
             {UserType === "admin" ? 
             /////// 유저타입이 사업자 일때 추가되는 input
                 <>
-                    <div>       
+                    <div className="input-box">       
                         <label htmlFor="companyName"> 사업자 상호명 : </label>
                         <input name="companyName" id="companyName" value={companyName} placeholder="사업자 상호명" readOnly/>
                     </div>
-                    <div>
+                    <div className="input-box">
                         <label htmlFor="CEO"> 대표자 : </label>
                         <input name="CEO" id="CEO" placeholder="대표자" value={CEO} readOnly/>
                     </div>
-                    <div>
+                    <div className="input-box">
                         <label htmlFor="companyNumber"> 사업자 번호 : </label>
                         <input name="companyNumber" id="companyNumber" value={companyNumber} placeholder="000-00-00000 형식으로 입력하세요" readOnly/>
                     </div>
-                    <div>
+                    <div className="input-box">
                         <label htmlFor="companyAddress"> 사업자 주소 : </label>
                         <input name="companyAddress" id="companyAddress" value={companyAddress} readOnly/>
                     </div>
                 </> 
             :
                 /////// 유저타입이 근로자 일때 추가되는 input
-                <>
+                <div className="input-box">
                     <label htmlFor="companyToken"> 사업장 인증번호 </label>
                     <input name="companyToken" id="companyToken" value={companyToken} placeholder="사업장 인증번호" readOnly/>
-                </>
+                </div>
             }
       
             <button className="update-button" type="button" onClick={(e)=>{UpdateMemberData()}}>정보수정</button>

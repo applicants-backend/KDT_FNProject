@@ -65,7 +65,7 @@ export default function AttendanceCon () {
                 </option>
             ))}
             </select>
-           
+           <div className="AttendanceConAdmin">
             <div>
                 이번주 총 출근시간
                 <div>{AttendWeek}</div>
@@ -74,11 +74,13 @@ export default function AttendanceCon () {
                 이번달 총 출근시간
                 <div>{AttendMonth}</div>
             </div> 
-            <div>지난 달에 비해 얼마나 더 일했지?</div>
+            <div>지난 달에 비해 얼마나 더 일했지?
             <div>
                 <div>{AttendPercent}</div>
                 <div style={{color : Color ? "green" : "red"}}> {Color ? "늘었어요!" : "줄었어요!"}</div>
             </div> 
+            </div>
+            </div>
         </div>
       )
     )
