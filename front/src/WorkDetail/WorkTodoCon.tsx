@@ -86,13 +86,13 @@ export default function WorkTodoCon () {
             {titleIs ? <div>{title}</div> : <input type="text" value={title} onChange={e=>setTitle(e.target.value)} onKeyDown={EditKeyDown}/> }
             <button type="button" onClick={EditTitleIs}>제목 수정</button>
             <button type="button" onClick={deleteWork}>글 삭제</button>
-            </div>
-
-            <div className="todolistCon">
                 <form>
                     <input type="text" onChange={e=>setInputTodo(e.target.value)} onKeyDown={handleKeyDown} className="todoinput"/> 
                     <button type="button" onClick={AddTodo}></button>
                 </form>
+            </div>
+
+            <div className="todolistCon">
                 {todoList && todoList.map((value : Contentinterface)=>{
                     return <WorkTodo key={value.contentsid?.toString()} contentsid={value.contentsid} contents={value.contents} checked={value.checked}></WorkTodo>
                 })}

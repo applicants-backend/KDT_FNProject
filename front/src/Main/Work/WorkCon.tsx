@@ -143,7 +143,7 @@ export default function WorkCon () {
               </div>
               {UserType === 'admin' ? 
               <button type="button" onClick={(e)=>{WriteAdd()}} className="writeButton">작성</button>
-              : <></>
+              : <div></div>
               }
             </div>
         </>

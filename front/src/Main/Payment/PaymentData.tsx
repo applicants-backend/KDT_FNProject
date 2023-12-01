@@ -120,7 +120,7 @@ export default function PaymentData () {
           }
         ],
       };
-
+    
     return(
        UserType === 'user' ? (
        <div style={{width:'300px'}}>

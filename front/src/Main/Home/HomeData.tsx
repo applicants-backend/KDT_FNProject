@@ -19,7 +19,7 @@ export default function HomeData () {
 
             const AttendMonthRes = await axios.get(UserType === 'admin' ? `${URL}/admin/attendance/data/${Memberid}/${Storeid}` : `${URL}/user/attendance/month/${Memberid}/${Storeid}` )
 
-            const PaymentMonthRes = await axios.post(UserType === 'admin' ? `${URL}/admin/allpayment`: `${URL}/allpayment`, UserType === 'admin' ? {memberid: Memberid,month} :{memberid: Memberid,register : new Date().toISOString()} )
+            const PaymentMonthRes = await axios.post(UserType === 'admin' ? `${URL}/admin/allpayment`: `${URL}/allpayment`, UserType === 'admin' ? {memberid: Memberid,month} :{memberid: Memberid} )
 
             const FirstWorkRes = await axios.get(`${URL}/work/boards/${Storeid}/0`)
 
