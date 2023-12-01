@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import UserTypeState, { URLstate, UserDataState } from "../../Store/Store"
 import axios from "axios"
 import { ListFormat } from "typescript"
+import "./scss/PaymentAdmin.scss"
 
 interface Datainterface {
     week : number,
