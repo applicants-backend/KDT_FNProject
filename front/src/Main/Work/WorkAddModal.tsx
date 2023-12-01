@@ -1,6 +1,8 @@
 import axios from "axios"
 import { URLstate, UserDataState, WorkState } from "../../Store/Store"
 import React, { useRef, useState } from "react"
+import './scss/WorkAddModal.scss'
+import { preventDefault } from "@fullcalendar/core/internal"
 
 interface Workinterface {
     workid : number,
@@ -41,16 +43,16 @@ export default function WorkAddModal() {
 
     }
     const handleKeyDown = (event : React.KeyboardEvent) => {
+        event.preventDefault()
         if (event.key === "Enter") {
             WorkAdd();
         }
     };
     
     return(
-       <form name="WorkAddForm">
+       <form name="WorkAddForm" className="WorkModalCon">
         <input name="title" type="text" id="title" placeholder="제목을 입력해주세요"
-        ref={AddRef} onChange={(e)=>setTitle(e.target.value)}/>
-        <button type="button" onClick={(e)=>WorkAdd()} onKeyDown={handleKeyDown}>만들기</button>
+        ref={AddRef} onChange={(e)=>setTitle(e.target.value)} onKeyDown={handleKeyDown}/>
        </form>
     )
 }
