@@ -7,7 +7,6 @@ import UserTypeState, {
   WorkerListState,
 } from "../../Store/Store";
 import axios from "axios";
-import { useStore } from "zustand";
 
 interface CalendarMoProps {
   isOpen: boolean;
@@ -119,6 +118,8 @@ function CalendarMo({
   }
 
   async function userAdditonalPost() {
+    console.log("유저 additional post 입니다");
+
     const sendUserData = {
       memberid: Memberid,
       storeid: Storeid,
@@ -129,18 +130,16 @@ function CalendarMo({
       leavework: leavework,
       wage: wage,
     };
-    // const response = axios.post(`${URL}/admin/attendance/create`, sendData)
-    // const responseRes = response
-    // console.log(responseRes)
-    try {
-      const postData = await axios.post(
-        `${URL}/user/attendance/create`,
-        sendUserData
-      );
-      console.log(postData.data);
-    } catch (error) {
-      console.log("에러 발생");
-    }
+
+    // try {
+    //   const patchData = await axios.patch(
+    //     `${URL}/user/attendance/update`,
+    //     sendUserData
+    //   );
+    //   console.log(patchData.data);
+    // } catch (error) {
+    //   console.log("에러 발생");
+    // }
     // axios.post(`${URL}/admin/attendance`)
     console.log("Data sent from CalendarMo:", {
       member: Memberid,
@@ -178,28 +177,35 @@ function CalendarMo({
   function handleUpdate() {
     // 수정 로직 추가
   }
-  function handleDelete(arg: any) {
-    // if (selectedEvent && selectedEvent.attendid) {
-    //   const attendid = selectedEvent.attendid;
-    //   // 서버로 삭제 요청 보내기
-    //   try {
-    //     // UserType에 따라 다른 엔드포인트를 사용할 수 있습니다.
-    //     const endpoint =
-    //       UserType === "admin"
-    //         ? `${URL}/admin/attendance/delete/${attendid}`
-    //         : `${URL}/user/attendance/delete/${attendid}`;
-    //     // 서버로 삭제 요청을 보냅니다.
-    //     axios.patch(endpoint).then(() => {
-    //       // 삭제가 성공하면 additionalContent 상태를 업데이트합니다.
-    //       setAdditionalContent("이벤트가 성공적으로 삭제되었습니다.");
-    //     });
-    //   } catch (error) {
-    //     console.error("삭제 요청 중 오류 발생:", error);
-    //   }
-    // } else {
-    //   // 선택된 이벤트가 없을 경우 에러 메시지를 설정합니다.
-    //   setAdditionalContent("삭제할 이벤트가 선택되지 않았습니다.");
-    // }
+  async function handleDelete(arg: any) {
+    if (selectedEvent && selectedEvent.attendid) {
+      const attendid = selectedEvent.attendid;
+      // 서버로 삭제 요청 보내기
+      const sendDeleteData = {
+        memberid: Memberid,
+        storeid: Storeid,
+        worker: worker,
+        start: start,
+        end: end,
+        startwork: startwork,
+        leavework: leavework,
+        attendid: attendid,
+      };
+      try {
+        // UserType에 따라 다른 엔드포인트를 사용할 수 있습니다.
+        UserType === "admin"
+          ? await axios.patch(`${URL}/admin/attendance/delete`, sendDeleteData)
+          : await axios.patch(
+              `${URL}/admin/attendance/delete/`,
+              sendDeleteData
+            );
+      } catch (error) {
+        console.error("삭제 요청 중 오류 발생:", error);
+      }
+    } else {
+      // 선택된 이벤트가 없을 경우 에러 메시지를 설정합니다.
+      setAdditionalContent("삭제할 이벤트가 선택되지 않았습니다.");
+    }
   }
 
   const handleWorker = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -249,20 +255,76 @@ function CalendarMo({
   );
 
   ///
-  const getCurrentTimeStart = () => {
+  async function getCurrentTimeStart() {
     const now = new Date();
     const formattedTime = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
     setStartWork(formattedTime);
-  };
-  const getCurrentTimeEnd = () => {
+    const sendUserData = {
+      memberid: Memberid,
+      storeid: Storeid,
+      worker: worker,
+      start: start,
+      end: end,
+      startwork: startwork,
+      leavework: leavework,
+      wage: wage,
+    };
+    try {
+      await axios.patch(`${URL}/user/attendance/gowork`, sendUserData);
+    } catch (error) {
+      console.error("gowork 도중에 오류발생 :", error);
+    }
+  }
+  async function getCurrentTimeEnd() {
     const now = new Date();
     const formattedTime = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
     setLeaveWork(formattedTime);
-  };
+    const sendUserData = {
+      memberid: Memberid,
+      storeid: Storeid,
+      worker: worker,
+      start: start,
+      end: end,
+      startwork: startwork,
+      leavework: leavework,
+      wage: wage,
+    };
+    try {
+      await axios.patch(`${URL}/user/attendance/leavework`, sendUserData);
+    } catch (error) {
+      console.error("leave work 도중 오류 발생 : ", error);
+    }
+  }
 
   ///
 
   const renderUserForm = () => (
+    <>
+      <label htmlFor="worker">근무자 : {worker}</label>
+      <label htmlFor="startwork">출근 시간 : {startwork}</label>
+      <button type="button" onClick={getCurrentTimeStart}>
+        출근 시간 저장하기
+      </button>
+      <label htmlFor="leavework">퇴근 시간 : {leavework}</label>
+      <button type="button" onClick={getCurrentTimeEnd}>
+        퇴근 시간 저장하기
+      </button>
+      <button type="button" onClick={userAdditonalPost}>
+        저장하기
+      </button>
+    </>
+  );
+
+  const adminEventForm = () => (
+    <>
+      <label htmlFor="worker">근무자 : {worker}</label>
+      <label htmlFor="startwork">근무자가 입력한 출근 시간 : {startwork}</label>
+      <label htmlFor="leavework">퇴근 시간 : {leavework}</label>
+      <button onClick={handleDelete}>삭제하기</button>
+    </>
+  );
+
+  const userEventForm = () => (
     <>
       <label htmlFor="worker">근무자 : {worker}</label>
       <label htmlFor="startwork">출근 시간 : {startwork}</label>
@@ -293,9 +355,10 @@ function CalendarMo({
       {isOpen && selectedEvent && (
         <ModalContainer>
           <ModalHeader>선택된 날짜</ModalHeader>
+          <form name="EventForm">
+            {UserType === "admin" ? adminEventForm() : userEventForm()}
+          </form>
           {eventDetails}
-          <button onClick={handleUpdate}>수정하기</button>
-          <button onClick={handleDelete}>삭제하기</button>
           <ModalContent>{additionalContent}</ModalContent>
           <CloseButton onClick={closeModal}>닫기</CloseButton>
         </ModalContainer>

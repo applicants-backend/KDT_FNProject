@@ -13,6 +13,7 @@ import axios from "axios";
 import Calendar from "./Calendar";
 import { CalendarImpl } from "@fullcalendar/core/internal";
 import { error } from "console";
+import { formatDate } from "@fullcalendar/core";
 
 interface CalendarConProps {
   // 다른 필요한 props가 있다면 추가
@@ -80,7 +81,7 @@ function CalendarCon(props: CalendarConProps) {
       return;
     }
 
-    // 한 달을 더함
+    // 한 달을 더함ㅌ
     startDate.setMonth(startDate.getMonth() + 1);
 
     // 12월에서 1월로 갈 때 연도를 늘림
@@ -89,23 +90,31 @@ function CalendarCon(props: CalendarConProps) {
     }
     const formattedDate = `${startDate.toISOString().slice(0, 16)}:00`;
 
-    setMonth(formattedDate);
+    const currentDate = new Date();
+    const currentDateStr = `${currentDate.toISOString().slice(0, 16)}:00`;
+
+    if (month == null) {
+      setMonth(currentDateStr);
+    } else {
+      setMonth(formattedDate);
+    }
   };
+
   const handleDidMount = () => {};
+
+  const currentDate = new Date();
+  const formmatDate = `${currentDate.toISOString().slice(0, 16)}:00`;
 
   useEffect(() => {
     const loadCalendarData = async () => {
-      const currentDate = new Date();
-      const formmatDate = `${currentDate.toISOString().slice(0, 16)}:00`;
-
       try {
         const calendarData =
           UserType === "admin"
             ? await axios.get<{ data: CalendarData[] }>(
-                `${URL}/admin/schedule/${memberid}/${storeid}/${formmatDate}`
+                `${URL}/admin/schedule/${memberid}/${storeid}/2023-12-16T19:52:00`
               )
             : await axios.get<{ data: CalendarData[] }>(
-                `${URL}/user/schedule/${memberid}/${storeid}/${formmatDate}`
+                `${URL}/user/schedule/${memberid}/${storeid}/2023-12-16T19:52:00`
               );
 
         const eventsArray = calendarData.data.data.map((item: CalendarData) => {
@@ -122,6 +131,7 @@ function CalendarCon(props: CalendarConProps) {
             title: item.worker,
             start: start,
             end: end,
+            attendid: item.attendid,
           };
         });
 
@@ -142,31 +152,33 @@ function CalendarCon(props: CalendarConProps) {
         const calendarData =
           UserType === "admin"
             ? await axios.get<{ data: CalendarData[] }>(
-                `${URL}/admin/schedule/${memberid}/${storeid}/${month}`
+                `${URL}/admin/schedule/${memberid}/${storeid}/2023-12-16T19:52:00`
               )
             : await axios.get<{ data: CalendarData[] }>(
-                `${URL}/user/schedule/${memberid}/${storeid}/${month}`
+                `${URL}/user/schedule/${memberid}/${storeid}/2023-12-16T19:52:00`
               );
 
         const eventsArray = calendarData.data.data.map((item: CalendarData) => {
           const start: Date =
             UserType === "admin"
               ? new Date(item.start as string)
-              : new Date(item.startwork as string);
+              : new Date(item.start as string);
           const end: Date =
             UserType === "admin"
               ? new Date(item.end as string)
-              : new Date(item.leavework as string);
+              : new Date(item.end as string);
           return {
             title: item.worker,
             start: start,
             end: end,
+            attendid: item.attendid,
           };
         });
 
         // Set the events array
         setEvents(eventsArray);
         console.log(calendarData.data.data);
+        console.log(eventsArray);
       } catch (error) {
         console.log("에러", error);
       }
