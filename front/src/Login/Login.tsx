@@ -30,10 +30,7 @@ export default function Login({type, img, onLoginSuccess} : props) {
         setUserTypeUser();
       }
       const response = await axios.post(`${URL}/login`, { memberid, password, role : UserType === 'admin'?'ADMIN': 'USER' });
-<<<<<<< HEAD
-=======
   
->>>>>>> DH_DEV
       // 여기서 실제 성공 여부 확인
       if (response.status === 200 && response.data && response.data.data) {
 
