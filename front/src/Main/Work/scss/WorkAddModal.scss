@@ -1,0 +1,14 @@
+@import '../../../common/style/style.scss';
+
+.WorkModalCon {
+    display: flex;
+    align-items: center;
+  input {
+    width: 588px;
+    height: 30px;
+    border: 1px solid $bordercolor1; // 원하는 테두리 색상
+    border-radius: 8px; // 원하는 테두리 반경
+    font-size: 14px; // 원하는 폰트 크기
+    color: $mainColor; // 원하는 텍스트 색상
+  }
+}

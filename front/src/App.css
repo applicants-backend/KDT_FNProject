@@ -35,20 +35,19 @@
     /* 2 */
   }
   
+  @import url('https://fonts.googleapis.com/css2?family=Gasoek+One&family=Noto+Sans+KR:wght@200;300;400;500;600;700;800;900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
-  @font-face {
-      font-family: 'TTWanjudaedunsancheB';
-      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/TTWanjudaedunsancheB.woff2') format('woff2');
-      font-weight: 700;
-      font-style: normal;
-  }
-  
   /*
      * Remove default margin
      */
   body {
-    margin: 0;
-    font-family: 'Noto Sans KR', 'TTWanjudaedunsancheB', sans-serif;
+    margin: 0; padding: 0;
+    font-family:  'Noto Sans KR', 'Roboto',  sans-serif;
+  }
+
+  #wrap {
+      width: 100%;
+      margin: 0; padding: 0;
   }
   
   /*

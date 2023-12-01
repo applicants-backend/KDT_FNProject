@@ -1,17 +1,20 @@
-import { useEffect, useState } from "react"
-import UserTypeState, { ProfileState, URLstate, UserDataState } from "../../Store/Store"
+import { useEffect, useState, SyntheticEvent } from "react"
+import UserTypeState, { ProfileState, URLstate, UserDataState, WorkerListState } from "../../Store/Store"
 import axios from "axios"
 import ReactModal from "react-modal"
 import ProfileModal from "./ProfileModal"
-import NaviCon from "../NaviBar/NaviCon"
+import customModalStyles from "./scss/Modal"
 
+import "./scss/Profile.scss"
 
 export default function Profile () {
 
     const {URL} = URLstate(state=>state)
     const {UserType} = UserTypeState(state=>state)
-    const {Memberid, Token, setToken, setName} = UserDataState(state=>state)
+    const {Memberid, Token, Storeid, setToken, setName} = UserDataState(state=>state)
     const {userImg,companyImg,name,phonenumber,companyNumber,companyName, setuserImg, setcompanyImg, setname, setphonenumber, setcompanyName, setcompanyNumber} = ProfileState(state=>state)
+    const {setWorkList,WorkerList} = WorkerListState(state=>state)
+
 
     useEffect(()=> {
         const loadUserData = async () => {
@@ -27,10 +30,15 @@ export default function Profile () {
             setcompanyName(Storeprofile.companyname)
             setcompanyNumber(Storeprofile.companynumber)
             setcompanyImg(Storeprofile.companyimg)
-           
+            console.log(UserRes)
+            if(UserType === 'admin'){
+                const WorkerListRes = await axios.get(`${URL}/admin/attendance/workerlist/${Memberid}/${Storeid}`)
+                setWorkList(WorkerListRes.data.data)
+                console.log(WorkerList)
+            }     
         }
         loadUserData()
-    },[Memberid,URL])
+    },[Memberid,URL,companyImg])
 
     const [modalOpenis, setmodalOpenis] = useState(false)
 
@@ -42,35 +50,51 @@ export default function Profile () {
         const CodeRes = await axios.post(`${URL}/generate`,{companynumber : companyNumber})
         const Code = CodeRes.data
         setToken(Code)
+        console.log(Code)
     }
-    return (
-        <div>
-            <img src={UserType ==="admin" ? companyImg : userImg} alt='Img'/>
-            <div>{name}</div>
-            <div>{phonenumber}</div>
-            <div>{companyName}</div>
 
+
+    const defalutImg = (e:SyntheticEvent<HTMLImageElement, Event> | any) => {
+        e.currentTarget.src = "https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/defalut_image.png";
+    }
+
+    return (
+        <div className="profile">
+            
+            <div className="profile-img">
+                <img src={UserType ==="admin" ? companyImg === null ? "" : companyImg : userImg === null ? "" : userImg } 
+                        alt='profile-image' 
+                        onError={defalutImg}/>
+            </div>
+            <div className="profile-info">
+                <p>{name}</p>
+                <p>{phonenumber}</p>
+                <p>{companyName}</p>
+            </div>
+            
             {UserType === "admin" ?
-            <>
-            <div>{companyNumber}</div>
-            <button onClick={(e)=>CodeGenerater()}>초대코드 발급</button>
-            <div>{Token}</div>
-            </> :
-            <></>
+                <>  
+                    <div className="profile-info">
+                         <p>{companyNumber}</p>
+                    </div>
+                    <button onClick={(e)=>CodeGenerater()}>초대코드 발급</button>
+                    <div style={{display:"none"}}>{Token}</div>
+                </> 
+                :
+                <></>
             }
             
             <button type="button" onClick={(e)=>{editProfle()}}>프로필수정</button>
             <ReactModal
-            ///// modal 설정
-             isOpen={modalOpenis}
-             onRequestClose={()=>setmodalOpenis(false)}
-             ariaHideApp={false}
-             shouldCloseOnOverlayClick={true}
+                ///// modal 설정
+                isOpen={modalOpenis}
+                onRequestClose={()=>setmodalOpenis(false)}
+                ariaHideApp={false}
+                shouldCloseOnOverlayClick={true}
+                style={customModalStyles}
             >
-            <ProfileModal></ProfileModal>
+                 <ProfileModal></ProfileModal>
             </ReactModal>  
-
-            {/* <NaviCon></NaviCon> */}
         </div>
     )
 }

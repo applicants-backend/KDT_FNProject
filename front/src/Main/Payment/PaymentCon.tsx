@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import UserTypeState, { URLstate, UserDataState } from "../../Store/Store"
 import axios from "axios"
 import { ListFormat } from "typescript"
+import "./scss/PaymentAdmin.scss"
 
 interface Datainterface {
     week : number,
@@ -44,9 +45,11 @@ export default function PaymentCon () {
                 const month =  new Date().getMonth()+1;
                 const adminMonthRes = await axios.post(`${URL}/admin/allpayment`,{memberid: Memberid,month})
                 const adminEachRes = await axios.get(`${URL}/admin/each/${Memberid}/${month}`)
+                const CompareDataRes = await axios.post(`${URL}/admin/percent`, {memberid: Memberid,month})
                 console.log(adminEachRes.data.data)
                 setAdminEach(adminEachRes.data.data)
                 setAdminMonth(adminMonthRes.data.data)
+                setPercentData(CompareDataRes.data.data)
             }
         
         }
@@ -76,7 +79,11 @@ export default function PaymentCon () {
             </div>
           )
           :(
-            <div>
+            <div className="PaymentConWrapAdmin">
+              <div>
+                이번달 총 인건비 지출
+                <div>{adminMonth}</div>
+              </div>
               <div>
                   알바별 이번달 급여
                   {adminEach &&
@@ -88,11 +95,7 @@ export default function PaymentCon () {
                       </div>
                     );
                   })}
-              </div>          
-              <div>
-                이번달 총 인건비 지출
-                <div>{adminMonth}</div>
-              </div> 
+              </div>           
               <div>
                 지난 달에 비해 얼마나 더 지출했지?
                 <div>

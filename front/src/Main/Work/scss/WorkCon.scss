@@ -1,0 +1,104 @@
+@import "../../../common/style/style.scss";
+
+
+
+.WorkConCon {
+
+    position: relative;
+    flex-grow: 1;
+    width: 90%;
+
+    background-color: rgb(238, 242, 246);
+    margin-bottom: 36px;
+    padding-bottom: 60px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    .searchform {
+        display: flex;
+        align-items: center;
+        font-size: x-large;
+        margin-top: 10px;
+        font-weight: 700;
+        width: 90%;
+        justify-content: space-between;
+
+    }
+}   
+    .moccha {
+        display: flex;
+        height: 50px;
+        align-items: center;
+        padding: 1rem;
+        width: 90%;
+        justify-content: space-between;
+
+        div {
+            display: flex;
+            justify-content: center;
+        }
+        
+        .date {
+            font-size: 14px;
+            color: $mainColor;
+        }
+        
+        .title {
+            font-size: 18px;
+            color: $titleColor;
+            font-weight: bold;
+        }
+        
+        .todo {
+            font-size: 14px;
+            color: $mainColor;
+            margin-top: 0.5rem;
+            justify-content: flex-end;
+        }
+    }
+
+    .bottom{
+        position: absolute;
+        display: flex;
+        align-items: center;
+        width: 90%;
+        height: 54Px;
+        bottom: 0;
+        justify-content: space-between;
+
+        .writeButton {
+            width: 56px;
+            height: 28px;
+            border: 0;
+            margin-top: 0.8em;
+            margin-bottom: 0.8em;
+            background-color: rgb(144, 202, 249);
+            color: #fff;
+            border-radius: 3px;
+            font-size: medium;     
+
+            &:hover{
+                border: groove;
+                border-color:rgb(94, 53, 177);
+            }
+        }
+
+    .pagination-button {
+        background-color: $buttonColor0;
+        color: #fff;
+        border: 0;
+        border-radius: 3px;
+        width: 28px;
+        height: 28px;
+        padding: 0 10px;
+        margin-right: 5px;
+        cursor: pointer;
+    
+        &:hover {
+            background-color: darken($buttonColor0, 10%);
+        }
+}
+    }
+

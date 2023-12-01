@@ -1,7 +1,9 @@
 import axios from "axios"
 import UserTypeState, { URLstate } from "../../Store/Store"
-import React, { useCallback, useState, useRef } from "react"
+import React, { FC, useCallback, useState, useRef, FocusEvent } from "react"
 import { useNavigate } from "react-router"
+
+import "../scss/RegiInformation.scss"
 
 interface UserData {
     memberid : String,
@@ -13,12 +15,17 @@ interface UserData {
     companynumber? : String | null,
     // companyAddress? : String | null,
     companyToken? : String | null
+    invitecode? : String | null
 }
 
-export default function RegiInformation () {
-    const {UserType} = UserTypeState(state => state)
+
+
+export default function RegiInformation (): ReturnType<FC> {
     const navigate = useNavigate();
     const {URL} = URLstate(state=>state)
+
+    const [usertype, setUsertype] = useState<String>("user");
+    const [nextstage, setNextStage] = useState<boolean>(false);
 
     ///// sever로 전송 될 데이터들
     const [userForm, setuserForm] = useState<UserData>({
@@ -30,8 +37,9 @@ export default function RegiInformation () {
         ceo : "",
         companynumber : "",
         // companyAddress : "",
-        companyToken : ""
+        invitecode : ""
     })
+ 
 
     ///// 인풋 통합핸들러
     const InputHandle = (e : React.ChangeEvent<HTMLInputElement>) => {
@@ -159,13 +167,13 @@ export default function RegiInformation () {
             return;
         }
 
-        if (UserType === "user") {
+        if (usertype === "user") {
             ///// 근로자일때
-            if (!userForm.companyToken) {
+            if (!userForm.invitecode) {
                 companyTokenInputRef.current && companyTokenInputRef.current.focus();
                 return;
             }
-        } else if (UserType === "admin") {
+        } else if (usertype === "admin") {
             ////// 사업자일때
             if (!userForm.companyname) {
                 companyNameInputRef.current && companyNameInputRef.current.focus();
@@ -195,65 +203,162 @@ export default function RegiInformation () {
             console.log("비밀번호검사")
             return;
         }
-        if(UserType === "admin") {
+        if(usertype === "admin") {
             if(!companyNumIs){
                 companyNumberInputRef.current && companyNumberInputRef.current.focus();
                 return;
             }
         }
         console.log(userForm)
-        const res = await axios.post(`${URL}/${UserType}/join`,userForm)
+        const res = await axios.post(`${URL}/${usertype}/join`,userForm)
         console.log(res.data)
         navigate('/')
     }
 
 
+    const chooseUserType = (type:string) => {
+
+        if (usertype !== type) return setUsertype(type);
+    }
+
+
+    const onfocusBluer = (e:FocusEvent<HTMLInputElement>, type:string) => {
+
+        if (type === "focus" && e.target.parentElement) {
+            e.target.parentElement.style.borderColor = "rgb(94, 53, 177)";
+        }
+        if (type === "blur" && e.target.parentElement) {
+            e.target.parentElement.style.borderColor = "#ccc";
+        }
+      }
+
+
     return (
-        <form name="RegisterForm">
-            <label htmlFor="id"> 아이디 : </label>
-            <input name="memberid" id="id" placeholder="아이디" ref={idInputRef} onChange={InputHandle}/>
-            <button type="button" onClick={(e)=>checkDuplicatedId()}>중복확인</button>
-            <div style={{ color: duplicate ? 'green' : 'red' }}>{duplimessage}</div>
+        <form className="register_form-box" name="RegisterForm">
+                <div className="register_stage_1" style={nextstage === false ? { display:"block"} : { display:"none"}}>
+                    <div className="input-label">
+                        <label htmlFor="id"> 아이디 : </label>
+                        <input  className="button-input" 
+                                onFocus={(e) => onfocusBluer(e,"focus")}
+                                onBlur={(e) => onfocusBluer(e,"blur")}
+                                name="memberid" id="id" placeholder="아이디" ref={idInputRef} onChange={InputHandle}/>
+                        <button type="button" onClick={(e)=>checkDuplicatedId()}>중복확인</button>
+                        <span className="warning_text-span" style={{ color: duplicate ? 'green' : 'red' }}>{duplimessage}</span>
+                    </div>
+                    <div className="input-label">
+                        <label htmlFor="pw"> 비밀번호 : </label>
+                        <input name="password" type="password" id="pw" placeholder="비밀번호" 
+                                onFocus={(e) => onfocusBluer(e,"focus")}
+                                onBlur={(e) => onfocusBluer(e,"blur")}
+                                ref={pwInputRef} onChange={e=>handlePassWordVail(e)}/>
+                        <span className="warning_text-span" style={{ color: pwIs ? 'green' : 'red' }}>{pwMes}</span>
 
-            <label htmlFor="pw"> 비밀번호 : </label>
-            <input name="password" type="password" id="pw" placeholder="비밀번호" ref={pwInputRef} onChange={e=>handlePassWordVail(e)}/>
-            <div style={{ color: pwIs ? 'green' : 'red' }}>{pwMes}</div>
+                    </div>
 
-            <label htmlFor="PWre"> 비밀번호 확인 : </label>
-            <input name="pwre" type="password" id="PWre" placeholder="비밀번호 확인" ref={repwInputRef} onChange={e=>handlePassWordConfirm(e)}/>
-            <div style={{ color: repwIs ? 'green' : 'red'}}>{repwMes}</div>
+                    <div className="input-label">
+                        <label htmlFor="PWre"> 비밀번호 확인 : </label>
+                        <input name="pwre" type="password" id="PWre" placeholder="비밀번호 확인" 
+                                onFocus={(e) => onfocusBluer(e,"focus")}
+                                onBlur={(e) => onfocusBluer(e,"blur")}
+                                ref={repwInputRef} onChange={e=>handlePassWordConfirm(e)}/>
+                        <span className="warning_text-span" style={{ color: repwIs ? 'green' : 'red'}}>{repwMes}</span>
 
-            <label htmlFor="name"> 이름 : </label>
-            <input name="name" id="name" placeholder="이름" ref={nameInputRef} onChange={InputHandle}/>
+                    </div>      
 
-            <label htmlFor="phoneNumber"> 휴대전화 번호 : </label>
-            <input name="phonenumber" id="phoneNumber" placeholder="휴대전화 번호" ref={phoneNumberInputRef} onChange={InputHandle}/>
+                    <div className="input-label">
+                        <label htmlFor="name"> 이름 : </label>
+                        <input name="name" id="name" placeholder="이름" 
+                                onFocus={(e) => onfocusBluer(e,"focus")}
+                                onBlur={(e) => onfocusBluer(e,"blur")}
+                                ref={nameInputRef} onChange={InputHandle}/>
+                    </div>
 
-            {UserType === "admin" ? 
-            /////// 유저타입이 사업자 일때 추가되는 input
-                <>
-            <label htmlFor="companyName"> 사업자 상호명 : </label>
-            <input name="companyname" id="companyName" placeholder="사업자 상호명" ref={companyNameInputRef} onChange={InputHandle}/>
+                    <div className="input-label">
+                        <label htmlFor="phoneNumber"> 휴대전화 번호 : </label>
+                        <input name="phonenumber" id="phoneNumber" placeholder="휴대전화 번호" 
+                                onFocus={(e) => onfocusBluer(e,"focus")}
+                                onBlur={(e) => onfocusBluer(e,"blur")}
+                                ref={phoneNumberInputRef} onChange={InputHandle}/>
+                    </div>
 
-            <label htmlFor="CEO"> 대표자 : </label>
-            <input name="ceo" id="CEO" placeholder="대표자" ref={CEOInputRef} onChange={InputHandle}/>
+                    <div className="input-label">
+                        <label htmlFor="phoneNumber"> 타입 : </label>
+                        <div className="type-choose-box">   
+                            <div onClick={() => chooseUserType("admin")} className={usertype === "admin" ? "on" : ""}>
+                                <img src={"https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/company_512.png"} alt={`${usertype} 이미지`}/>
+                                <p>사업자</p>
+                            </div>
+                            <div onClick={() => chooseUserType("user")} className={usertype === "user" ? "on" : ""}>
+                                <img src="https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/worker_512.png" alt={`${usertype} 이미지`}/>
+                                <p>근로자</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" className="join-button"  onClick= {() => setNextStage(true)}> 다음 단계 </button>
+                </div>
+               
+               <div className="register_stage_2" style={nextstage === false ? { display:"none"} : { display:"block"}}>
+                {usertype === "admin" ? (
+                /////// 유저타입이 사업자 일때 추가되는 input
+                    <>
 
-            <label htmlFor="companyNumber"> 사업자 번호 : </label>
-            <input name="companynumber" id="companyNumber" placeholder="000-00-00000 형식으로 입력하세요" ref={companyNumberInputRef} onChange={e=>handleCompanyNumber(e)}/>
-            <div style={{ color: companyNumIs ? 'green' : 'red' }}>{companyNum}</div>
+                        <div className="input-label">
+                            <label htmlFor="companyName"> 사업자 상호명 : </label>
+                            <input name="companyname" id="companyName" placeholder="사업자 상호명" 
+                                    onFocus={(e) => onfocusBluer(e,"focus")}
+                                    onBlur={(e) => onfocusBluer(e,"blur")}
+                                    ref={companyNameInputRef} onChange={InputHandle}/>
+                        </div>
 
-            <label htmlFor="companyAddress"> 사업자 주소 : </label>
-            <input name="companyAddress" id="companyAddress" ref={companyAddressInputRef} onChange={InputHandle}/>
-                </> 
-                :
-            /////// 유저타입이 근로자 일때 추가되는 input
-                <>
-            <label htmlFor="companyToken"> 사업장 인증번호 </label>
-            <input name="companyToken" id="companyToken" placeholder="사업장 인증번호" ref={companyTokenInputRef} onChange={InputHandle}/>
-                </>
-            }
-            <input type="checkbox"/>
-            <button type="button" onClick={(e)=>{Register()}}>회원가입</button>
-        </form>
+                        <div className="input-label">
+                            <label htmlFor="CEO"> 대표자 : </label>
+                            <input name="ceo" id="CEO" placeholder="대표자" 
+                                    onFocus={(e) => onfocusBluer(e,"focus")}
+                                    onBlur={(e) => onfocusBluer(e,"blur")}
+                                    ref={CEOInputRef} onChange={InputHandle}/>
+                        </div>
+
+                        <div className="input-label">
+                            <label htmlFor="companyNumber"> 사업자 번호 : </label>
+                            <input name="companynumber" id="companyNumber" placeholder="000-00-00000 형식으로 입력하세요" 
+                                    onFocus={(e) => onfocusBluer(e,"focus")}
+                                    onBlur={(e) => onfocusBluer(e,"blur")}
+                                    ref={companyNumberInputRef} onChange={e=>handleCompanyNumber(e)}/>
+                            <span className="warning_text-span" style={{ color: companyNumIs ? 'green' : 'red' }}>{companyNum}</span>
+                        </div>
+
+                        <div className="input-label">
+                            <label htmlFor="companyAddress"> 사업자 주소 : </label>
+                            <input name="companyAddress" id="companyAddress"        
+                                    onFocus={(e) => onfocusBluer(e, "focus")}
+                                    onBlur={(e) => onfocusBluer(e, "blur")}
+                                    ref={companyAddressInputRef} onChange={InputHandle}/>
+                        </div>
+
+                    </> 
+                    )
+                    :
+                /////// 유저타입이 근로자 일때 추가되는 input
+                    (
+
+                    <div className="input-label">
+                        <label htmlFor="companyToken"> 사업장 인증번호 </label>
+                        <input name="invitecode" id="companyToken" placeholder="사업장 인증번호" 
+                            onFocus={(e) =>onfocusBluer(e,"focus")}
+                            onBlur={(e) =>onfocusBluer(e,"blur")}
+                            ref={companyTokenInputRef} onChange={InputHandle}/>
+                    </div>
+                    )}
+
+                    <div className="register_agree-box">
+                        <input id="registerAgree" type="checkbox"/>
+                        <label className="register-agree-label" htmlFor="registerAgree" >이용 약관에 동의하십니까?</label>
+                    </div>
+                    <button className="join-button_stage" type="button" onClick= {() => setNextStage(false)}> 이전 단계 </button>
+                    <button className="join-button" type="button" onClick={(e)=>{Register()}}>회원가입</button>
+                
+            </div>
+    </form>
+        
     )
 }

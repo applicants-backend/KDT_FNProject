@@ -1,0 +1,66 @@
+
+@import "../../../common/style/style.scss"; 
+
+.main-wrap {
+    display: flex; 
+    justify-content: space-around;  
+    align-items: center; width: 100%; height: 100vh;
+    .left-page {
+        display: flex; flex-grow: 1; flex-direction: column;
+        align-items: center; 
+        min-height: 100%;  background-color: $mainSideBackgroundColor;
+        width: 25%; min-width: 25%;
+        .main-logo {
+            text-align: center; padding: 0; margin: 0;
+            width: 90px; height: 78px; margin: auto;
+            a {
+                text-decoration: none; color: $titleColor;
+                img {
+                    width: 100%; height: 100%; 
+                    object-fit: contain;
+                }
+            }
+        }
+    }
+    .middle-page {
+ 
+        flex-grow: 3; width: 85%; height: 100vh; 
+        padding: 0 1em;  padding-top: 3em;
+    }
+}
+
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .main-wrap {
+         
+        .left-page {
+            width: 30%; min-width: 30%;
+        
+        }
+        .middle-page {
+            margin-top: 2%; 
+        }
+    }
+}
+
+
+@media (max-width: 768px) {
+    .main-wrap {
+        display: block; 
+        .left-page {
+            width: 100%; min-width: 0; height: 100;
+            min-height: 0;
+
+            .profile-img {
+                overflow: hidden;
+                img {
+                    object-fit: contain;
+                    width: 100%; height: 100%;
+                }
+            }
+        }
+        .middle-page {
+            margin-top: 2%; width: 100%;
+        }
+    }
+}
