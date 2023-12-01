@@ -10,8 +10,10 @@ export default function Payment() {
             <div className="PaymentConWrap">
                 <PaymentCon></PaymentCon>
             </div>
+            <div className="PaymentListAndData">
             <PaymentHistory></PaymentHistory>
             <PaymentData></PaymentData>
+            </div>
         </div>
     )
 }
