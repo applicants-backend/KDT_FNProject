@@ -5,6 +5,7 @@ import WorkCompo from "./WorkCompo"
 import WorkAddModal from "./WorkAddModal";
 import ReactModal from "react-modal";
 import './scss/WorkCon.scss'
+import WorkModalStyles from "./scss/Modal";
 interface workinterface {
     workid : number,
     memberid : string, 
@@ -84,6 +85,7 @@ export default function WorkCon () {
                 key={pageNumber}
                 onClick={() => pageHandle(pageNumber - 1)}
                 style={{ fontWeight: isCurrentPage ? "bold" : "normal" }}
+                className="pagination-button"
               >
                 {pageNumber}
               </button>
@@ -100,12 +102,11 @@ export default function WorkCon () {
         });
       };
 
-
     return (
         <div className="WorkConCon">
           <div className="searchform">
             <div>업무일지</div>
-            <input onChange={(e)=>{setKeyword(e.target.value)}}/>
+            <input onChange={(e)=>{setKeyword(e.target.value)}} placeholder="Search"/>
           </div>
 
           <div className="moccha">
@@ -114,31 +115,37 @@ export default function WorkCon () {
             <div className="todo">업무 현황</div>
           </div>
 
-            {UserType === 'admin' ? 
-            <button type="button" onClick={(e)=>{WriteAdd()}}>작성</button>
-            : <></>
-            }
 
             <ReactModal
             ///// modal 설정
-             isOpen={modalOpenis}
-             onRequestClose={()=>setmodalOpenis(false)}
-             ariaHideApp={false}
-             shouldCloseOnOverlayClick={true}
+            isOpen={modalOpenis}
+            onRequestClose={()=>setmodalOpenis(false)}
+            ariaHideApp={false}
+            shouldCloseOnOverlayClick={true}
+            style={WorkModalStyles}
             >
             <WorkAddModal></WorkAddModal>
             </ReactModal>  
   
             {workList.length === 0 ?(
               <div>업무일지가 없습니다.</div>
-            )
-            : workList.map((value : workinterface)=>{
-              if (!value) {
-                return null; // 또는 다른 처리를 수행하고 싶은 로직 추가
-              }
+              )
+              : workList.map((value : workinterface)=>{
+                if (!value) {
+                  return null; // 또는 다른 처리를 수행하고 싶은 로직 추가
+                }
                 return <WorkCompo key={value.workid} title={value.title} date={value.date} workid={value.workid}></WorkCompo>
-            })}
+              })}
+            <div className="bottom">
+              <div></div>
+              <div>
             {renderPaginationButtons()}
+              </div>
+              {UserType === 'admin' ? 
+              <button type="button" onClick={(e)=>{WriteAdd()}} className="writeButton">작성</button>
+              : <></>
+              }
+            </div>
         </div>
     )
 }
