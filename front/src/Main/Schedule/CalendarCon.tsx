@@ -294,8 +294,7 @@ function CalendarCon(props: CalendarConProps) {
 
   /// return 시작
   return (
-    <>
-      <div>
+      <div className="">
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
@@ -338,7 +337,7 @@ function CalendarCon(props: CalendarConProps) {
           />
         )}
       </div>
-    </>
+  
   );
 }
 

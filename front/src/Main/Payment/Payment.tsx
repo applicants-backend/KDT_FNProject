@@ -6,8 +6,11 @@ import PaymentHistory from "./PaymentHistory";
 
 export default function Payment() {
     return(
-        <div>
-            <PaymentCon></PaymentCon>
+        <div className="">
+            <div className="">
+                <PaymentCon></PaymentCon>
+            </div>
+            
             <PaymentHistory></PaymentHistory>
             <PaymentData></PaymentData>
         </div>
