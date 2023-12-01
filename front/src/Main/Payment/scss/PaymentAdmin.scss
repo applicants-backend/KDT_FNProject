@@ -1,9 +1,8 @@
 .PaymentConWrapAdmin {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr; 
-    gap: 10px; 
-    width: 70vw;
-    position: relative;
+    gap: 10px;
+    width: 70vw; 
     > div:nth-child(1) {
       grid-column: 1 / span 1; 
       grid-row: 1 / span 1;
