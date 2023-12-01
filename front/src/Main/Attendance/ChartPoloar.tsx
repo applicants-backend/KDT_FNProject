@@ -16,6 +16,7 @@ const options = {
     mode: "index" as const,
     intersect: false,
   },
+  maintainAspectRatio : true
 };
 
 export function ChartPolar(props : any) {

@@ -120,13 +120,13 @@ export default function PaymentData () {
           }
         ],
       };
-
+    
     return(
        UserType === 'user' ? (
        <div style={{width:'300px'}}>
            <Chartex data={Userdata}/>       
        </div> ) : (
-        <div style={{width:'300px'}}>
+        <div style={{width:'400px'}}>
             <ChartDoughut data={AdminEachData}/>
             <Chartex data={Admindata}/>
         </div>
