@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr; 
     gap: 10px;
+    height: 400px;
     width: 70vw; 
     > div:nth-child(1) {
       grid-column: 1 / span 1; 
@@ -35,4 +36,13 @@
       border-radius: 5px;
     }
   }
+  .PaymentListAndData{
+    display: grid;
+    grid-template-columns: 1fr 1fr
+   
+  }
+  .PaymentListAndData > :nth-child(1) {
+    /* 첫 번째 자식 요소에 대한 스타일을 적용하세요 */
+  }
+
   
