@@ -1,7 +1,11 @@
 import WorkCon from "./WorkCon";
+import './scss/WorkCon.scss'
+
 
 export default function Work () {
     return (
-        <WorkCon></WorkCon>
+        <div className="WorkConCon">
+            <WorkCon></WorkCon>
+        </div>
     )
 }

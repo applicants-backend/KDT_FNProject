@@ -1,6 +1,7 @@
 import axios from "axios"
 import { TodoState, URLstate, UserDataState } from "../Store/Store"
 import React, { useState } from "react"
+import './scss/WorkTodo.scss'
 interface Contentinterface {
   contentsid : number,
   contents : string,
@@ -47,12 +48,14 @@ export default function WorkTodo (props : Contentinterface) {
 
 
   return (
-    <div>
-      <input type = "checkbox" checked={checked} onChange={e=>setChecked(e.target.checked)} onClick={editChecked}/>
-      {CheckMsg? <div>{CheckMsg}님이 체크하셨습니다.</div> : <div></div>}
-      <input readOnly={readOnly} value={readOnly ? props.contents : content} 
-      onClick={TodoReadOnly} onChange={e=>setContent(e.target.value)} onKeyDown={handleKeyDown} />
-      <button onClick={DeleteTodo}>delete</button>
+    <div className="WorkTodoCon">
+      <input type = "checkbox" checked={checked} onChange={e=>setChecked(e.target.checked)} onClick={editChecked} className="checkbox"/>
+      <div className="inputCon">
+        <input readOnly={readOnly} value={readOnly ? props.contents : content} 
+        onClick={TodoReadOnly} onChange={e=>setContent(e.target.value)} onKeyDown={handleKeyDown} className="content" />
+        {CheckMsg? <div className="CheckName">{CheckMsg}님이 체크하셨습니다.</div> : <div></div>}
+      </div>
+      <button onClick={DeleteTodo} className="delete"></button>
   </div>
   )
 }
