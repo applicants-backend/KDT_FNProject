@@ -78,7 +78,11 @@ export default function PaymentCon () {
             </div>
           )
           :(
-            <div>
+            <div className="PaymentConWrapAdmin">
+              <div>
+                이번달 총 인건비 지출
+                <div>{adminMonth}</div>
+              </div>
               <div>
                   알바별 이번달 급여
                   {adminEach &&
@@ -90,11 +94,7 @@ export default function PaymentCon () {
                       </div>
                     );
                   })}
-              </div>          
-              <div>
-                이번달 총 인건비 지출
-                <div>{adminMonth}</div>
-              </div> 
+              </div>           
               <div>
                 지난 달에 비해 얼마나 더 지출했지?
                 <div>
