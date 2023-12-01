@@ -29,6 +29,7 @@ export default function AttendanceHistory () {
             const Attendres = await axios.get(UserType === "admin"? `${URL}/admin/attendance/${Memberid}/${Storeid}/${page}` :`${URL}/user/attendance/${Memberid}/${Storeid}/${page}` )
             console.log(Attendres.data.data)
             const RoadedAttend = Attendres.data.data.content
+            console.log(Attendres.data.data.content)
             const totalPage = Attendres.data.data.totalPages
             setTotalPage(totalPage)
             setpageList(createArray(totalPage))
@@ -84,7 +85,7 @@ export default function AttendanceHistory () {
 
     return (
       <div>
-      {AttendList.map((value: Attendinterface, index) => {
+      {AttendList.map((value: Attendinterface) => {
         if (value.gowork && value.leavework) {
           return (
             <HistoryCompo attendid={value.attendid} worker={value.worker} gowork={value.worker} 
