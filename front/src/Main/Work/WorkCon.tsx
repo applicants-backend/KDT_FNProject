@@ -103,7 +103,7 @@ export default function WorkCon () {
       };
 
     return (
-        <div className="WorkConCon">
+        <>
           <div className="searchform">
             <div>업무일지</div>
             <input onChange={(e)=>{setKeyword(e.target.value)}} placeholder="Search"/>
@@ -146,6 +146,6 @@ export default function WorkCon () {
               : <></>
               }
             </div>
-        </div>
+        </>
     )
 }

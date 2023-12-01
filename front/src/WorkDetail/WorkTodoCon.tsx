@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { TodoState, URLstate, UserDataState, WorkState } from "../Store/Store"
 import axios from "axios"
 import WorkTodo from "./WorkTodo"
+import './scss/WorkTodoCon.scss'
 
 
 interface Contentinterface {
@@ -41,7 +42,7 @@ export default function WorkTodoCon () {
         setWorkList(deletedList)
     }
     const EditTitleIs = () => {
-        setTitleIs(false)
+        setTitleIs(!titleIs)
     }
     const EditTitle = async () => {
         const EditedTitleRes = await axios.patch(`${URL}/work/board/update`,{workid : workId, title})
@@ -50,6 +51,7 @@ export default function WorkTodoCon () {
         setTitle(EditedTitle)
     }
     const EditKeyDown = (event : React.KeyboardEvent) => {
+        // event.defaultPrevented()
         if (event.key === "Enter") {
             EditTitle();
             setTitleIs(true)
@@ -78,16 +80,24 @@ export default function WorkTodoCon () {
 
 
     return (
-        <div>
+        <div className="WorkCon">
+
+            <div className="TopCon">
             {titleIs ? <div>{title}</div> : <input type="text" value={title} onChange={e=>setTitle(e.target.value)} onKeyDown={EditKeyDown}/> }
             <button type="button" onClick={EditTitleIs}>제목 수정</button>
             <button type="button" onClick={deleteWork}>글 삭제</button>
-            <input type="text" onChange={e=>setInputTodo(e.target.value)} onKeyDown={handleKeyDown}/> 
-            <button type="button" onClick={AddTodo}>생성하기</button>
-            
-            {todoList && todoList.map((value : Contentinterface)=>{
-                return <WorkTodo key={value.contentsid?.toString()} contentsid={value.contentsid} contents={value.contents} checked={value.checked}></WorkTodo>
-            })}
+            </div>
+
+            <div className="todolistCon">
+                <form>
+                    <input type="text" onChange={e=>setInputTodo(e.target.value)} onKeyDown={handleKeyDown} className="todoinput"/> 
+                    <button type="button" onClick={AddTodo}></button>
+                </form>
+                {todoList && todoList.map((value : Contentinterface)=>{
+                    return <WorkTodo key={value.contentsid?.toString()} contentsid={value.contentsid} contents={value.contents} checked={value.checked}></WorkTodo>
+                })}
+            </div>
+
         </div>
     )
 }
