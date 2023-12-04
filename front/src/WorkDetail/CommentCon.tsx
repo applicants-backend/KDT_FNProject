@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import CommentCompo from "./CommentCompo"
 import { CommentState, URLstate, UserDataState, WorkState } from "../Store/Store"
 import axios from "axios"
+import './scss/CommentCon.scss'
 
 
 interface Commentinterface {
@@ -25,7 +26,8 @@ export default function CommentCon () {
             const AddComRes = await axios.post(`${URL}/work/comment/create`,{workid : workId, memberid : Memberid, comment : inpustComment, name :Name})
             const Addcomment = AddComRes.data.data
             console.log(AddComRes)
-            setCommentList([...commentList,Addcomment])    
+            setCommentList([Addcomment,...commentList])    
+            setInputComment("")
         } catch (error) {
             console.log(error)
         }
@@ -51,13 +53,18 @@ export default function CommentCon () {
     },[workId])
 
     return (
-        <div>
-            {commentList.map((value : Commentinterface)=>{
-                return <CommentCompo key={value.commentid?.toString()} name={value.name} comment={value.comment} commentid={value.commentid}></CommentCompo>
-            })}
-
-            <input type="text" onChange={e=>setInputComment(e.target.value)} onKeyDown={handleKeyDown}/>
-            <button type="button" onClick={ADDComment}>댓글달기</button>
+        <div className="CommentContaniner">
+            <div className="CommentCon">
+                {commentList.map((value : Commentinterface)=>{
+                    return <CommentCompo key={value.commentid?.toString()} name={value.name} comment={value.comment} commentid={value.commentid}></CommentCompo>
+                })}
+            </div>
+            
+            <div className="Bottom">
+                <div className="name">{Name}</div>
+                <input type="text" value={inpustComment} onChange={e=>setInputComment(e.target.value)} onKeyDown={handleKeyDown}/>
+                <button type="button" onClick={ADDComment}>댓글달기</button>
+            </div>
         </div>
     )
 }

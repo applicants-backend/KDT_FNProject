@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import './scss/WorkCompo.scss'
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { colors } from "react-select/dist/declarations/src/theme";
 
 interface Workdata {
     workid : number ;
@@ -90,7 +91,9 @@ export default function WorkCompo (props : Workdata) {
     return (
         <div onClick={(e)=>{enterTodo()}} className="CompoCon">
             <div className="date">{date}</div>
-            <div className="title">{props.title}{New ? <div className="New"> New</div> : '' }</div>
+            <div className="titleCon" style={!New ? { marginRight: "140px" } : {}}>
+                <div className="title">{props.title}{New ? <div className="New"> New</div> : '' }</div>
+            </div>
             <div className="todo">{checked} / {unchecked}</div>
         </div>
     )

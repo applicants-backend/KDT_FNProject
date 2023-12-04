@@ -32,6 +32,7 @@ export default function WorkTodoCon () {
     const handleKeyDown = (event : React.KeyboardEvent) => {
         if (event.key === "Enter") {
             AddTodo();
+            setInputTodo("")
         }
     };
 
@@ -81,16 +82,14 @@ export default function WorkTodoCon () {
 
     return (
         <div className="WorkCon">
-
             <div className="TopCon">
-            {titleIs ? <div>{title}</div> : <input type="text" value={title} onChange={e=>setTitle(e.target.value)} onKeyDown={EditKeyDown}/> }
-            <button type="button" onClick={EditTitleIs}>제목 수정</button>
-            <button type="button" onClick={deleteWork}>글 삭제</button>
-                <form>
-                    <input type="text" onChange={e=>setInputTodo(e.target.value)} onKeyDown={handleKeyDown} className="todoinput"/> 
-                    <button type="button" onClick={AddTodo}></button>
-                </form>
+                {titleIs ? <div className="title"> 제목 : {title}</div> : <input type="text" value={title} onChange={e=>setTitle(e.target.value)} onKeyDown={EditKeyDown}/> }
+                <div>
+                    <button type="button" onClick={EditTitleIs} className="edit"></button>
+                    <button type="button" onClick={deleteWork} className="delete"></button>
+                </div>
             </div>
+                <input type="text" value={inputTodo} onChange={e=>setInputTodo(e.target.value)} onKeyDown={handleKeyDown} placeholder="업무를 추가해주세요" className="todoinput"/> 
 
             <div className="todolistCon">
                 {todoList && todoList.map((value : Contentinterface)=>{
