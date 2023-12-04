@@ -4,6 +4,8 @@ import UserTypeState, { URLstate } from "../Store/Store";
 import {UserDataState} from "../Store/Store";
 
 import { Cookies } from 'react-cookie';
+
+import { Link } from "react-router-dom"
 import "./scss/Login.scss"
 interface props {
   type : String;
@@ -84,6 +86,9 @@ export default function Login({type, img, onLoginSuccess} : props) {
                         value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} />
             </div>
         </form>
+        <span className='login-findpassword'>
+            비밀번호를 잊으셨나요? <b><Link to={"/findPassword"}>비밀번호 찾기</Link></b>
+        </span>
         <button className='login-button' type='button' onClick={handleLogin}>로그인</button>
     </>
   );

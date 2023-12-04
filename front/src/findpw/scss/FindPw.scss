@@ -1,0 +1,58 @@
+@import "../../common/style/style.scss"; 
+
+
+.findPw-wrap {
+    width: 100%;  min-height: 100vh;
+    background-color: $mainBackgroundColor;
+    display: flex; justify-content: center; align-items: center;
+    .findPw-contents-box {
+        width: 500px; height: 348px; background-color:$contentsBackgroundColor;
+        padding: 2em; color: $mainColor;
+        transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+        box-shadow: none; background-image: none;
+        border-radius: 12px; overflow: hidden;
+        border: 1px solid $contentsBorderColor;
+
+        div {
+            border: 1px solid $bordercolor1; border-radius: 5px; 
+            padding: 0.5em; margin-bottom: 5px; 
+            label {
+                display: block; font-size: 12px;
+            }
+            input {
+                border: 0; padding: 0; margin-top: 0.5em; width: 100%; height: 30px;
+                padding-left: 5px;
+            }
+        }
+        .back-button {
+            width: 100%; height: 50px; border: 0; 
+            margin-bottom: 7px;  margin-top: 10px;
+            background-color:$buttonColor0; 
+            color: #fff;
+            border-radius: 3px;
+            &:hover {
+                opacity: 0.9;
+            }
+        }
+        .find-button {
+            width: 100%; height: 50px; border: 0;
+            background-color:$buttonColor1;  margin-top: 10px;
+            color: #fff;
+            border-radius: 3px;
+            &:hover {
+                opacity: 0.9;
+            }
+        }
+    }   
+}
+
+
+@media (max-width : 768px) {
+    .findPw-wrap {
+        background-color: #fff;
+        .findPw-contents-box {
+                width: 94%; margin: auto;  border: 0;
+        
+        }
+    }
+}
