@@ -15,6 +15,9 @@ import Attendance from './Main/Attendance/Attendance'
 import {Cookies} from 'react-cookie';
 import "./App.css"
 
+
+
+
 export default function AppRouter() {
 
     const [isLogin, setIslogin] = useState<boolean>(false);
@@ -44,7 +47,6 @@ export default function AppRouter() {
                         :   
                         <Routes>
                             <Route path='/'  element={<MainPage/>} />
-                            <Route path='/profile' element={<Profile/>} />
                             <Route path='*'  element={<MainPage/>} />
                         </Routes>
                     }   
