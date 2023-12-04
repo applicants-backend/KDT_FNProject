@@ -15,7 +15,7 @@ interface Workinterface {
 export default function WorkAddModal() {
     const {Storeid,Memberid} = UserDataState(state=>state)
     const {workList,setWorkList, add, setAdd} = WorkState(state=>state)
-    const [title,setTitle] = useState<String>()
+    const [title,setTitle] = useState<string>("")
     const AddRef = useRef<HTMLInputElement>(null)
     const {URL} = URLstate(state=>state)
     
@@ -43,16 +43,16 @@ export default function WorkAddModal() {
 
     }
     const handleKeyDown = (event : React.KeyboardEvent) => {
-        event.preventDefault()
+        // event.preventDefault()
         if (event.key === "Enter") {
             WorkAdd();
-        }
+        }   
     };
     
     return(
-       <form name="WorkAddForm" className="WorkModalCon">
-        <input name="title" type="text" id="title" placeholder="제목을 입력해주세요"
+       <div className="WorkModalCon">
+        <input name="title" type="text" id="title" placeholder="제목을 입력해주세요" value={title}
         ref={AddRef} onChange={(e)=>setTitle(e.target.value)} onKeyDown={handleKeyDown}/>
-       </form>
+       </div>
     )
 }

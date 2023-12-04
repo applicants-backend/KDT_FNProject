@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import UserTypeState, { URLstate, UserDataState, WorkerListState } from "../../Store/Store"
+import './scss/HomeData.scss'
 
 export default function HomeData () {
     const {URL} = URLstate(state=>state)
@@ -43,25 +44,46 @@ export default function HomeData () {
 
     return (
         UserType === 'user' ? (
-        <div>
-            <div>이번달 일한 시간은 ? {attend}</div>
-            <div>이번달 예상 월급은 ? {payment}</div>
-            <div>오늘 업무 일지 {checked} / {unchecked}</div>
+        <div className="HomeDataCon">
+            <div>이번달 일한 시간은 ? 
+                <div>{attend}</div>
+            </div>
+
+            <div>
+                이번달 예상 월급은 ? 
+                <div>{payment}</div>
+            </div>
+
+            <div>
+                오늘 업무 일지
+                <div> {checked} / {unchecked}</div>
+            </div>
         </div>
         ) : (
-        <div>
-            알바생 별 한달 출근 현황
-            {attend &&
-            Object.entries(attend).map(([key, value]: [string, string]) => {
-            return (
-                <div key={key}>
-                <div>{key}</div>
-                <div>{value}</div>
-                </div>
-            );
-            })}
-            <div>이번달 예상 월급은 ? {payment}</div>
-           {unchecked && <div>오늘 업무 일지 {checked} / {unchecked}</div>}
+        <div className="HomeDataCon">
+
+            <div className="attendance">
+                알바생 별 한달 출근 현황
+                {attend &&
+                Object.entries(attend).map(([key, value]: [string, string]) => {
+                return (
+                    <div key={key} className="compo">
+                        <div>{key}</div>
+                        <div>{value}</div>
+                    </div>
+                );
+                })}
+            </div>
+
+            <div className="payment">
+                이번달 예상 월급은 ? 
+                <div>{payment}</div>
+            </div>
+
+            <div className="work">
+                오늘 업무 일지 
+                <div>{checked} / {unchecked}</div>
+            </div>
         </div>
         )
   

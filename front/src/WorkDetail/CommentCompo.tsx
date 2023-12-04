@@ -1,6 +1,7 @@
 import axios from "axios"
 import { CommentState, URLstate, UserDataState } from "../Store/Store"
 import { useState } from "react"
+import './scss/CommentCompo.scss'
 
 interface Commentinterface {
     commentid : number,
@@ -40,11 +41,14 @@ export default function CommentCompo (props : Commentinterface) {
     };
     
     return (
-        <div key={props.commentid}>
-            <div>{props.name}</div>
-            {editIs ? <div>{Comment}</div> : <input type="text" value={Comment} onChange={e=>setComment(e.target.value)} onKeyDown={handleKeyDown}/> }
-            <button type="button" onClick={EditCommentIs}>수정하기</button>
-            <button type="button" onClick={DeleteComment}>삭제하기</button>
+        <div key={props.commentid} className={props.name === Name ? 'Comment myComment' : 'Comment'}>
+            <div className="name">{props.name}</div>
+            {editIs ? <div className="comment">{Comment}</div> : <input type="text" value={Comment} onChange={e=>setComment(e.target.value)} onKeyDown={handleKeyDown}/> }
+
+            <div>
+                <button type="button" onClick={EditCommentIs} className="eidt"></button>
+                <button type="button" onClick={DeleteComment} className="delete"></button>
+            </div>
         </div>
     )
 }

@@ -1,22 +1,48 @@
 @import "../../../common/style/style.scss"; 
 
+
 .register-form {
-    width: 100%; padding: 2em 0 ;
+    width: 100%; height: 100%; box-sizing: border-box; padding: 20px 0 ;
     .profile-img {
-        width: 128px; height: 128px; background-color: #fff;
-        border-radius: 50%; border: 1px solid #eee;
-        overflow: hidden;
-        img {
-            width: 100%; height: 100%;
-            object-fit: contain;
+       position: relative; width: 100px; min-height: 130px; margin-bottom: 15px;
+        .image-box {
+            width: 128px; height: 128px;
+            background-color: #fff;
+            overflow: hidden;
+            border-radius: 50%; border: 1px solid #eee;
+            overflow: hidden;
+            img {
+                width: 100%; height: 100%;
+                object-fit: contain;
+            }
+        }
+        .profile-image-input {
+            position: absolute; right: 0;
+            left: 150px; bottom: 0;
+            label {
+                display: block; font-size: 12px;
+                text-align: center; border-radius: 7px; 
+                padding: 0.8em; 
+                width: 150px; border: 1px solid #eee;
+                cursor: pointer; color: #fff;
+                background-color: $buttonColor1;
+                &:hover {
+                    opacity: 0.9;
+                }
+            }
         }
     }
+   
     .input-box {
-        width: 100%; height: 32px;
+        width: 100%; min-height: 320px; box-sizing: border-box;
+        padding: 1em 0;
+        div {
+            width: 100%; height: 32px;
+        }
     }
 
     .update-button {
-        width: 100%; height: 50px; border: 0; 
+        width: 100%; height: 38px; border: 0; 
         margin-top: 0.8em;
         margin-bottom: 0.8em;
         background-color:$buttonColor1; 
@@ -28,7 +54,7 @@
     }
 
     .remove-button {
-        width: 100%; height: 50px; border: 0;
+        width: 100%; height: 38px; border: 0;
         background-color:#dc3545; 
         color: #fff;
         border-radius: 3px;
@@ -38,4 +64,13 @@
     }
 
 
+}
+
+@media (max-width : 768px) {
+    
+    .profile-modal {
+        .ReactModal__Content {
+            width: 452px !important;
+        }
+    }
 }

@@ -1,13 +1,18 @@
-import { useEffect, useState, SyntheticEvent } from "react"
+import { useEffect, useState, SyntheticEvent,FC } from "react"
 import UserTypeState, { ProfileState, URLstate, UserDataState, WorkerListState } from "../../Store/Store"
 import axios from "axios"
-import ReactModal from "react-modal"
-import ProfileModal from "./ProfileModal"
-import customModalStyles from "./scss/Modal"
-
 import "./scss/Profile.scss"
 
-export default function Profile () {
+import ReactModal from "react-modal"
+
+import customModalStyles from "./scss/Modal"
+
+interface profileProps {
+    setmodalOpenis?:React.Dispatch<React.SetStateAction<boolean>>;
+    logout? : Function
+}
+
+export default function Profile ({setmodalOpenis, logout}:profileProps):ReturnType<FC> {
 
     const {URL} = URLstate(state=>state)
     const {UserType} = UserTypeState(state=>state)
@@ -15,6 +20,7 @@ export default function Profile () {
     const {userImg,companyImg,name,phonenumber,companyNumber,companyName, setuserImg, setcompanyImg, setname, setphonenumber, setcompanyName, setcompanyNumber} = ProfileState(state=>state)
     const {setWorkList,WorkerList} = WorkerListState(state=>state)
 
+    const [inviteModal, setInviteModal] = useState<boolean>(false);
 
     useEffect(()=> {
         const loadUserData = async () => {
@@ -40,10 +46,11 @@ export default function Profile () {
         loadUserData()
     },[Memberid,URL,companyImg])
 
-    const [modalOpenis, setmodalOpenis] = useState(false)
+  
 
     const editProfle = () => {
-        setmodalOpenis(true)
+
+        if (setmodalOpenis) setmodalOpenis(true)
     }
 
     const CodeGenerater = async () => {
@@ -67,34 +74,43 @@ export default function Profile () {
                         onError={defalutImg}/>
             </div>
             <div className="profile-info">
-                <p>{name}</p>
-                <p>{phonenumber}</p>
-                <p>{companyName}</p>
+                <p> Name : {name}</p>
+                <p> Phone : {phonenumber}</p>
+                <p> Company : {companyName}</p>
+                {UserType === "admin" ?  <p> Number : {companyNumber}</p> : <></>}
             </div>
-            
-            {UserType === "admin" ?
-                <>  
-                    <div className="profile-info">
-                         <p>{companyNumber}</p>
+
+            <div className="profile-icon-box" >
+                { UserType === "admin" ? 
+                    <div className="invite-icon" onClick={(e)=>{setInviteModal(true)}}>
+                        <img src={"https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/invitation_icon.png"} alt="icon" />
                     </div>
-                    <button onClick={(e)=>CodeGenerater()}>초대코드 발급</button>
-                    <div style={{display:"none"}}>{Token}</div>
-                </> 
-                :
-                <></>
-            }
-            
-            <button type="button" onClick={(e)=>{editProfle()}}>프로필수정</button>
+                    :
+                    <></>
+                }
+                <div className="profile-icon" onClick={(e)=>{editProfle()}}>
+                    <img src={"https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/edit_icon.png"} alt="edit_icon" />
+                </div>
+                <div className="logout-icon" onClick={() => {if (logout) logout()}}>
+                    <img src={"https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/shutdown_icon.png"} alt="shutdown_icon" />
+                </div>
+            </div>
+          
             <ReactModal
-                ///// modal 설정
-                isOpen={modalOpenis}
-                onRequestClose={()=>setmodalOpenis(false)}
-                ariaHideApp={false}
-                shouldCloseOnOverlayClick={true}
-                style={customModalStyles}
-            >
-                 <ProfileModal></ProfileModal>
-            </ReactModal>  
+                    ///// modal 설정
+                    isOpen={inviteModal}
+                    onRequestClose={()=> setInviteModal(false)}
+                    overlayClassName= "invite-modal"
+                    ariaHideApp={false}
+                    shouldCloseOnOverlayClick={true}
+                    style={customModalStyles}
+                >
+                <div className="">
+                    <div >{Token}</div>
+                    <button onClick={(e)=>CodeGenerater()}>초대코드 발급</button>
+                </div>
+            </ReactModal>
+
         </div>
     )
 }
