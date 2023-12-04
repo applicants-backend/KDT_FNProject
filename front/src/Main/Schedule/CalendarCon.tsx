@@ -8,26 +8,132 @@ import UserTypeState, {
   CalendarData,
   UserDataState,
   URLstate,
+  WorkerListState,
 } from "../../Store/Store";
 import axios from "axios";
-import Calendar from "./Calendar";
-import { CalendarImpl } from "@fullcalendar/core/internal";
-import { error } from "console";
 import { formatDate } from "@fullcalendar/core";
+import styled from "styled-components";
 
 interface CalendarConProps {
   // 다른 필요한 props가 있다면 추가
 }
+
+// fullcalendar css
+const FullCalendarContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+
+  // 캘린더 전체 사이즈 조정
+  .fc {
+    width: 100%;
+  }
+
+  // toolbar container
+  .fc .fc-toolbar.fc-header-toolbar {
+    margin: 0;
+    padding: 0 40px;
+    background-color: #040f2b;
+    height: 63px;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 29px;
+    color: white;
+    border-radius: 20px 20px 0px 0px;
+  }
+
+  // toolbar 버튼
+  .fc .fc-button-primary {
+    background-color: transparent;
+    border: none;
+
+    span {
+      font-weight: 500;
+      font-size: 25px;
+    }
+
+    :hover {
+      background-color: transparent;
+    }
+  }
+  .fc .fc-prev-button,
+  .fc .fc-next-button {
+    background-color: transparent;
+    border: none;
+
+    span {
+      font-weight: 500;
+      font-size: 25px;
+    }
+
+    :hover {
+      background-color: transparent;
+    }
+  }
+
+  // 요일 부분
+  .fc-theme-standard th {
+    height: 25px;
+    padding-top: 3px;
+    background: #e5edff;
+    border: 1px solid #dddee0;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 10px;
+    color: #7b7b7b;
+  }
+
+  // 오늘 날짜 배경색
+  .fc .fc-daygrid-day.fc-day-today {
+    background-color: #fff8bd;
+    color: #238ba2;
+  }
+
+  // 날짜별 그리드
+  .fc .fc-daygrid-day-frame {
+    padding: 5px;
+  }
+
+  // 날짜  ex) 2일
+  .fc .fc-daygrid-day-top {
+    flex-direction: row;
+    margin-bottom: 2px;
+  }
+
+  // 각 이벤트 요소
+  .fc-event {
+    cursor: pointer;
+    padding: 2px 3px;
+    margin-bottom: 2px;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 11px;
+  }
+  .fc-day-sun a {
+    color: red;
+  }
+  .fc-day-sat a {
+    color: blue;
+  }
+`;
 
 function CalendarCon(props: CalendarConProps) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [events, setEvents] = useState<any[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  // workerlist 갖고오기
+  const { WorkerList } = WorkerListState((state) => state);
 
   // 시간 데이터 갖고오기
   const [nowDate, setNowDate] = useState<string | null>("");
-  const [month, setMonth] = useState<string | null>("");
+
+  // month Date
+  const [month, setMonth] = useState<string | null>(() => {
+    const currentDate = new Date();
+    return `${currentDate.toISOString().slice(0, 16)}:00`;
+  });
 
   const [worker, setWorker] = useState<string>("");
   const [startwork, setStartWork] = useState<string>("");
@@ -107,17 +213,22 @@ function CalendarCon(props: CalendarConProps) {
 
   useEffect(() => {
     const loadCalendarData = async () => {
+      const monthOnly = new Date().getMonth() + 1;
+      console.log("monthOnly : ", monthOnly);
+
       try {
         const calendarData =
           UserType === "admin"
             ? await axios.get<{ data: CalendarData[] }>(
-                `${URL}/admin/schedule/${memberid}/${storeid}/2023-12-16T19:52:00`
+                `${URL}/admin/schedule/${memberid}/${storeid}/${month}`
               )
             : await axios.get<{ data: CalendarData[] }>(
-                `${URL}/user/schedule/${memberid}/${storeid}/2023-12-16T19:52:00`
+                `${URL}/user/schedule/${memberid}/${storeid}/${month}`
               );
 
         const eventsArray = calendarData.data.data.map((item: CalendarData) => {
+          const workerName = WorkerList[item.worker];
+
           const start: Date =
             UserType === "admin"
               ? new Date(item.start as string)
@@ -128,15 +239,17 @@ function CalendarCon(props: CalendarConProps) {
               : new Date(item.leavework as string);
 
           return {
-            title: item.worker,
+            title: workerName ? workerName : item.worker,
             start: start,
             end: end,
             attendid: item.attendid,
+            wage: item.wage,
+            worker: item.worker,
           };
         });
 
         setEvents(eventsArray);
-        console.log(calendarData.data.data);
+        // console.log(calendarData.data.data);
       } catch (error) {
         console.log("에러", error);
       }
@@ -144,21 +257,24 @@ function CalendarCon(props: CalendarConProps) {
 
     // 페이지가 처음으로 마운트될 때만 실행
     loadCalendarData();
-  }, []); // 두 번째 인자에 빈 배열을 전달하여 페이지가 처음으로 마운트될 때만 실행
+  }, [WorkerList]); // 두 번째 인자에 빈 배열을 전달하여 페이지가 처음으로 마운트될 때만 실행
 
   useEffect(() => {
     const loadMonthData = async () => {
+      console.log("month", month);
       try {
         const calendarData =
           UserType === "admin"
             ? await axios.get<{ data: CalendarData[] }>(
-                `${URL}/admin/schedule/${memberid}/${storeid}/2023-12-16T19:52:00`
+                `${URL}/admin/schedule/${memberid}/${storeid}/${month}`
               )
             : await axios.get<{ data: CalendarData[] }>(
-                `${URL}/user/schedule/${memberid}/${storeid}/2023-12-16T19:52:00`
+                `${URL}/user/schedule/${memberid}/${storeid}/${month}`
               );
 
         const eventsArray = calendarData.data.data.map((item: CalendarData) => {
+          const workerName = WorkerList[item.worker];
+
           const start: Date =
             UserType === "admin"
               ? new Date(item.start as string)
@@ -168,16 +284,18 @@ function CalendarCon(props: CalendarConProps) {
               ? new Date(item.end as string)
               : new Date(item.end as string);
           return {
-            title: item.worker,
+            title: workerName ? workerName : item.worker,
             start: start,
             end: end,
             attendid: item.attendid,
+            wage: item.wage,
+            worker: item.worker,
           };
         });
 
         // Set the events array
         setEvents(eventsArray);
-        console.log(calendarData.data.data);
+        // console.log(calendarData.data.data);
         console.log(eventsArray);
       } catch (error) {
         console.log("에러", error);
@@ -191,8 +309,11 @@ function CalendarCon(props: CalendarConProps) {
   function sendDataFromModal(data: any) {
     console.log("Data received in CalendarCon:", data);
 
+    const workerName = WorkerList[data.worker];
+
     // 근무자 이름을 이벤트 제목으로 사용
-    const title = data.worker;
+    // const title = data.worker;
+    // const title = data.worker === data.memberid ? data.Name : data.worker;
 
     // 출근 시간을 이벤트 시작 시간으로 사용
     const start =
@@ -202,10 +323,15 @@ function CalendarCon(props: CalendarConProps) {
     const end =
       UserType === "admin" ? new Date(data.end) : new Date(data.leavework);
 
+    const wage = data.wage;
+    const worker = data.worker;
+
     const newEvent = {
-      title: title,
+      title: workerName ? workerName : data.worker,
       start: start,
       end: end,
+      wage: wage,
+      worker: worker,
     };
 
     setEvents([...events, newEvent]);
@@ -214,11 +340,12 @@ function CalendarCon(props: CalendarConProps) {
   function handleEventClick(arg: any) {
     const clickedEvent = arg.event.extendedProps;
     const attendid = clickedEvent.attendid; // attendid 가져오기
+    const worker = clickedEvent.worker;
 
     if (UserType === "admin") {
       setEventModalOpen(true);
       setDateModalOpen(false); // 모달이 열릴 때 다른 모달은 닫아줍니다.)
-      console.log(events);
+      // console.log(events);
       const clickedEvent = arg.event.extendedProps;
       console.log(clickedEvent);
       setSelectedEvent({
@@ -226,89 +353,42 @@ function CalendarCon(props: CalendarConProps) {
         start: arg.event.start,
         end: arg.event.end,
         attendid: attendid, // attendid 추가
+        wage: arg.event.wage,
+        worker: worker,
         // 이벤트에서 가져와야 하는 다른 속성들을 추가할 수 있습니다.
       });
       const extendedProps = arg.event.extendedProps;
 
       if (Object.keys(extendedProps).length > 0) {
         console.log("Click Event Extended Props:", extendedProps);
-        console.log("Extended Props:", extendedProps);
+        // console.log("Extended Props:", extendedProps);
       } else {
         console.log("Extended Props is an empty object.");
       }
     } else {
       setEventModalOpen(true);
       setDateModalOpen(false); // 모달이 열릴 때 다른 모달은 닫아줍니다.)
-      console.log(events);
-      const clickedEvent = arg.event.extendedProps;
-      console.log(clickedEvent);
-
-      const getCurrentTimeStart = () => {
-        const now = new Date();
-        const formattedTime = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
-        setStartWork(formattedTime);
-        const dataSet = {
-          attendid: attendid,
-          memberid: Memberid,
-          storeid: Storeid,
-          startwork: setStartWork,
-          worker: Memberid,
-        };
-        try {
-          axios.patch(`${URL}/user/attendance/gowork`, dataSet);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      const getCurrentTimeEnd = () => {
-        const now = new Date();
-        const formattedTime = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
-        setLeaveWork(formattedTime);
-        const dataSet = {
-          attendid: attendid,
-          memberid: Memberid,
-          storeid: Storeid,
-          leavework: setLeaveWork,
-          worker: Memberid,
-        };
-        try {
-          axios.patch(`${URL}/user/attendance/leavework`, dataSet);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-      const UserDataSet = () => {
-        <>
-          <label htmlFor="worker">근무자 : {Name}</label>
-          <label htmlFor="startwork">출근 시간 : {startwork}</label>
-          <button type="button" onClick={getCurrentTimeStart}>
-            출근 시간 저장하기
-          </button>
-          <label htmlFor="leavework">퇴근 시간 : {leavework}</label>
-          <button type="button" onClick={getCurrentTimeEnd}>
-            퇴근 시간 저장하기
-          </button>
-        </>;
-      };
-
       setSelectedEvent({
         title: arg.event.title,
         start: arg.event.start,
         end: arg.event.end,
-        attendid: arg.event.attendid,
-        // 이벤트에서 가져와야 하는 다른 속성들을 추가할 수 있습니다.
-        // UserDataSet,
+        attendid: attendid,
+        wage: arg.event.wage,
+        worker: arg.event.worker,
       });
+      console.log(events);
+      const clickedEvent = arg.event.extendedProps;
+      console.log(clickedEvent);
       console.log("Click Event Extended Props:", arg.event.extendedProps);
     }
   }
 
   /// return 시작
   return (
-      <div className="">
+    <>
+      <FullCalendarContainer>
         <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           dayMaxEvents={true}
           eventDisplay="list-item"
@@ -318,9 +398,9 @@ function CalendarCon(props: CalendarConProps) {
           eventClick={handleEventClick}
           weekends={true}
           headerToolbar={{
-            left: "prev,next today",
+            left: "prev today",
             center: "title",
-            right: "dayGridMonth,timeGridWeek",
+            right: "next",
           }}
           events={events}
           eventChange={() => {
@@ -330,26 +410,26 @@ function CalendarCon(props: CalendarConProps) {
           datesSet={handleDatesSet}
           viewDidMount={handleDidMount}
         />
-        {isDateModalOpen && (
-          <CalendarMo
-            isOpen={isDateModalOpen}
-            closeModal={() => setDateModalOpen(false)}
-            sendDataToCon={sendDataFromModal}
-            selectedDate={selectedDate}
-            selectedEvent={null} // 선택된 이벤트는 null로 설정
-          />
-        )}
-        {isEventModalOpen && (
-          <CalendarMo
-            isOpen={isEventModalOpen}
-            closeModal={() => setEventModalOpen(false)}
-            sendDataToCon={sendDataFromModal}
-            selectedDate={null} // 선택된 날짜는 null로 설정
-            selectedEvent={selectedEvent}
-          />
-        )}
-      </div>
-  
+      </FullCalendarContainer>
+      {isDateModalOpen && (
+        <CalendarMo
+          isOpen={isDateModalOpen}
+          closeModal={() => setDateModalOpen(false)}
+          sendDataToCon={sendDataFromModal}
+          selectedDate={selectedDate}
+          selectedEvent={null} // 선택된 이벤트는 null로 설정
+        />
+      )}
+      {isEventModalOpen && (
+        <CalendarMo
+          isOpen={isEventModalOpen}
+          closeModal={() => setEventModalOpen(false)}
+          sendDataToCon={sendDataFromModal}
+          selectedDate={null} // 선택된 날짜는 null로 설정
+          selectedEvent={selectedEvent}
+        />
+      )}
+    </>
   );
 }
 

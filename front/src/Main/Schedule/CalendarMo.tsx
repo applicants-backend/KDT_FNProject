@@ -62,9 +62,9 @@ function CalendarMo({
   const { Storeid, Memberid, Name } = UserDataState((state) => state);
   
   const { WorkerList } = WorkerListState((state) => state);
-  
+  // const [worker, setWorker] = useState<string>(Object.keys(WorkerList)[0]);
+  const [worker, setWorker] = useState<string>("");
   const { URL } = URLstate((state) => state);
-  const [worker, setWorker] = useState<string>(Object.keys(WorkerList)[0]);
 
   useEffect(() => {});
 
@@ -105,12 +105,14 @@ function CalendarMo({
       wage: wage,
     });
     try {
+      console.log("데이터 전송 요청");
       const res = await axios.post(
         `${URL}/admin/attendance/create`,
         sendAdminData
       );
       console.log("sendAdminData : ", sendAdminData);
       console.log("res : ", res);
+      // window.location.reload();
     } catch (error) {
       console.log("에러 발생");
     }
@@ -170,16 +172,22 @@ function CalendarMo({
       <p>Title: {selectedEvent.title}</p>
       <p>Start: {selectedEvent.start?.toLocaleString()}</p>
       <p>End: {selectedEvent.end?.toLocaleString()}</p>
-      {/* <p>"selectedEvent.attendid" {selectedEvent.attendid}</p> */}
     </>
   ) : null;
 
   function handleUpdate() {
     // 수정 로직 추가
   }
+
   async function handleDelete(arg: any) {
+    console.log("selectedEvent", selectedEvent);
     if (selectedEvent && selectedEvent.attendid) {
       const attendid = selectedEvent.attendid;
+      const worker = selectedEvent.worker;
+      const start = selectedEvent.start;
+      const end = selectedEvent.end;
+      console.log("worker : ", worker);
+
       // 서버로 삭제 요청 보내기
       const sendDeleteData = {
         memberid: Memberid,
@@ -190,15 +198,16 @@ function CalendarMo({
         startwork: startwork,
         leavework: leavework,
         attendid: attendid,
+        wage: wage,
       };
       try {
+        console.log("삭제요청중");
         // UserType에 따라 다른 엔드포인트를 사용할 수 있습니다.
-        UserType === "admin"
-          ? await axios.patch(`${URL}/admin/attendance/delete`, sendDeleteData)
-          : await axios.patch(
-              `${URL}/admin/attendance/delete/`,
-              sendDeleteData
-            );
+        const res = await axios.patch(
+          `${URL}/admin/attendance/delete`,
+          sendDeleteData
+        );
+        console.log("res : ", res);
       } catch (error) {
         console.error("삭제 요청 중 오류 발생:", error);
       }
@@ -208,17 +217,15 @@ function CalendarMo({
     }
   }
 
-  const handleWorker = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    // 선택된 값을 사용하여 WorkerList를 업데이트
-    const selectedValue = event.target.value;
-    setWorker(selectedValue);
-    // 위 주석 처리한 부분은 이제 필요하지 않습니다.
-    console.log("selectedValue : ", selectedValue);
-  };
+  const defaultDate = selectedDate
+    ? new Date(selectedDate.getTime() + 24 * 60 * 60 * 1000)
+        .toISOString()
+        .slice(0, 16)
+    : ""; // 선택된 날짜가 있을 때는 하루를 더한 값을, 없을 때는 빈 문자열을 기본값으로 설정
 
   const renderAdminForm = () => (
     <>
-      <label htmlFor="worker">근무자 : </label>
+      <label htmlFor="worker">근무자 : {worker}</label>
       <select
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
           setWorker(e.target.value)
@@ -238,12 +245,14 @@ function CalendarMo({
       <input
         type="datetime-local"
         id="start"
+        value={start || defaultDate}
         onChange={(e) => setStart(e.target.value)}
       />
       <label htmlFor="end">퇴근 시간 : </label>
       <input
         type="datetime-local"
         id="end"
+        value={end || defaultDate}
         onChange={(e) => setEnd(e.target.value)}
       />
       <label htmlFor="wage">급여 : </label>
@@ -254,27 +263,68 @@ function CalendarMo({
     </>
   );
 
-  ///
-  async function getCurrentTimeStart() {
-    const now = new Date();
-    const formattedTime = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
-    setStartWork(formattedTime);
-    const sendUserData = {
-      memberid: Memberid,
-      storeid: Storeid,
-      worker: worker,
-      start: start,
-      end: end,
-      startwork: startwork,
-      leavework: leavework,
-      wage: wage,
-    };
-    try {
-      await axios.patch(`${URL}/user/attendance/gowork`, sendUserData);
-    } catch (error) {
-      console.error("gowork 도중에 오류발생 :", error);
+  // async function getCurrentTimeStart(arg: any) {
+  //   const now = new Date();
+  //   const formattedTime = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
+  //   setStartWork(formattedTime);
+  //   if (selectedEvent && selectedEvent.attendid) {
+  //     const attendid = selectedEvent.attendid;
+  //   }
+  //   const sendUserData = {
+  //     memberid: Memberid,
+  //     storeid: Storeid,
+  //     worker: worker,
+  //     start: start,
+  //     end: end,
+  //     startwork: startwork,
+  //     leavework: leavework,
+  //     wage: wage,
+  //     attendid: selectedEvent?.attendid,
+  //   };
+  //   console.log("setStawrkWork : ", sendUserData);
+  //   try {
+  //     await axios.patch(`${URL}/user/attendance/gowork`, sendUserData);
+  //   } catch (error) {
+  //     console.error("gowork 도중에 오류발생 :", error);
+  //   }
+  // }
+
+  async function getCurrentTimeStart(arg: any) {
+    console.log("selectedEvent", selectedEvent);
+    if (selectedEvent && selectedEvent.attendid) {
+      const attendid = selectedEvent.attendid;
+      // 서버로 삭제 요청 보내기
+      const now = new Date();
+      const formattedTime = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
+      setStartWork(formattedTime);
+      const sendUserData = {
+        memberid: Memberid,
+        storeid: Storeid,
+        worker: worker,
+        start: start,
+        end: end,
+        startwork: startwork,
+        leavework: leavework,
+        attendid: attendid,
+        wage: wage,
+      };
+      try {
+        console.log("gowork 요청중");
+        // UserType에 따라 다른 엔드포인트를 사용할 수 있습니다.
+        const res = await axios.patch(
+          `${URL}/user/attendance/gowork`,
+          sendUserData
+        );
+        console.log("res : ", res);
+      } catch (error) {
+        console.error("gowork 요청 중 오류 발생:", error);
+      }
+    } else {
+      // 선택된 이벤트가 없을 경우 에러 메시지를 설정합니다.
+      setAdditionalContent("이벤트가 선택되지 않았습니다.");
     }
   }
+
   async function getCurrentTimeEnd() {
     const now = new Date();
     const formattedTime = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
@@ -289,14 +339,13 @@ function CalendarMo({
       leavework: leavework,
       wage: wage,
     };
+    console.log("setLeaveWork : ", sendUserData);
     try {
       await axios.patch(`${URL}/user/attendance/leavework`, sendUserData);
     } catch (error) {
       console.error("leave work 도중 오류 발생 : ", error);
     }
   }
-
-  ///
 
   const renderUserForm = () => (
     <>
@@ -309,18 +358,19 @@ function CalendarMo({
       <button type="button" onClick={getCurrentTimeEnd}>
         퇴근 시간 저장하기
       </button>
-      <button type="button" onClick={userAdditonalPost}>
-        저장하기
-      </button>
+      <label htmlFor="wage">시급 : {wage}</label>
     </>
   );
+
+  ///
+
+  ///
 
   const adminEventForm = () => (
     <>
       <label htmlFor="worker">근무자 : {worker}</label>
       <label htmlFor="startwork">근무자가 입력한 출근 시간 : {startwork}</label>
       <label htmlFor="leavework">퇴근 시간 : {leavework}</label>
-      <button onClick={handleDelete}>삭제하기</button>
     </>
   );
 
@@ -338,8 +388,17 @@ function CalendarMo({
       <button type="button" onClick={userAdditonalPost}>
         저장하기
       </button>
+      <label htmlFor="wage">시급 : {wage}</label>
     </>
   );
+
+  // useEffect(() => {
+  //   if (selectedEvent) {
+  //     const { wage, worker, start, end, startwork, leavework } = selectedEvent;
+
+  //     getCurrentTimeStart({ wage, worker, start, end, startwork, leavework });
+  //   }
+  // }, [selectedEvent]);
 
   return (
     <>
@@ -360,6 +419,7 @@ function CalendarMo({
           </form>
           {eventDetails}
           <ModalContent>{additionalContent}</ModalContent>
+          <button onClick={handleDelete}>삭제하기</button>
           <CloseButton onClick={closeModal}>닫기</CloseButton>
         </ModalContainer>
       )}
