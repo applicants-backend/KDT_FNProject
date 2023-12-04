@@ -20,7 +20,7 @@ export default function Login({type, img, onLoginSuccess} : props) {
   const [password, setPassword] = useState<string>('');
   const {URL} =URLstate(state=>state)
   const {UserType,setUserTypeAdmin, setUserTypeUser} = UserTypeState(state => state)
-  const { setMemberid, setStoreid, setToken, setName } = UserDataState(state => state); 
+  const { setMemberid, setStoreid, setName } = UserDataState(state => state); 
 
   const cookies = new Cookies();
 
@@ -38,7 +38,6 @@ export default function Login({type, img, onLoginSuccess} : props) {
 
         setMemberid(response.data.data.memberid);
         setStoreid(response.data.data.storeid);
-        setToken(response.data.data.token);
         setName(response.data.data.name)
         cookies.set("token",response.data.data.token);
 

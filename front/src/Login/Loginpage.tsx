@@ -36,7 +36,7 @@ export default function Loginpage (): ReturnType<FC> {
             </div>
             <div className="login-type-tab">
                 <div className={UserType=== "user" ? "on" : ""} onClick={() => setUserTypeUser()}> 근로자 </div>
-                <div className={UserType=== "admin" ? "on" : ""} onClick={() => setUserTypeAdmin()}> 시업자 </div>
+                <div className={UserType=== "admin" ? "on" : ""} onClick={() => setUserTypeAdmin()}> 사업자 </div>
             </div>
             {UserType && (
                 <Login type={UserType} img={UserType=== "user" ? "/Img/WorkerImg.jpeg" : "/Img/CompanyImg.jpeg"} 
