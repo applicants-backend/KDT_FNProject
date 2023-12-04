@@ -36,6 +36,7 @@ export default function Profile ({setmodalOpenis, logout}:profileProps):ReturnTy
             setcompanyName(Storeprofile.companyname)
             setcompanyNumber(Storeprofile.companynumber)
             setcompanyImg(Storeprofile.companyimg)
+            setToken(Storeprofile.invitecode)
             console.log(UserRes)
             if(UserType === 'admin'){
                 const WorkerListRes = await axios.get(`${URL}/admin/attendance/workerlist/${Memberid}/${Storeid}`)
