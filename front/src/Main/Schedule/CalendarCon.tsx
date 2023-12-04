@@ -146,11 +146,6 @@ function CalendarCon(props: CalendarConProps) {
   const memberid = Memberid;
   const storeid = Storeid;
 
-  const data = {
-    memberid,
-    storeid,
-  };
-
   // modal open 두개로 쪼개기
   const [isDateModalOpen, setDateModalOpen] = useState(false);
   const [isEventModalOpen, setEventModalOpen] = useState(false);
@@ -161,18 +156,18 @@ function CalendarCon(props: CalendarConProps) {
     setEventModalOpen(false); // 모달이 열릴 때 다른 모달은 닫아줍니다.
   }
 
-  function openModal() {
-    setModalOpen(true);
-  }
+  // function openModal() {
+  //   setModalOpen(true);
+  // }
 
-  function handleModalClose() {
-    setDateModalOpen(false);
-    setEventModalOpen(false);
-  }
-  function dateClick(info: any) {
-    console.log(info);
-    console.log(info.view);
-  }
+  // function handleModalClose() {
+  //   setDateModalOpen(false);
+  //   setEventModalOpen(false);
+  // }
+  // function dateClick(info: any) {
+  //   console.log(info);
+  //   console.log(info.view);
+  // }
 
   // month 값.
   // 해당 달 정보 보내기
@@ -275,14 +270,10 @@ function CalendarCon(props: CalendarConProps) {
         const eventsArray = calendarData.data.data.map((item: CalendarData) => {
           const workerName = WorkerList[item.worker];
 
-          const start: Date =
-            UserType === "admin"
-              ? new Date(item.start as string)
-              : new Date(item.start as string);
-          const end: Date =
-            UserType === "admin"
-              ? new Date(item.end as string)
-              : new Date(item.end as string);
+          const start: Date = new Date(item.start as string);
+          const end: Date = new Date(item.end as string);
+          const startwork: Date = new Date(item.startwork as string);
+          const leavework: Date = new Date(item.leavework as string);
           return {
             title: workerName ? workerName : item.worker,
             start: start,
@@ -290,6 +281,8 @@ function CalendarCon(props: CalendarConProps) {
             attendid: item.attendid,
             wage: item.wage,
             worker: item.worker,
+            startwork: startwork,
+            leavework: leavework,
           };
         });
 
@@ -316,13 +309,11 @@ function CalendarCon(props: CalendarConProps) {
     // const title = data.worker === data.memberid ? data.Name : data.worker;
 
     // 출근 시간을 이벤트 시작 시간으로 사용
-    const start =
-      UserType === "admin" ? new Date(data.start) : new Date(data.startwork);
-
     // 퇴근 시간을 이벤트 종료 시간으로 사용
-    const end =
-      UserType === "admin" ? new Date(data.end) : new Date(data.leavework);
-
+    const end = new Date(data.end);
+    const start = new Date(data.start);
+    const startwork = new Date(data.startwork);
+    const leavework = new Date(data.leavework);
     const wage = data.wage;
     const worker = data.worker;
 
@@ -332,6 +323,8 @@ function CalendarCon(props: CalendarConProps) {
       end: end,
       wage: wage,
       worker: worker,
+      startwork: startwork,
+      leavework: leavework,
     };
 
     setEvents([...events, newEvent]);
@@ -346,8 +339,8 @@ function CalendarCon(props: CalendarConProps) {
       setEventModalOpen(true);
       setDateModalOpen(false); // 모달이 열릴 때 다른 모달은 닫아줍니다.)
       // console.log(events);
-      const clickedEvent = arg.event.extendedProps;
-      console.log(clickedEvent);
+      // const clickedEvent = arg.event.extendedProps;
+      // console.log(clickedEvent);
       setSelectedEvent({
         title: arg.event.title,
         start: arg.event.start,
@@ -355,16 +348,19 @@ function CalendarCon(props: CalendarConProps) {
         attendid: attendid, // attendid 추가
         wage: arg.event.wage,
         worker: worker,
+        startwork: arg.event.startwork,
+        leavework: arg.event.leavework,
         // 이벤트에서 가져와야 하는 다른 속성들을 추가할 수 있습니다.
       });
       const extendedProps = arg.event.extendedProps;
 
-      if (Object.keys(extendedProps).length > 0) {
-        console.log("Click Event Extended Props:", extendedProps);
-        // console.log("Extended Props:", extendedProps);
-      } else {
-        console.log("Extended Props is an empty object.");
-      }
+      // if (Object.keys(extendedProps).length > 0) {
+      //   console.log("Click Event Extended Props:", extendedProps);
+      //   // console.log("Extended Props:", extendedProps);
+      // } else {
+      // console.log("Extended Props is an empty object.");
+      // }
+      console.log("extendedProps : ", extendedProps);
     } else {
       setEventModalOpen(true);
       setDateModalOpen(false); // 모달이 열릴 때 다른 모달은 닫아줍니다.)
@@ -374,7 +370,9 @@ function CalendarCon(props: CalendarConProps) {
         end: arg.event.end,
         attendid: attendid,
         wage: arg.event.wage,
-        worker: arg.event.worker,
+        worker: worker,
+        startwork: arg.event.startwork,
+        leavework: arg.event.leavework,
       });
       console.log(events);
       const clickedEvent = arg.event.extendedProps;

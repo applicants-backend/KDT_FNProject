@@ -25,7 +25,7 @@ export default function CommentCompo (props : Commentinterface) {
     }
 
     const EditCommentIs = () => {
-        setEditIs(false)
+        setEditIs(!editIs)
     }
     const EditComment = async() => {
         const EditRes = await axios.patch(`${URL}/work/comment/update`,{memberid : Memberid,commentid : props.commentid, comment : Comment, name : Name})
