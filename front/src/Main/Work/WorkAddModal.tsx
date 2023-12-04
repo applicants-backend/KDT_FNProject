@@ -14,7 +14,7 @@ interface Workinterface {
 
 export default function WorkAddModal() {
     const {Storeid,Memberid} = UserDataState(state=>state)
-    const {workList,setWorkList, add, setAdd} = WorkState(state=>state)
+    const {add, setAdd} = WorkState(state=>state)
     const [title,setTitle] = useState<string>("")
     const AddRef = useRef<HTMLInputElement>(null)
     const {URL} = URLstate(state=>state)
@@ -38,12 +38,11 @@ export default function WorkAddModal() {
         const AddRes = await axios.post(`${URL}/work/board/create`,AddData)
         console.log(AddRes.data.data)
         const Add: Workinterface = AddRes.data.data;
-        setWorkList([Add,...workList]);
-        setAdd(add)
+        setAdd(!add)
+        setTitle("")
 
     }
     const handleKeyDown = (event : React.KeyboardEvent) => {
-        // event.preventDefault()
         if (event.key === "Enter") {
             WorkAdd();
         }   

@@ -37,11 +37,11 @@
     }
 
     .login-type-tab {
-        display: flex; align-items: center; margin-bottom: 15px;
+        display: flex; align-items: center; margin-bottom: 12px;
         div {
-            width: 50%; 
-            height: 50px; text-align: center; border: 1px solid $bordercolor1;
-            line-height: 50px; cursor: pointer; border-radius: 3px;
+            width: 50%; font-size: 14px;
+            height: 42px; text-align: center; border: 1px solid $bordercolor1;
+            line-height: 42px; cursor: pointer; border-radius: 3px;
             &.on {
                 background-color: #eee; font-weight: bold;
             }
@@ -52,10 +52,18 @@
         }
     }
 
+    .login-findpassword {
+        display: block; text-align: center;
+        font-size: 14px; padding: 5px 0;
+        a {
+            text-decoration: none;
+            color: rgb(94, 53, 177);
+        }
+    }
+
     .login-button {
         width: 100%; height: 50px; border: 0; 
-        margin-top: 0.8em;
-        margin-bottom: 0.8em;
+        margin-bottom: 7px;
         background-color:$buttonColor0; 
         color: #fff;
         border-radius: 3px;

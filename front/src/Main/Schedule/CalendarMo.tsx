@@ -57,10 +57,10 @@ function CalendarMo({
   const [leavework, setLeaveWork] = useState<string>("");
   const [wage, setWage] = useState<string>("");
   const [additionalContent, setAdditionalContent] = useState<string>("");
-  
+
   const { UserType } = UserTypeState((state) => state);
   const { Storeid, Memberid, Name } = UserDataState((state) => state);
-  
+
   const { WorkerList } = WorkerListState((state) => state);
   // const [worker, setWorker] = useState<string>(Object.keys(WorkerList)[0]);
   const [worker, setWorker] = useState<string>("");
@@ -132,7 +132,6 @@ function CalendarMo({
       leavework: leavework,
       wage: wage,
     };
-
     // try {
     //   const patchData = await axios.patch(
     //     `${URL}/user/attendance/update`,
@@ -142,7 +141,7 @@ function CalendarMo({
     // } catch (error) {
     //   console.log("에러 발생");
     // }
-    // axios.post(`${URL}/admin/attendance`)
+    // axios.post(`${URL}/admin/attendance`);
     console.log("Data sent from CalendarMo:", {
       member: Memberid,
       storeid: Storeid,
@@ -169,9 +168,15 @@ function CalendarMo({
 
   const eventDetails = selectedEvent ? (
     <>
-      <p>Title: {selectedEvent.title}</p>
-      <p>Start: {selectedEvent.start?.toLocaleString()}</p>
-      <p>End: {selectedEvent.end?.toLocaleString()}</p>
+      <p>근무자 : {selectedEvent.title}</p>
+      <p>사장님이 등록한 출근시간 : {selectedEvent.start?.toLocaleString()}</p>
+      <p>사장님이 등록한 퇴근시간 : {selectedEvent.end?.toLocaleString()}</p>
+      <p>
+        근무자가 입력한 출근시간 : {selectedEvent.startwork?.toLocaleString()}
+      </p>
+      <p>
+        근무자가 입력한 퇴근시간 : {selectedEvent.leavework?.toLocaleString()}
+      </p>
     </>
   ) : null;
 
@@ -291,23 +296,38 @@ function CalendarMo({
 
   async function getCurrentTimeStart(arg: any) {
     console.log("selectedEvent", selectedEvent);
+
     if (selectedEvent && selectedEvent.attendid) {
       const attendid = selectedEvent.attendid;
-      // 서버로 삭제 요청 보내기
+      console.log("selectedEvent 2", selectedEvent);
+      const worker = selectedEvent.worker; // worker 정보 추가
+
+      // 시간 설정하기
       const now = new Date();
       const formattedTime = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
       setStartWork(formattedTime);
+
       const sendUserData = {
         memberid: Memberid,
+        storeid: Storeid,
+        worker: Memberid,
+        start: start,
+        end: end,
+        startwork: formattedTime,
+        leavework: leavework,
+        attendid: attendid,
+        wage: selectedEvent.wage,
+      };
+      sendDataToCon({
+        member: Memberid,
         storeid: Storeid,
         worker: worker,
         start: start,
         end: end,
         startwork: startwork,
         leavework: leavework,
-        attendid: attendid,
         wage: wage,
-      };
+      });
       try {
         console.log("gowork 요청중");
         // UserType에 따라 다른 엔드포인트를 사용할 수 있습니다.
@@ -326,24 +346,53 @@ function CalendarMo({
   }
 
   async function getCurrentTimeEnd() {
-    const now = new Date();
-    const formattedTime = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
-    setLeaveWork(formattedTime);
-    const sendUserData = {
-      memberid: Memberid,
-      storeid: Storeid,
-      worker: worker,
-      start: start,
-      end: end,
-      startwork: startwork,
-      leavework: leavework,
-      wage: wage,
-    };
-    console.log("setLeaveWork : ", sendUserData);
-    try {
-      await axios.patch(`${URL}/user/attendance/leavework`, sendUserData);
-    } catch (error) {
-      console.error("leave work 도중 오류 발생 : ", error);
+    console.log("selectedEvent", selectedEvent);
+
+    if (selectedEvent && selectedEvent.attendid) {
+      const attendid = selectedEvent.attendid;
+      console.log("selectedEvent 2", selectedEvent);
+      const worker = selectedEvent.worker; // worker 정보 추가
+
+      // 시간 설정하기
+      const now = new Date();
+      const formattedTime = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
+      setLeaveWork(formattedTime);
+
+      const sendUserData = {
+        memberid: Memberid,
+        storeid: Storeid,
+        worker: Memberid,
+        start: start,
+        end: end,
+        startwork: startwork,
+        leavework: formattedTime,
+        attendid: attendid,
+        wage: selectedEvent.wage,
+      };
+      sendDataToCon({
+        member: Memberid,
+        storeid: Storeid,
+        worker: worker,
+        start: start,
+        end: end,
+        startwork: startwork,
+        leavework: leavework,
+        wage: wage,
+      });
+      try {
+        console.log("leavework 요청중");
+        // UserType에 따라 다른 엔드포인트를 사용할 수 있습니다.
+        const res = await axios.patch(
+          `${URL}/user/attendance/leavework`,
+          sendUserData
+        );
+        console.log("res : ", res);
+      } catch (error) {
+        console.error("leavework 요청 중 오류 발생:", error);
+      }
+    } else {
+      // 선택된 이벤트가 없을 경우 에러 메시지를 설정합니다.
+      setAdditionalContent("이벤트가 선택되지 않았습니다.");
     }
   }
 
@@ -362,43 +411,31 @@ function CalendarMo({
     </>
   );
 
-  ///
-
-  ///
-
   const adminEventForm = () => (
     <>
-      <label htmlFor="worker">근무자 : {worker}</label>
+      {/* <label htmlFor="worker">근무자 : {worker}</label>
       <label htmlFor="startwork">근무자가 입력한 출근 시간 : {startwork}</label>
-      <label htmlFor="leavework">퇴근 시간 : {leavework}</label>
+      <label htmlFor="leavework">퇴근 시간 : {leavework}</label> */}
     </>
   );
 
   const userEventForm = () => (
     <>
-      <label htmlFor="worker">근무자 : {worker}</label>
+      {/* <label htmlFor="worker">근무자 : {worker}</label> */}
       <label htmlFor="startwork">출근 시간 : {startwork}</label>
       <button type="button" onClick={getCurrentTimeStart}>
-        출근 시간 저장하기
+        출근
       </button>
       <label htmlFor="leavework">퇴근 시간 : {leavework}</label>
       <button type="button" onClick={getCurrentTimeEnd}>
-        퇴근 시간 저장하기
+        퇴근
       </button>
-      <button type="button" onClick={userAdditonalPost}>
+      {/* <button type="button" onClick={userAdditonalPost}>
         저장하기
-      </button>
-      <label htmlFor="wage">시급 : {wage}</label>
+      </button> */}
+      {/* <label htmlFor="wage">시급 : {wage}</label> */}
     </>
   );
-
-  // useEffect(() => {
-  //   if (selectedEvent) {
-  //     const { wage, worker, start, end, startwork, leavework } = selectedEvent;
-
-  //     getCurrentTimeStart({ wage, worker, start, end, startwork, leavework });
-  //   }
-  // }, [selectedEvent]);
 
   return (
     <>

@@ -16,6 +16,7 @@ interface UserData {
     // companyAddress? : String | null,
     companyToken? : String | null
     invitecode? : String | null
+    email? :  String | null
 }
 
 
@@ -35,6 +36,7 @@ export default function RegiInformation (): ReturnType<FC> {
         phonenumber : "",
         companyname : "",
         ceo : "",
+        email:"",
         companynumber : "",
         // companyAddress : "",
         invitecode : ""
@@ -142,12 +144,10 @@ export default function RegiInformation (): ReturnType<FC> {
 
 
 
-    const Register = async () => {
-        /////// 빈값에 focus 
-        ////// 공통
+    const nextStageFunc = () => {
+
         if (!userForm.memberid) {
             idInputRef.current && idInputRef.current.focus();
-            console.log("중복검사")
             return;
         }
         if (!userForm.password) {
@@ -163,6 +163,17 @@ export default function RegiInformation (): ReturnType<FC> {
             return;
         }
         if (!userForm.phonenumber) {
+            phoneNumberInputRef.current && phoneNumberInputRef.current.focus();
+            return;
+        }
+
+        setNextStage(true)
+    }
+
+    const Register = async () => {
+        /////// 빈값에 focus 
+        ////// 공통
+        if (!userForm.email) {
             phoneNumberInputRef.current && phoneNumberInputRef.current.focus();
             return;
         }
@@ -260,7 +271,7 @@ export default function RegiInformation (): ReturnType<FC> {
                         <input name="pwre" type="password" id="PWre" placeholder="비밀번호 확인" 
                                 onFocus={(e) => onfocusBluer(e,"focus")}
                                 onBlur={(e) => onfocusBluer(e,"blur")}
-                                ref={repwInputRef} onChange={e=>handlePassWordConfirm(e)}/>
+                                ref={repwInputRef} onChange={e=> handlePassWordConfirm(e)}/>
                         <span className="warning_text-span" style={{ color: repwIs ? 'green' : 'red'}}>{repwMes}</span>
 
                     </div>      
@@ -294,60 +305,69 @@ export default function RegiInformation (): ReturnType<FC> {
                             </div>
                         </div>
                     </div>
-                    <button type="button" className="join-button"  onClick= {() => setNextStage(true)}> 다음 단계 </button>
+                    <button type="button" className="join-button"  onClick= {() => nextStageFunc()}> 다음 단계 </button>
                 </div>
                
                <div className="register_stage_2" style={nextstage === false ? { display:"none"} : { display:"block"}}>
-                {usertype === "admin" ? (
-                /////// 유저타입이 사업자 일때 추가되는 input
-                    <>
-
-                        <div className="input-label">
-                            <label htmlFor="companyName"> 사업자 상호명 : </label>
-                            <input name="companyname" id="companyName" placeholder="사업자 상호명" 
-                                    onFocus={(e) => onfocusBluer(e,"focus")}
-                                    onBlur={(e) => onfocusBluer(e,"blur")}
-                                    ref={companyNameInputRef} onChange={InputHandle}/>
-                        </div>
-
-                        <div className="input-label">
-                            <label htmlFor="CEO"> 대표자 : </label>
-                            <input name="ceo" id="CEO" placeholder="대표자" 
-                                    onFocus={(e) => onfocusBluer(e,"focus")}
-                                    onBlur={(e) => onfocusBluer(e,"blur")}
-                                    ref={CEOInputRef} onChange={InputHandle}/>
-                        </div>
-
-                        <div className="input-label">
-                            <label htmlFor="companyNumber"> 사업자 번호 : </label>
-                            <input name="companynumber" id="companyNumber" placeholder="000-00-00000 형식으로 입력하세요" 
-                                    onFocus={(e) => onfocusBluer(e,"focus")}
-                                    onBlur={(e) => onfocusBluer(e,"blur")}
-                                    ref={companyNumberInputRef} onChange={e=>handleCompanyNumber(e)}/>
-                            <span className="warning_text-span" style={{ color: companyNumIs ? 'green' : 'red' }}>{companyNum}</span>
-                        </div>
-
-                        <div className="input-label">
-                            <label htmlFor="companyAddress"> 사업자 주소 : </label>
-                            <input name="companyAddress" id="companyAddress"        
-                                    onFocus={(e) => onfocusBluer(e, "focus")}
-                                    onBlur={(e) => onfocusBluer(e, "blur")}
-                                    ref={companyAddressInputRef} onChange={InputHandle}/>
-                        </div>
-
-                    </> 
-                    )
-                    :
-                /////// 유저타입이 근로자 일때 추가되는 input
-                    (
 
                     <div className="input-label">
-                        <label htmlFor="companyToken"> 사업장 인증번호 </label>
-                        <input name="invitecode" id="companyToken" placeholder="사업장 인증번호" 
-                            onFocus={(e) =>onfocusBluer(e,"focus")}
-                            onBlur={(e) =>onfocusBluer(e,"blur")}
-                            ref={companyTokenInputRef} onChange={InputHandle}/>
+                        <label htmlFor="email"> 이메일 : </label>
+                        <input name="email" id="email" placeholder="이메일" 
+                                onFocus={(e) => onfocusBluer(e,"focus")}
+                                onBlur={(e) => onfocusBluer(e,"blur")}
+                                //ref={companyNameInputRef} onChange={InputHandle}
+                                />
                     </div>
+                    {usertype === "admin" ? (
+                    /////// 유저타입이 사업자 일때 추가되는 input
+                        <>
+
+                            <div className="input-label">
+                                <label htmlFor="companyName"> 사업자 상호명 : </label>
+                                <input name="companyname" id="companyName" placeholder="사업자 상호명" 
+                                        onFocus={(e) => onfocusBluer(e,"focus")}
+                                        onBlur={(e) => onfocusBluer(e,"blur")}
+                                        ref={companyNameInputRef} onChange={InputHandle}/>
+                            </div>
+
+                            <div className="input-label">
+                                <label htmlFor="CEO"> 대표자 : </label>
+                                <input name="ceo" id="CEO" placeholder="대표자" 
+                                        onFocus={(e) => onfocusBluer(e,"focus")}
+                                        onBlur={(e) => onfocusBluer(e,"blur")}
+                                        ref={CEOInputRef} onChange={InputHandle}/>
+                            </div>
+
+                            <div className="input-label">
+                                <label htmlFor="companyNumber"> 사업자 번호 : </label>
+                                <input name="companynumber" id="companyNumber" placeholder="000-00-00000 형식으로 입력하세요" 
+                                        onFocus={(e) => onfocusBluer(e,"focus")}
+                                        onBlur={(e) => onfocusBluer(e,"blur")}
+                                        ref={companyNumberInputRef} onChange={e=>handleCompanyNumber(e)}/>
+                                <span className="warning_text-span" style={{ color: companyNumIs ? 'green' : 'red' }}>{companyNum}</span>
+                            </div>
+
+                            <div className="input-label">
+                                <label htmlFor="companyAddress"> 사업자 주소 : </label>
+                                <input name="companyAddress" id="companyAddress"        
+                                        onFocus={(e) => onfocusBluer(e, "focus")}
+                                        onBlur={(e) => onfocusBluer(e, "blur")}
+                                        ref={companyAddressInputRef} onChange={InputHandle}/>
+                            </div>
+
+                        </> 
+                        )
+                        :
+                    /////// 유저타입이 근로자 일때 추가되는 input
+                        (
+
+                        <div className="input-label">
+                            <label htmlFor="companyToken"> 사업장 인증번호 </label>
+                            <input name="invitecode" id="companyToken" placeholder="사업장 인증번호" 
+                                onFocus={(e) =>onfocusBluer(e,"focus")}
+                                onBlur={(e) =>onfocusBluer(e,"blur")}
+                                ref={companyTokenInputRef} onChange={InputHandle}/>
+                        </div>
                     )}
 
                     <div className="register_agree-box">

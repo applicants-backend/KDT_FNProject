@@ -6,11 +6,14 @@ import Register from './Register/Register'
 import Profile from './Navi/Profile/Profile'
 import CalendarCon from './Main/Schedule/CalendarCon'
 import WorkCon from './Main/Work/WorkCon'
-import MainPage from './Main/page/MainPage'
 import WorkDetail from './WorkDetail/WorkDetail'
 import Payment from './Main/Payment/Payment'
 import App from './App'
 import Attendance from './Main/Attendance/Attendance'
+
+
+import MainPage from './Main/page/MainPage'
+import FindPw from './findpw/FindPw'
 
 import {Cookies} from 'react-cookie';
 import "./App.css"
@@ -42,6 +45,7 @@ export default function AppRouter() {
                         <Routes>
                             <Route path='/' element={<Loginpage/>} />
                             <Route path='/register'  element={<Register/>} />
+                            <Route path='/findPassword' element={<FindPw/>}/>
                             <Route path='*'  element={<Loginpage/>} />
                         </Routes>
                         :   
