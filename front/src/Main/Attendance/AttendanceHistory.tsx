@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import UserTypeState, { URLstate, UserDataState } from "../../Store/Store"
 import axios from "axios"
 import HistoryCompo from "./HistoryCompo"
+import './scss/History.scss'
 
 interface Attendinterface {
    attendid : number,
@@ -9,7 +10,7 @@ interface Attendinterface {
    gowork : string,
    leavework : string,
    wage : string,
-   comfirm : number
+   confirm : number
 }
 
 export default function AttendanceHistory () {
@@ -19,7 +20,7 @@ export default function AttendanceHistory () {
 
     const [AttendList, setAttendList]= useState<Attendinterface[]>([])
 
-    const [totalPage,setTotalPage] =useState<number>()
+    const [totalPage,setTotalPage] =useState<number>(0)
     const [page,setPage] = useState<number>(0)
     const [pageList,setpageList] =useState<number[]>()
 
@@ -29,6 +30,7 @@ export default function AttendanceHistory () {
             const Attendres = await axios.get(UserType === "admin"? `${URL}/admin/attendance/${Memberid}/${Storeid}/${page}` :`${URL}/user/attendance/${Memberid}/${Storeid}/${page}` )
             console.log(Attendres.data.data)
             const RoadedAttend = Attendres.data.data.content
+            console.log(Attendres.data.data.content)
             const totalPage = Attendres.data.data.totalPages
             setTotalPage(totalPage)
             setpageList(createArray(totalPage))
@@ -40,37 +42,71 @@ export default function AttendanceHistory () {
     },[page])
 
     const renderPaginationButtons = () => {
-        if (!pageList) return null;
-
-        const BUTTONS_AROUND_CURRENT = 5;
-
-        return pageList.map((pageNumber) => {
-          const isCurrentPage = pageNumber === page + 1;
-          const shouldRenderButton =
-            pageNumber <= page +1 + BUTTONS_AROUND_CURRENT &&
-            pageNumber >= page +1 - BUTTONS_AROUND_CURRENT;
+      if (!pageList) return null;
     
-          if (shouldRenderButton) {
-            return (
+      const BUTTONS_AROUND_CURRENT = 2;
+    
+      let startPage = page + 1 - BUTTONS_AROUND_CURRENT;
+      let endPage = page + 1 + BUTTONS_AROUND_CURRENT;
+    
+      // 최소 5개의 페이지가 보이도록 보정
+      if (endPage - startPage < 4) {
+        endPage += 4 - (endPage - startPage);
+      }
+    
+      if (startPage < 1) {
+        startPage = 1;
+        endPage = Math.min(totalPage as number, startPage + BUTTONS_AROUND_CURRENT * 2);
+      }
+    
+      if (endPage > totalPage) {
+        endPage = totalPage;
+        startPage = Math.max(1, endPage - BUTTONS_AROUND_CURRENT * 2);
+      }
+    
+      return Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index).map((pageNumber) => {
+        const isCurrentPage = pageNumber === page + 1;
+    
+        if (pageNumber === startPage && pageNumber !== 1) {
+          return (
+            <div>
+              <span key="prev">...</span>
               <button
-                key={pageNumber}
                 onClick={() => pageHandle(pageNumber - 1)}
                 style={{ fontWeight: isCurrentPage ? "bold" : "normal" }}
+                className="pagination-button"
               >
                 {pageNumber}
               </button>
-            );
-          } else if (
-            (pageNumber === page + BUTTONS_AROUND_CURRENT + 1 && page + BUTTONS_AROUND_CURRENT + 1 !== totalPage) ||
-            (pageNumber === page - BUTTONS_AROUND_CURRENT - 1 && page - BUTTONS_AROUND_CURRENT - 1 !== 0)
-          ) {
-            // 현재 페이지 주위에 있는 버튼이 아닌 경우, 생략된 페이지를 나타내는 버튼을 추가
-            return <span key={pageNumber}>...</span>;
-          } else {
-            return null; // 현재 페이지 주위에 있는 버튼이 아니고, 생략된 페이지를 나타내는 버튼도 아닌 경우, null 반환
-          }
-        });
-      };
+            </div>
+          );
+        } else if (pageNumber === endPage && pageNumber !== totalPage) {
+          return (
+            <div>
+              <button
+                onClick={() => pageHandle(pageNumber - 1)}
+                style={{ fontWeight: isCurrentPage ? "bold" : "normal" }}
+                className="pagination-button"
+              >
+                {pageNumber}
+              </button>
+              <span key="next">...</span>
+            </div>
+          );
+        } else {
+          return (
+            <button
+              key={pageNumber}
+              onClick={() => pageHandle(pageNumber - 1)}
+              style={{ fontWeight: isCurrentPage ? "bold" : "normal" }}
+              className="pagination-button"
+            >
+              {pageNumber}
+            </button>
+          );
+        }
+      });
+    };
 
       const pageHandle =(respage : number) => {
         setPage(respage)
@@ -83,18 +119,29 @@ export default function AttendanceHistory () {
 
 
     return (
-      <div>
-      {AttendList.map((value: Attendinterface, index) => {
-        if (value.gowork && value.leavework) {
-          return (
-            <HistoryCompo attendid={value.attendid} worker={value.worker} gowork={value.worker} 
-                          leavework={value.leavework} wage={value.wage} comfirm={value.comfirm}
-            ></HistoryCompo>
-          );
-        }
-        return null; // 조건을 만족하지 않으면 null 반환
-      })}
-      {renderPaginationButtons()}
+      <div className="History">
+
+        <div className="top">
+          <div>이름</div>
+          <div>출근시간</div>
+          <div>퇴근시간</div>
+          <div>시급</div>
+          <div>승인현황</div>
+        </div>
+
+        {AttendList.map((value: Attendinterface) => {
+            return (
+              <HistoryCompo key={value.attendid} attendid={value.attendid} worker={value.worker} gowork={value.gowork} 
+                            leavework={value.leavework} wage={value.wage} confirm={value.confirm}
+              ></HistoryCompo>
+            );
+        })}
+
+        
+        <div className="bottom">
+          {renderPaginationButtons()}
+        </div>
+ 
     </div>
     )
 }

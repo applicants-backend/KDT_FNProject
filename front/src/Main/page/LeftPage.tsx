@@ -1,11 +1,19 @@
 import { useEffect, useState, SyntheticEvent, FC } from "react";
 import NaviCon from "../../Navi/NaviBar/NaviCon";
 import Profile from "../../Navi/Profile/Profile";
-import MainPage from "./MainPage";
 
 import "./scss/LeftPage.scss";
 import UserTypeState, { ProfileState } from "../../Store/Store";
-import { Link } from "react-router-dom";
+
+import { Link, useLocation } from "react-router-dom";
+
+
+import ReactModal from "react-modal"
+import ProfileModal from "../../Navi/Profile/ProfileModal"
+import customModalStyles from "../../Navi/Profile/scss/Modal"
+
+import {Cookies} from 'react-cookie';
+
 
 export default function LeftPage (): ReturnType<FC>  {
 
@@ -13,7 +21,13 @@ export default function LeftPage (): ReturnType<FC>  {
     const {userImg, companyImg } = ProfileState(state=>state)
     const [hambergericon, setHambergericon] = useState(false);
 
+    
+    const [modalOpenis, setmodalOpenis] = useState(false)
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+    let location = useLocation();
+
+
     const onClickHambeger = () => {
          setHambergericon(!hambergericon);
     };
@@ -32,8 +46,21 @@ export default function LeftPage (): ReturnType<FC>  {
         }
     },[windowWidth])
 
+    useEffect(() => {
+        
+        setHambergericon(false);
+    },[location])
+
     const defalutImg = (e:SyntheticEvent<HTMLImageElement, Event> | any) => {
         e.currentTarget.src = "https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/defalut_image.png";
+    }
+
+    const logout = () => {
+        
+        if (!window.confirm("로그 아웃 하시겠습니까?")) return;
+        const cookies = new Cookies();
+        cookies.remove("token");
+        window.location.reload();
     }
 
   return (
@@ -46,8 +73,8 @@ export default function LeftPage (): ReturnType<FC>  {
                             <img src="https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/logo_white_small.png" alt="logo"/>
                         </Link>
                     </h2>
-                    <Profile />
-                    <NaviCon />
+                    <Profile logout={() => logout()} setmodalOpenis={(pros) => setmodalOpenis(pros)}/>
+                    <NaviCon location = {location}/>
                 </div>
                 :
                 windowWidth <= 768 && (
@@ -59,8 +86,13 @@ export default function LeftPage (): ReturnType<FC>  {
                                     <img src="https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/logo_white_small.png" alt="logo"/>
                                 </Link>
                             </h2>
-                            <div className="main-icon">
-                                <div className="profile-img">
+                            <div className="main-header-icon">
+
+                                <div className="logout-icon" onClick={() => {if (logout) logout()}}>
+                                    <img src={"https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/shutdown_icon.png"} alt="shutdown_icon" />
+                                </div>
+
+                                <div className="profile-img" onClick={() => setmodalOpenis(true)}>
                                     <img src={UserType ==="admin" ? companyImg === null ? "" : companyImg : userImg === null ? "" : userImg } 
                                             alt='profile-image' 
                                             onError={defalutImg}/>
@@ -70,10 +102,23 @@ export default function LeftPage (): ReturnType<FC>  {
                                 </div>
                             </div>
                         </div>
-                        {hambergericon && <NaviCon />}
+                        {hambergericon && <NaviCon location = {location}/>}
                     </>
                 )
             }
+
+            <ReactModal
+                    ///// modal 설정
+                    isOpen={modalOpenis}
+                    onRequestClose={()=> setmodalOpenis(false)}
+                    overlayClassName= "profile-modal"
+                    ariaHideApp={false}
+                    shouldCloseOnOverlayClick={true}
+                    style={customModalStyles}
+                >
+                 <ProfileModal></ProfileModal>
+            </ReactModal>  
+
         </div>
   );
 }

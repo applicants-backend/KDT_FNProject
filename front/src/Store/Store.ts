@@ -153,6 +153,8 @@ export interface CalendarData {
     registerTime?: string;
     worker: string;
     title : string;
+    attendid : string | number ;
+    wage?: string | number;
     start?: string | Date | null;
     end?: string | Date | null;
     startwork?: string | Date | null;

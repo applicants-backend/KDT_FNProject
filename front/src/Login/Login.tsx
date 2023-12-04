@@ -29,7 +29,7 @@ export default function Login({type, img, onLoginSuccess} : props) {
       } else {
         setUserTypeUser();
       }
-      const response = await axios.post(`${URL}/login`, { memberid, password, role : UserType });
+      const response = await axios.post(`${URL}/login`, { memberid, password, role : UserType === 'admin'?'ADMIN': 'USER' });
   
       // 여기서 실제 성공 여부 확인
       if (response.status === 200 && response.data && response.data.data) {
@@ -80,6 +80,7 @@ export default function Login({type, img, onLoginSuccess} : props) {
                 <input type="password" 
                         onFocus={(e) => onfocusBluer(e,"focus")}
                         onBlur={(e) => onfocusBluer(e,"blur")}
+                        onKeyDown={(e) => { if (e.key === "Enter") handleLogin()}}
                         value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} />
             </div>
         </form>

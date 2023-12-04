@@ -1,20 +1,19 @@
 @import "../../../common/style/style.scss";
 
-
-
 .WorkConCon {
-
     position: relative;
     flex-grow: 1;
-    width: 90%;
-
+    width: 100%;
+    height: 100%;
     background-color: rgb(238, 242, 246);
-    margin-bottom: 36px;
     padding-bottom: 60px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    .pageNationCon {
+        display: flex;
+    }
     
     .searchform {
         display: flex;
@@ -24,9 +23,8 @@
         font-weight: 700;
         width: 90%;
         justify-content: space-between;
-
     }
-}   
+
     .moccha {
         display: flex;
         height: 50px;
@@ -49,6 +47,7 @@
             font-size: 18px;
             color: $titleColor;
             font-weight: bold;
+            margin-right: 30px;
         }
         
         .todo {
@@ -59,12 +58,12 @@
         }
     }
 
-    .bottom{
+    .bottom {
         position: absolute;
         display: flex;
         align-items: center;
         width: 90%;
-        height: 54Px;
+        height: 54px;
         bottom: 0;
         justify-content: space-between;
 
@@ -79,26 +78,26 @@
             border-radius: 3px;
             font-size: medium;     
 
-            &:hover{
+            &:hover {
                 border: groove;
-                border-color:rgb(94, 53, 177);
+                border-color: rgb(94, 53, 177);
             }
         }
 
-    .pagination-button {
-        background-color: $buttonColor0;
-        color: #fff;
-        border: 0;
-        border-radius: 3px;
-        width: 28px;
-        height: 28px;
-        padding: 0 10px;
-        margin-right: 5px;
-        cursor: pointer;
-    
-        &:hover {
-            background-color: darken($buttonColor0, 10%);
-        }
-}
-    }
+        .pagination-button {
+            background-color: $buttonColor0;
+            color: #fff;
+            border: 0;
+            border-radius: 3px;
+            width: 28px;
+            height: 28px;
+            padding: 0 10px;
+            margin-right: 5px;
+            cursor: pointer;
 
+            &:hover {
+                background-color: darken($buttonColor0, 10%);
+            }
+        }
+    }
+}
