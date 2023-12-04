@@ -51,20 +51,20 @@ function CalendarMo({
   selectedEvent,
   selectedDate,
 }: CalendarMoProps) {
-  const [worker, setWorker] = useState<string>("");
   const [start, setStart] = useState<string>("");
   const [end, setEnd] = useState<string>("");
   const [startwork, setStartWork] = useState<string>("");
   const [leavework, setLeaveWork] = useState<string>("");
   const [wage, setWage] = useState<string>("");
   const [additionalContent, setAdditionalContent] = useState<string>("");
-
+  
   const { UserType } = UserTypeState((state) => state);
   const { Storeid, Memberid, Name } = UserDataState((state) => state);
-
+  
   const { WorkerList } = WorkerListState((state) => state);
-
+  
   const { URL } = URLstate((state) => state);
+  const [worker, setWorker] = useState<string>(Object.keys(WorkerList)[0]);
 
   useEffect(() => {});
 

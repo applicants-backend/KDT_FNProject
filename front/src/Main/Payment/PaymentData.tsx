@@ -98,37 +98,13 @@ export default function PaymentData () {
         ],
       };
       
-
-      const Admindata = {
-        labels : Label,
-        datasets: [
-          {
-            type: 'line' as const,
-            label: '급여 추이',
-            borderColor: 'rgb(255, 99, 132)',
-            borderWidth: 2,
-            fill: false,
-            data: Data,
-          },
-          {
-            type: 'bar' as const,
-            label: '월별 급여',
-            backgroundColor: 'rgb(75, 192, 192)',
-            data: Data,
-            borderColor: 'white',
-            borderWidth: 2,
-          }
-        ],
-      };
-    
     return(
        UserType === 'user' ? (
-       <div style={{width:'300px'}}>
+       <div>
            <Chartex data={Userdata}/>       
        </div> ) : (
-        <div style={{width:'400px'}}>
+        <div>
             <ChartDoughut data={AdminEachData}/>
-            <Chartex data={Admindata}/>
         </div>
        )
     )

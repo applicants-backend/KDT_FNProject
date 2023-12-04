@@ -32,7 +32,9 @@
         font-size: 14px;
         color: $mainColor;
     }
-
+    .titleCon {
+        display: flex;
+    }
     .title {
         font-size: 18px;
         color: $titleColor;

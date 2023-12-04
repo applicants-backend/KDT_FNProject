@@ -1,48 +1,137 @@
 .PaymentConWrapAdmin {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr; 
-    gap: 10px;
-    height: 400px;
-    width: 70vw; 
-    > div:nth-child(1) {
-      grid-column: 1 / span 1; 
-      grid-row: 1 / span 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    > div:nth-child(2) {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        grid-column: 2 / span 2; 
-        grid-row: 1 / span 2;
-    }
-  
-    > div:nth-child(3) {
-      grid-column: 1 / span 1; 
-      grid-row: 2 / span 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-  
-    
-  
-    > div {
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-  }
-  .PaymentListAndData{
-    display: grid;
-    grid-template-columns: 1fr 1fr
-   
-  }
-  .PaymentListAndData > :nth-child(1) {
-    /* 첫 번째 자식 요소에 대한 스타일을 적용하세요 */
-  }
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; 
+  // grid-template-rows: 1fr 1fr 1fr ;
+  gap: 10px;
 
+  > div {
+    background-color: rgb(238, 242, 246);
+    border-radius: 10px;
+    color: #333; /* 글자 색상 */
+    font-size: 1.5rem;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약한 그림자 효과 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease-in-out; /* 확대 효과를 위한 애니메이션 */
+
+    &:hover {
+      transform: scale(1.02); /* 확대 효과를 위한 애니메이션 */
+    }
+
+    > div {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-top: 0.5rem;
+      color: #333;
+    }
+
+    > div:nth-child(2) {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+
+      > div {
+        margin-top: 0.5rem;
+      }
+    }
+
+    > div:last-child {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+
+      > div {
+        margin-top: 0.5rem;
+        font-size: 1rem;
+        font-weight: bold;
+
+        &:last-child {
+          margin-top: 0.2rem;
+        }
+      }
+    }
+  }
+  > div:nth-child(1) {
+    grid-column: 1 / span 1;
+    grid-row: 1 / span 1;
+  }
+  
+  > div:nth-child(2) {
+    grid-column: 2/span 2;
+    grid-row: 1/span 2;
+  }
+  
+  > div:nth-child(3) {
+    grid-column: 1 / span 1;
+    grid-row: 2 / span 1;
+  }
+  
+  > div:nth-child(4) {
+    grid-column: 1 / span 1;
+    grid-row: 3 / span 1;
+  }
+  > div:nth-child(5) {
+    grid-column: 2 / span 2;
+    grid-row: 3 / span 1;
+  }
+}
+
+  
+  .PaymentConWrapUser{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+    height: 400px;
+    
+    > div {
+      background-color: rgb(238, 242, 246);
+      border-radius: 10px;
+      color: #333; /* 글자 색상 */
+      font-size: 1.5rem;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약한 그림자 효과 */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease-in-out; /* 확대 효과를 위한 애니메이션 */
+      
+      &:hover {
+        transform: scale(1.02); /* 호버 시 약간 확대 */
+      }
+      
+      > div {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-top: 0.5rem;
+        color: #333; /* 중요한 텍스트 강조를 위한 색상 */
+      }
+    }
+    
+    > div:nth-child(1) {
+      grid-column: 1 / span 1;
+      grid-row: 1 / span 1;
+    }
+    
+    > div:nth-child(2) {
+      grid-column: 1 / span 1;
+      grid-row: 2 / span 1;
+    }
+    
+    > div:nth-child(3) {
+      grid-column: 2 / span 1;
+      grid-row: 1 / span 1;
+    }
+    
+    > div:nth-child(4) {
+      grid-column: 2 / span 1;
+      grid-row: 2 / span 1;
+    }
+  }
+  
   
