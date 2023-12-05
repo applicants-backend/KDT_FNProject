@@ -7,6 +7,7 @@ import UserTypeState, {
   WorkerListState,
 } from "../../Store/Store";
 import axios from "axios";
+import "./scss/calendarMoStyle.scss";
 
 interface CalendarMoProps {
   isOpen: boolean;
@@ -16,32 +17,16 @@ interface CalendarMoProps {
   selectedDate: Date | null;
 }
 
-const ModalContainer = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 20px;
-  width: 50vh;
-  height: 50vh;
-  z-index: 1000;
+const DateTimeLabel = styled.label`
+  margin-bottom: 5px;
+  font-weight: bold;
 `;
 
-const ModalHeader = styled.h2`
-  margin-bottom: 10px;
-`;
-
-const ModalContent = styled.p`
-  margin-bottom: 20px;
-`;
-
-const CloseButton = styled.button`
-  background-color: #3498db;
-  color: white;
-  padding: 10px;
-  cursor: pointer;
+const DateTimeInput = styled.input`
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 `;
 
 function CalendarMo({
@@ -113,7 +98,7 @@ function CalendarMo({
         sendAdminData
       );
       console.log("sendAdminData : ", sendAdminData);
-      console.log("res : ", res);
+      // console.log("res : ", res);
       // window.location.reload();
     } catch (error) {
       console.log("에러 발생");
@@ -206,33 +191,43 @@ function CalendarMo({
         }
       })()
     : "";
+
   const newEventDefaultDateStart = selectedEvent
     ? (() => {
         if (typeof selectedEvent.start === "string") {
           return selectedEvent.start;
         } else {
-          const startDate = selectedEvent.start as Date;
-          const year = startDate.getFullYear();
-          const month = String(startDate.getMonth() + 1).padStart(2, "0");
-          const day = String(startDate.getDate()).padStart(2, "0");
-          return `${year}-${month}-${day}T${startDate
-            .toTimeString()
-            .slice(0, 5)}`;
+          const startDate = selectedEvent.start as Date | null;
+          if (startDate) {
+            const year = startDate.getFullYear();
+            const month = String(startDate.getMonth() + 1).padStart(2, "0");
+            const day = String(startDate.getDate()).padStart(2, "0");
+            return `${year}-${month}-${day}T${startDate
+              .toTimeString()
+              .slice(0, 5)}`;
+          } else {
+            return "";
+          }
         }
       })()
     : "";
+
   const newEventDefaultDateEnd = selectedEvent
     ? (() => {
         if (typeof selectedEvent.end === "string") {
           return selectedEvent.end;
         } else {
-          const endDate = selectedEvent.end as Date;
-          const year = endDate.getFullYear();
-          const month = String(endDate.getMonth() + 1).padStart(2, "0");
-          const day = String(endDate.getDate()).padStart(2, "0");
-          return `${year}-${month}-${day}T${endDate
-            .toTimeString()
-            .slice(0, 5)}`;
+          const endDate = selectedEvent.end as Date | null;
+          if (endDate) {
+            const year = endDate.getFullYear();
+            const month = String(endDate.getMonth() + 1).padStart(2, "0");
+            const day = String(endDate.getDate()).padStart(2, "0");
+            return `${year}-${month}-${day}T${endDate
+              .toTimeString()
+              .slice(0, 5)}`;
+          } else {
+            return "";
+          }
         }
       })()
     : "";
@@ -255,15 +250,15 @@ function CalendarMo({
           })}
       </select>
 
-      <label htmlFor="start">출근 시간 : </label>
-      <input
+      <DateTimeLabel htmlFor="start">출근 시간 : </DateTimeLabel>
+      <DateTimeInput
         type="datetime-local"
         id="start"
         value={start || defaultDate}
         onChange={(e) => setStart(e.target.value)}
       />
-      <label htmlFor="end">퇴근 시간 : </label>
-      <input
+      <DateTimeLabel htmlFor="end">퇴근 시간 : </DateTimeLabel>
+      <DateTimeInput
         type="datetime-local"
         id="end"
         value={end || defaultDate}
@@ -521,29 +516,34 @@ function CalendarMo({
   return (
     <>
       {isOpen && selectedDate && (
-        <ModalContainer>
-          <ModalHeader>{newDefaultDate}</ModalHeader>
+        <div className="modal-container">
+          <h2>{newDefaultDate}</h2>
           <form name="RegisterForm">
             {UserType === "admin" ? renderAdminForm() : renderUserForm()}
           </form>
-          <CloseButton onClick={closeModal}>닫기</CloseButton>
-        </ModalContainer>
+          <button className="close-button" onClick={closeModal}>
+            닫기
+          </button>
+        </div>
       )}
+
       {isOpen && selectedEvent && (
-        <ModalContainer>
-          <ModalHeader>{newSelectedDate}</ModalHeader>
+        <div className="modal-container">
+          <h2>{newSelectedDate}</h2>
           <form name="EventForm">
             {UserType === "admin" ? adminEventForm() : userEventForm()}
           </form>
           {!editMode && eventDetails}
-          <ModalContent>{additionalContent}</ModalContent>
+          <p>{additionalContent}</p>
 
           {UserType === "admin" && !editMode && (
             <button onClick={handleEdit}>수정하기</button>
           )}
           {editMode && updateForm()}
-          <CloseButton onClick={closeModal}>닫기</CloseButton>
-        </ModalContainer>
+          <button className="close-button" onClick={closeModal}>
+            닫기
+          </button>
+        </div>
       )}
     </>
   );

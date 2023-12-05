@@ -223,7 +223,9 @@ function CalendarCon(props: CalendarConProps) {
               );
 
         const eventsArray = calendarData.data.data.map((item: CalendarData) => {
-          const workerName = WorkerList[item.worker];
+          const workerName =
+            UserType === "admin" ? WorkerList[item.worker] : Name;
+          // const workerName = WorkerList[item.worker];
 
           const start: Date = new Date(item.start as string);
           const end: Date = new Date(item.end as string);
@@ -267,8 +269,8 @@ function CalendarCon(props: CalendarConProps) {
               );
 
         const eventsArray = calendarData.data.data.map((item: CalendarData) => {
-          const workerName = WorkerList[item.worker];
-
+          const workerName =
+            UserType === "admin" ? WorkerList[item.worker] : Name;
           const start: Date | null = item.start ? new Date(item.start) : null;
           const end: Date | null = item.end ? new Date(item.end) : null;
           const gowork: Date | null = item.gowork
@@ -495,21 +497,21 @@ function CalendarCon(props: CalendarConProps) {
           headerToolbar={{
             left: "prev today",
             center: "title",
-            right: "handleEdit next",
+            right: "next",
           }}
           events={events}
           eventChange={calendarOptions.eventChange}
           // customButtons={CustomButtons}
           datesSet={handleDatesSet}
           viewDidMount={handleDidMount}
-          customButtons={{
-            handleEdit: {
-              text: "저장하기",
-              click: function () {
-                handleEdit();
-              },
-            },
-          }}
+          // customButtons={{
+          //   handleEdit: {
+          //     text: "저장하기",
+          //     click: function () {
+          //       handleEdit();
+          //     },
+          //   },
+          // }}
         />
       </FullCalendarContainer>
       {isDateModalOpen && (
