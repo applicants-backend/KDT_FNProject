@@ -33,7 +33,6 @@ export default function WorkCompo (props : Workdata) {
     useEffect(()=>{
         const loadCheckList = async () => {
             const WorkListRes = await axios.get(`${URL}/work/boards/detail/${props.workid}`)
-            console.log(WorkListRes)
             setChecked(WorkListRes.data.data.contents.filter((value : any) => value.checked !== null && value.checked.trim() !=='').length)
             setUnchecked(WorkListRes.data.data.contents.length)
 
