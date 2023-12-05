@@ -222,7 +222,7 @@ export const ProfileState = create<Profileinterface>((set)=>({
     setCEO : res => set({CEO : res}),
     setcompanyNumber :res => set({companyNumber : res}),
     setcompanyAddress :res => set({companyAddress : res}),
-    setcompanyToken : res => set({companyToken : res})
+    setcompanyToken : res => set({companyToken : res}),
 }))
 
 interface WorkerListInerface {

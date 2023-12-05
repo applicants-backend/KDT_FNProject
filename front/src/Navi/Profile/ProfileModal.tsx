@@ -5,7 +5,7 @@ import React, { useCallback, useState, useRef, useMemo, SyntheticEvent} from "re
 import "./scss/ProfileModal.scss"
 
 export default function ProfileModal() {
-    const {userImg,companyImg,setuserImg, setcompanyImg ,setname, setphonenumber} = ProfileState(state=>state)
+    const {userImg, companyImg, setuserImg, setcompanyImg ,setname, setphonenumber} = ProfileState(state=>state)
 
     const {URL} = URLstate(state=>state)
     const {UserType} = UserTypeState(state => state)
@@ -23,6 +23,8 @@ export default function ProfileModal() {
     const[companyToken, setcompanyToken] =useState<string>()
     const[CEO, setCEO] =useState<string>()
 
+    const [email, setEmail] = useState<string>("");
+
     useMemo(()=> {
         ///// 유저데이터 로드
         const loadUserData = async () => {
@@ -35,13 +37,14 @@ export default function ProfileModal() {
             setuserImg(Userprofile.memberimg)
             setuserName(Userprofile.name)
             setphoneNumber(Userprofile.phonenumber)
-
+            setEmail(Userprofile.email)
             setCompanyName(Storeprofile.companyname)
             setCEO(Storeprofile.ceo)
             setCompanyNumber(Storeprofile.companynumber)
             setcompanyAddress(Storeprofile.companyAddress)
             setcompanyImg(Storeprofile.companyimg)
             setcompanyToken(Storeprofile.companToken)
+          
         }
         loadUserData()
     },[Memberid,URL,])
@@ -90,12 +93,15 @@ export default function ProfileModal() {
     ///// 업데이트 시 빈값 보내지 않기위한 장치
     const pwInputRef = useRef<HTMLInputElement | null>(null);
     const repwInputRef = useRef<HTMLInputElement | null>(null);
+    const emailInputRef = useRef<HTMLInputElement | null>(null);
     const nameInputRef = useRef<HTMLInputElement | null>(null);
     const phoneNumberInputRef = useRef<HTMLInputElement | null>(null);
 
     const UpdateMemberData = async () => {
         /////// 빈값에 focus 
         ////// 공통
+
+       
         if (!userPw) {
             pwInputRef.current && pwInputRef.current.focus();
             return;
@@ -112,6 +118,12 @@ export default function ProfileModal() {
             phoneNumberInputRef.current && phoneNumberInputRef.current.focus();
             return;
         }   
+
+        if (!email) {
+            emailInputRef.current && emailInputRef.current.focus();
+            return;
+        }
+
         ///// 유효성 통과검사
         if(!pwIs){
             pwInputRef.current && pwInputRef.current.focus();
@@ -119,12 +131,16 @@ export default function ProfileModal() {
             return;
         }
 
-        const updateUserdata = await axios.patch(`${URL}/update`,{memberid : Memberid, password : userPw, phonenumber :phoneNumber, name : userName, role : UserType, memberimg :""})
-        setname(userName)
-        setName(userName)
-        setphonenumber(phoneNumber)
+        const updateUserdata = await axios.patch(`${URL}/update`,{memberid : Memberid, password : userPw, email:email, phonenumber :phoneNumber, name : userName, role : UserType, memberimg :""})
         
-        console.log(updateUserdata)
+        if (updateUserdata.data.message === "수정 완료") {
+
+            setname(userName)
+            setName(userName)
+            setphonenumber(phoneNumber)
+            alert("수정 완료");
+        }
+      
     }
      
     const DeleteMemberData = async () => {
@@ -231,18 +247,23 @@ export default function ProfileModal() {
                     <label htmlFor="pw"> 비밀번호 : </label>
                     <input  name="password" type="password" id="pw"  
                             autoComplete="new-password" placeholder="비밀번호" ref={pwInputRef} onChange={e=>handlePassWordVail(e)}/>
-                    <div style={{ color: pwIs ? 'green' : 'red' }}>{pwMes}</div>
+                    <span style={{ color: pwIs ? 'green' : 'red' }}>{pwMes}</span>
                 </div>
 
                 <div>   
                     <label htmlFor="PWre"> 비밀번호 확인 : </label>
                     <input name="pwre" type="password" id="PWre" value={userPwre} placeholder="비밀번호 확인" autoComplete="new-password" ref={repwInputRef} onChange={e=>handlePassWordConfirm(e)}/>
-                    <div style={{ color: repwIs ? 'green' : 'red'}}>{repwMes}</div>
+                    <span style={{ color: repwIs ? 'green' : 'red'}}>{repwMes}</span>
                 </div>
                 
                 <div >
                     <label htmlFor="name"> 이름 : </label>
                     <input name="name" id="name" placeholder="이름" value={userName} ref={nameInputRef} onChange={e=>setuserName(e.target.value)}/>
+                </div>
+
+                <div >
+                    <label htmlFor="email"> 이메일 : </label>
+                    <input name="email" id="email" placeholder="이메일" value={email} ref={emailInputRef} onChange={e=>setEmail(e.target.value)}/>
                 </div>
             
                 <div >

@@ -4,8 +4,7 @@ import axios from "axios"
 import "./scss/Profile.scss"
 
 import ReactModal from "react-modal"
-
-import customModalStyles from "./scss/Modal"
+import inviteModalStyles from './scss/InviteModal';
 
 interface profileProps {
     setmodalOpenis?:React.Dispatch<React.SetStateAction<boolean>>;
@@ -104,11 +103,30 @@ export default function Profile ({setmodalOpenis, logout}:profileProps):ReturnTy
                     overlayClassName= "invite-modal"
                     ariaHideApp={false}
                     shouldCloseOnOverlayClick={true}
-                    style={customModalStyles}
+                    style={inviteModalStyles}
                 >
-                <div className="">
-                    <div >{Token}</div>
-                    <button onClick={(e)=>CodeGenerater()}>초대코드 발급</button>
+                <div style={{
+                    width : "100%",
+                    height: "100%",
+                    display : "flex", alignItems:"center",
+                    textAlign:"center"
+                }}>
+                <div style={{
+                    width:"80%",
+                    margin:"auto"
+                }}>
+                    <div style={{
+                            width: "100%",
+                            height: "50px",
+
+                    }}>
+                        {Token}
+                    </div>
+                    <button  
+                        style={{backgroundColor:"rgb(94, 53, 177)", color:"#fff", padding:"0.3em", borderColor:"#eee"}}
+                     onClick={(e)=>CodeGenerater()}>초대코드 발급</button>
+                </div>
+        
                 </div>
             </ReactModal>
 
