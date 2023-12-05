@@ -17,7 +17,7 @@ export default function WorkTodoCon () {
     const {todoList,setTodoList} = TodoState(state=>state)
     const {workId,workList,setWorkList} = WorkState(state=>state)
 
-    const [inputTodo,setInputTodo]= useState<string>()
+    const [inputTodo,setInputTodo]= useState<string>("")
 
     const [titleIs, setTitleIs] =useState<boolean>(true)
     const [title,setTitle] = useState<string>()
@@ -27,13 +27,17 @@ export default function WorkTodoCon () {
         const addTodo : Contentinterface = addTodoRes.data.data
         console.log(addTodo)
         setTodoList([addTodo,...todoList])
+        setInputTodo("");
     }
 
     const handleKeyDown = (event : React.KeyboardEvent) => {
-        if (event.key === "Enter") {
-            AddTodo();
-            setInputTodo("")
-        }
+            if (event.key === "Enter") {
+                event.preventDefault();
+                console.log("Before setInputTodo:", inputTodo);
+                AddTodo();
+               
+                console.log("After setInputTodo:", inputTodo);
+            }
     };
 
     const deleteWork = async() => {
@@ -52,7 +56,7 @@ export default function WorkTodoCon () {
         setTitle(EditedTitle)
     }
     const EditKeyDown = (event : React.KeyboardEvent) => {
-        // event.defaultPrevented()
+        event.preventDefault()
         if (event.key === "Enter") {
             EditTitle();
             setTitleIs(true)
@@ -83,13 +87,13 @@ export default function WorkTodoCon () {
     return (
         <div className="WorkCon">
             <div className="TopCon">
-                {titleIs ? <div className="title"> 제목 : {title}</div> : <input type="text" value={title} onChange={e=>setTitle(e.target.value)} onKeyDown={EditKeyDown}/> }
+                {titleIs ? <div className="title"> 제목 : {title}</div> : <input type="text" onChange={e=>setTitle(e.target.value)} onKeyUp={EditKeyDown}/> }
                 <div>
                     <button type="button" onClick={EditTitleIs} className="edit"></button>
                     <button type="button" onClick={deleteWork} className="delete"></button>
                 </div>
             </div>
-                <input type="text" value={inputTodo} onChange={e=>setInputTodo(e.target.value)} onKeyDown={handleKeyDown} placeholder="업무를 추가해주세요" className="todoinput"/> 
+                <input type="text" value={inputTodo} onChange={e=>setInputTodo(e.target.value)} onKeyDown={e=>handleKeyDown(e)} placeholder="업무를 추가해주세요" className="todoinput"/> 
 
             <div className="todolistCon">
                 {todoList && todoList.map((value : Contentinterface)=>{

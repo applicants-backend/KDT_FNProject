@@ -16,26 +16,23 @@ export default function CommentCon () {
     const {commentList,setCommentList} = CommentState(state=>state)
 
     const {Name} = UserDataState(state=>state)
-    const [inpustComment, setInputComment] = useState<string>()
+    const [inpustComment, setInputComment] = useState<string>("")
 
     const {workId} = WorkState(state=>state)
     const {Memberid} =UserDataState(state=>state)
 
     const ADDComment =  async() => {
-        try {
             const AddComRes = await axios.post(`${URL}/work/comment/create`,{workid : workId, memberid : Memberid, comment : inpustComment, name :Name})
-            const Addcomment = AddComRes.data.data
+            const Addcomment : Commentinterface = AddComRes.data.data
             console.log(AddComRes)
-            setCommentList([Addcomment,...commentList])    
-            setInputComment("")
-        } catch (error) {
-            console.log(error)
-        }
+            setCommentList([Addcomment,...commentList]);
     }
     
     const handleKeyDown = (event : React.KeyboardEvent) => {
         if (event.key === "Enter") {
+            event.preventDefault()
             ADDComment();
+            setInputComment("")
         }
     };
 
@@ -50,7 +47,7 @@ export default function CommentCon () {
             console.error("Error loading contents:", error);
         }}
         loadComment()
-    },[workId])
+    },[])
 
     return (
         <div className="CommentContaniner">
@@ -62,7 +59,7 @@ export default function CommentCon () {
             
             <div className="Bottom">
                 <div className="name">{Name}</div>
-                <input type="text" value={inpustComment} onChange={e=>setInputComment(e.target.value)} onKeyDown={handleKeyDown}/>
+                <input type="text" value={inpustComment} onChange={e=>setInputComment(e.target.value)} onKeyDown={e=>handleKeyDown(e)}/>
                 <button type="button" onClick={ADDComment}>댓글달기</button>
             </div>
         </div>
