@@ -11,17 +11,17 @@ export default function ProfileModal() {
     const {UserType} = UserTypeState(state => state)
     const {Memberid, Storeid, setName} = UserDataState(state=>state)
 
-    const[userPw, setUserpw]=useState<string>()
-    const[userPwre, setUserpwre]=useState<string>()
+    const[userPw, setUserpw]=useState<string>("")
+    const[userPwre, setUserpwre]=useState<string>("")
 
-    const[userName, setuserName] = useState<string>()
-    const[phoneNumber, setphoneNumber] =useState<string>()
+    const[userName, setuserName] = useState<string>("")
+    const[phoneNumber, setphoneNumber] =useState<string>("")
     
-    const[companyName, setCompanyName] =useState<string>()
-    const[companyNumber, setCompanyNumber] =useState<string>()
-    const[companyAddress, setcompanyAddress] =useState<string>()
-    const[companyToken, setcompanyToken] =useState<string>()
-    const[CEO, setCEO] =useState<string>()
+    const[companyName, setCompanyName] =useState<string>("")
+    const[companyNumber, setCompanyNumber] =useState<string>("")
+    const[companyAddress, setcompanyAddress] =useState<string>("")
+    const[companyToken, setcompanyToken] =useState<string>("")
+    const[CEO, setCEO] =useState<string>("")
 
     const [email, setEmail] = useState<string>("");
 
@@ -225,7 +225,6 @@ export default function ProfileModal() {
                         alt='profile-image' 
                         onError={defalutImg}/>
                 </div>
-          
                 <div className="profile-image-input"> 
                     <input  id="profileFile" type='file' 
                             accept='image/jpg, impge/png, image/jpeg, image/gif' 
@@ -240,19 +239,21 @@ export default function ProfileModal() {
             <div className="input-box">
                 <div>
                     <label htmlFor="id"> 아이디 : </label>
-                    <input name="memberid" value={Memberid} id="id" placeholder="아이디" readOnly/>
+                    <input name="memberid" value={Memberid ? Memberid : "" } id="id" placeholder="아이디" readOnly/>
                 </div>
 
                 <div>
                     <label htmlFor="pw"> 비밀번호 : </label>
                     <input  name="password" type="password" id="pw"  
-                            autoComplete="new-password" placeholder="비밀번호" ref={pwInputRef} onChange={e=>handlePassWordVail(e)}/>
+                            autoComplete="new-password" 
+                            placeholder="비밀번호" ref={pwInputRef} onChange={ e=> handlePassWordVail(e)}/>
                     <span style={{ color: pwIs ? 'green' : 'red' }}>{pwMes}</span>
                 </div>
 
                 <div>   
                     <label htmlFor="PWre"> 비밀번호 확인 : </label>
-                    <input name="pwre" type="password" id="PWre" value={userPwre} placeholder="비밀번호 확인" autoComplete="new-password" ref={repwInputRef} onChange={e=>handlePassWordConfirm(e)}/>
+                    <input name="pwre" type="password" id="PWre" 
+                    value={userPwre} placeholder="비밀번호 확인" autoComplete="new-password" ref={repwInputRef} onChange={e=>handlePassWordConfirm(e)}/>
                     <span style={{ color: repwIs ? 'green' : 'red'}}>{repwMes}</span>
                 </div>
                 
@@ -287,10 +288,6 @@ export default function ProfileModal() {
                         <div >
                             <label htmlFor="companyNumber"> 사업자 번호 : </label>
                             <input name="companyNumber" id="companyNumber" value={companyNumber} placeholder="000-00-00000 형식으로 입력하세요" readOnly/>
-                        </div>
-                        <div >
-                            <label htmlFor="companyAddress"> 사업자 주소 : </label>
-                            <input name="companyAddress" id="companyAddress" value={companyAddress} readOnly/>
                         </div>
                     </> 
                 :

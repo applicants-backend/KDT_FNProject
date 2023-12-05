@@ -168,7 +168,8 @@ export default function RegiInformation (): ReturnType<FC> {
             return;
         }
 
-        setNextStage(true)
+        if (duplicate)  setNextStage(true)
+     
     }
 
     const Register = async () => {
@@ -199,10 +200,6 @@ export default function RegiInformation (): ReturnType<FC> {
                 companyNumberInputRef.current && companyNumberInputRef.current.focus();
                 return;
             }
-            // if (!userForm.companyAddress) {
-            //     companyAddressInputRef.current && companyAddressInputRef.current.focus();
-            //     return;
-            // }
         }      
         ///// 유효성 통과검사
         if(!duplicate){
@@ -346,14 +343,6 @@ export default function RegiInformation (): ReturnType<FC> {
                                         onBlur={(e) => onfocusBluer(e,"blur")}
                                         ref={companyNumberInputRef} onChange={e=>handleCompanyNumber(e)}/>
                                 <span className="warning_text-span" style={{ color: companyNumIs ? 'green' : 'red' }}>{companyNum}</span>
-                            </div>
-
-                            <div className="input-label">
-                                <label htmlFor="companyAddress"> 사업자 주소 : </label>
-                                <input name="companyAddress" id="companyAddress"        
-                                        onFocus={(e) => onfocusBluer(e, "focus")}
-                                        onBlur={(e) => onfocusBluer(e, "blur")}
-                                        ref={companyAddressInputRef} onChange={InputHandle}/>
                             </div>
 
                         </> 
