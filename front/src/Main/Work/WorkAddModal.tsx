@@ -19,26 +19,28 @@ export default function WorkAddModal() {
     const AddRef = useRef<HTMLInputElement>(null)
     const {URL} = URLstate(state=>state)
     
-    const now = new Date();
-    const year = now.getFullYear()
-    const month = now.getMonth()+1;
-    const day = now.getDate();
-    const hour = now.getHours();
-    const min = now.getMinutes();
-
-    const AddData = {storeid :Storeid.toString(), memberid : Memberid, title, date:`${year}년 ${month}월 ${day}일 ${hour}:${min}`}
-
+    
     const WorkAdd = async () => {
-
+        
         if(!title) {
             AddRef.current && AddRef.current.focus()
             return;
         }
+        
+        const now = new Date();
+        const year = now.getFullYear()
+        const month = now.getMonth()+1;
+        const day = now.getDate();
+        const hour = now.getHours();
+        const min = now.getMinutes();
+    
+        const AddData = {storeid :Storeid.toString(), memberid : Memberid, title, date:`${year}년 ${month}월 ${day}일 ${hour}:${min}`}
 
         const AddRes = await axios.post(`${URL}/work/board/create`,AddData)
         console.log(AddRes.data.data)
         const Add: Workinterface = AddRes.data.data;
-        setAdd(!add)
+        
+        setAdd(add)
         setTitle("")
 
     }
@@ -51,7 +53,7 @@ export default function WorkAddModal() {
     return(
        <div className="WorkModalCon">
         <input name="title" type="text" id="title" placeholder="제목을 입력해주세요" value={title}
-        ref={AddRef} onChange={(e)=>setTitle(e.target.value)} onKeyDown={handleKeyDown}/>
+        ref={AddRef} onChange={(e)=>setTitle(e.target.value)} onKeyPress={e=>handleKeyDown(e)}/>
        </div>
     )
 }
