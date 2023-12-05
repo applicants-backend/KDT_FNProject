@@ -53,7 +53,8 @@ function CalendarMo({
 }: CalendarMoProps) {
   const [start, setStart] = useState<string>("");
   const [end, setEnd] = useState<string>("");
-  const [startwork, setStartWork] = useState<string>("");
+  const [gowork, setGowork] = useState<string>("");
+  // const [gowork, setgowork] = useState<string>("");
   const [leavework, setLeaveWork] = useState<string>("");
   const [wage, setWage] = useState<string>("");
   const [additionalContent, setAdditionalContent] = useState<string>("");
@@ -62,8 +63,8 @@ function CalendarMo({
   const { Storeid, Memberid, Name } = UserDataState((state) => state);
 
   const { WorkerList } = WorkerListState((state) => state);
-  // const [worker, setWorker] = useState<string>(Object.keys(WorkerList)[0]);
-  const [worker, setWorker] = useState<string>("");
+  const [worker, setWorker] = useState<string>(Object.keys(WorkerList)[0]);
+  // const [worker, setWorker] = useState<string>("");
   const { URL } = URLstate((state) => state);
 
   useEffect(() => {});
@@ -71,14 +72,13 @@ function CalendarMo({
   async function adminAdditonalPost() {
     console.log("Worker in adminAdditonalPost:", worker); // 디버깅용 콘솔 로그
     console.log("WorkerList : ", WorkerList);
-    console.log("안녕하세요");
 
     // axios.post(`${URL}/admin/attendance`)
     console.log("Data sent from CalendarMo:", {
       member: Memberid,
       storeid: Storeid,
       worker: worker,
-      startwork: startwork,
+      gowork: gowork,
       leavework: leavework,
       start: start,
       end: end,
@@ -90,7 +90,7 @@ function CalendarMo({
       worker: worker,
       start: start,
       end: end,
-      startwork: startwork,
+      gowork: gowork,
       leavework: leavework,
       wage: wage,
     };
@@ -100,7 +100,7 @@ function CalendarMo({
       worker: worker,
       start: start,
       end: end,
-      startwork: startwork,
+      gowork: gowork,
       leavework: leavework,
       wage: wage,
     });
@@ -128,7 +128,7 @@ function CalendarMo({
       worker: worker,
       start: start,
       end: end,
-      startwork: startwork,
+      gowork: gowork,
       leavework: leavework,
       wage: wage,
     };
@@ -146,7 +146,7 @@ function CalendarMo({
       member: Memberid,
       storeid: Storeid,
       worker: worker,
-      startwork: startwork,
+      gowork: gowork,
       leavework: leavework,
       start: start,
       end: end,
@@ -158,7 +158,7 @@ function CalendarMo({
       worker: worker,
       start: start,
       end: end,
-      startwork: startwork,
+      gowork: gowork,
       leavework: leavework,
       wage: wage,
     });
@@ -171,9 +171,7 @@ function CalendarMo({
       <p>근무자 : {selectedEvent.title}</p>
       <p>사장님이 등록한 출근시간 : {selectedEvent.start?.toLocaleString()}</p>
       <p>사장님이 등록한 퇴근시간 : {selectedEvent.end?.toLocaleString()}</p>
-      <p>
-        근무자가 입력한 출근시간 : {selectedEvent.startwork?.toLocaleString()}
-      </p>
+      <p>근무자가 입력한 출근시간 : {selectedEvent.gowork?.toLocaleString()}</p>
       <p>
         근무자가 입력한 퇴근시간 : {selectedEvent.leavework?.toLocaleString()}
       </p>
@@ -200,7 +198,7 @@ function CalendarMo({
         worker: worker,
         start: start,
         end: end,
-        startwork: startwork,
+        gowork: gowork,
         leavework: leavework,
         attendid: attendid,
         wage: wage,
@@ -271,7 +269,7 @@ function CalendarMo({
   // async function getCurrentTimeStart(arg: any) {
   //   const now = new Date();
   //   const formattedTime = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
-  //   setStartWork(formattedTime);
+  //   setgowork(formattedTime);
   //   if (selectedEvent && selectedEvent.attendid) {
   //     const attendid = selectedEvent.attendid;
   //   }
@@ -281,7 +279,7 @@ function CalendarMo({
   //     worker: worker,
   //     start: start,
   //     end: end,
-  //     startwork: startwork,
+  //     gowork: gowork,
   //     leavework: leavework,
   //     wage: wage,
   //     attendid: selectedEvent?.attendid,
@@ -305,7 +303,7 @@ function CalendarMo({
       // 시간 설정하기
       const now = new Date();
       const formattedTime = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
-      setStartWork(formattedTime);
+      setGowork(formattedTime);
 
       const sendUserData = {
         memberid: Memberid,
@@ -313,7 +311,7 @@ function CalendarMo({
         worker: Memberid,
         start: start,
         end: end,
-        startwork: formattedTime,
+        gowork: formattedTime,
         leavework: leavework,
         attendid: attendid,
         wage: selectedEvent.wage,
@@ -324,9 +322,20 @@ function CalendarMo({
         worker: worker,
         start: start,
         end: end,
-        startwork: startwork,
+        gowork: gowork,
         leavework: leavework,
         wage: wage,
+      });
+      console.log("Data sent to GetCurrentStart :", {
+        memberid: Memberid,
+        storeid: Storeid,
+        worker: Memberid,
+        start: start,
+        end: end,
+        gowork: formattedTime,
+        leavework: leavework,
+        attendid: attendid,
+        wage: selectedEvent.wage,
       });
       try {
         console.log("gowork 요청중");
@@ -364,7 +373,7 @@ function CalendarMo({
         worker: Memberid,
         start: start,
         end: end,
-        startwork: startwork,
+        gowork: gowork,
         leavework: formattedTime,
         attendid: attendid,
         wage: selectedEvent.wage,
@@ -375,7 +384,7 @@ function CalendarMo({
         worker: worker,
         start: start,
         end: end,
-        startwork: startwork,
+        gowork: gowork,
         leavework: leavework,
         wage: wage,
       });
@@ -399,7 +408,7 @@ function CalendarMo({
   const renderUserForm = () => (
     <>
       <label htmlFor="worker">근무자 : {worker}</label>
-      <label htmlFor="startwork">출근 시간 : {startwork}</label>
+      <label htmlFor="gowork">출근 시간 : {gowork}</label>
       <button type="button" onClick={getCurrentTimeStart}>
         출근 시간 저장하기
       </button>
@@ -414,7 +423,7 @@ function CalendarMo({
   const adminEventForm = () => (
     <>
       {/* <label htmlFor="worker">근무자 : {worker}</label>
-      <label htmlFor="startwork">근무자가 입력한 출근 시간 : {startwork}</label>
+      <label htmlFor="gowork">근무자가 입력한 출근 시간 : {gowork}</label>
       <label htmlFor="leavework">퇴근 시간 : {leavework}</label> */}
     </>
   );
@@ -422,7 +431,7 @@ function CalendarMo({
   const userEventForm = () => (
     <>
       {/* <label htmlFor="worker">근무자 : {worker}</label> */}
-      <label htmlFor="startwork">출근 시간 : {startwork}</label>
+      <label htmlFor="gowork">출근 시간 : {gowork}</label>
       <button type="button" onClick={getCurrentTimeStart}>
         출근
       </button>
