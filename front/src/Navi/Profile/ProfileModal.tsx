@@ -31,8 +31,7 @@ export default function ProfileModal() {
             const UserRes = await axios.post(`${URL}/detail`,{memberid:Memberid})
             const Userprofile = UserRes.data.data.member
             const Storeprofile = UserRes.data.data.store
-
-            setUserpw(Userprofile.password)
+            setUserpw(Userprofile.password || ""); // 여기 수정
 
             setuserImg(Userprofile.memberimg)
             setuserName(Userprofile.name)
@@ -47,7 +46,7 @@ export default function ProfileModal() {
           
         }
         loadUserData()
-    },[Memberid,URL,])
+    },[Memberid,URL])
 
     ///// 유효성 검사 메세지들
     const [pwMes,setpwMes] = useState<String>()
