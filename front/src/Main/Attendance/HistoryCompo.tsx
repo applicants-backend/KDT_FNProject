@@ -13,7 +13,6 @@ interface HistoryInterface {
 }
 
 
-
 export default function HistoryCompo(props : HistoryInterface) {
     const {URL} = URLstate(state=>state)
     const {Memberid,Name} = UserDataState(state=>state)
@@ -23,7 +22,7 @@ export default function HistoryCompo(props : HistoryInterface) {
     const [comfirm, setComfirm] = useState<number>(props.confirm)
 
     const AttendanceComfirm = async (attendid:number) => {
-        const ComfirmRes = axios.patch(`${URL}/admin/attendance/confirm`,{attendid,memberid :Memberid, worker : props.worker ,confirm : 1})
+        const ComfirmRes = axios.patch(`${URL}/admin/attendance/confirm`,{attendid,memberid :Memberid, leavework : props.leavework, worker : props.worker ,confirm : 1})
         setComfirm(1)
     }
 
