@@ -93,7 +93,7 @@ export default function WorkTodoCon () {
                     <button type="button" onClick={deleteWork} className="delete"></button>
                 </div>
             </div>
-                <input type="text" value={inputTodo} onChange={e=>setInputTodo(e.target.value)} onKeyDown={e=>handleKeyDown(e)} placeholder="업무를 추가해주세요" className="todoinput"/> 
+                <input type="text" value={inputTodo} onChange={e=>setInputTodo(e.target.value)} onKeyPress={e=>handleKeyDown(e)} placeholder="업무를 추가해주세요" className="todoinput"/> 
 
             <div className="todolistCon">
                 {todoList && todoList.map((value : Contentinterface)=>{

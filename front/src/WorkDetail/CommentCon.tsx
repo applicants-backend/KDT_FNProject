@@ -59,7 +59,7 @@ export default function CommentCon () {
             
             <div className="Bottom">
                 <div className="name">{Name}</div>
-                <input type="text" value={inpustComment} onChange={e=>setInputComment(e.target.value)} onKeyDown={e=>handleKeyDown(e)}/>
+                <input type="text" value={inpustComment} onChange={e=>setInputComment(e.target.value)} onKeyPress={e=>handleKeyDown(e)}/>
                 <button type="button" onClick={ADDComment}>댓글달기</button>
             </div>
         </div>
