@@ -53,7 +53,7 @@ export default function WorkAddModal() {
     return(
        <div className="WorkModalCon">
         <input name="title" type="text" id="title" placeholder="제목을 입력해주세요" value={title}
-        ref={AddRef} onChange={(e)=>setTitle(e.target.value)} onKeyDown={e=>handleKeyDown(e)}/>
+        ref={AddRef} onChange={(e)=>setTitle(e.target.value)} onKeyPress={e=>handleKeyDown(e)}/>
        </div>
     )
 }
