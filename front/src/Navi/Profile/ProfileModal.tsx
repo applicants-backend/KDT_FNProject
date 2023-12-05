@@ -11,17 +11,17 @@ export default function ProfileModal() {
     const {UserType} = UserTypeState(state => state)
     const {Memberid, Storeid, setName} = UserDataState(state=>state)
 
-    const[userPw, setUserpw]=useState<string>()
-    const[userPwre, setUserpwre]=useState<string>()
+    const[userPw, setUserpw]=useState<string>("")
+    const[userPwre, setUserpwre]=useState<string>("")
 
-    const[userName, setuserName] = useState<string>()
-    const[phoneNumber, setphoneNumber] =useState<string>()
+    const[userName, setuserName] = useState<string>("")
+    const[phoneNumber, setphoneNumber] =useState<string>("")
     
-    const[companyName, setCompanyName] =useState<string>()
-    const[companyNumber, setCompanyNumber] =useState<string>()
-    const[companyAddress, setcompanyAddress] =useState<string>()
-    const[companyToken, setcompanyToken] =useState<string>()
-    const[CEO, setCEO] =useState<string>()
+    const[companyName, setCompanyName] =useState<string>("")
+    const[companyNumber, setCompanyNumber] =useState<string>("")
+    const[companyAddress, setcompanyAddress] =useState<string>("")
+    const[companyToken, setcompanyToken] =useState<string>("")
+    const[CEO, setCEO] =useState<string>("")
 
     const [email, setEmail] = useState<string>("");
 
@@ -31,8 +31,7 @@ export default function ProfileModal() {
             const UserRes = await axios.post(`${URL}/detail`,{memberid:Memberid})
             const Userprofile = UserRes.data.data.member
             const Storeprofile = UserRes.data.data.store
-
-            setUserpw(Userprofile.password)
+            setUserpw(Userprofile.password || ""); // 여기 수정
 
             setuserImg(Userprofile.memberimg)
             setuserName(Userprofile.name)
@@ -47,7 +46,7 @@ export default function ProfileModal() {
           
         }
         loadUserData()
-    },[Memberid,URL,])
+    },[Memberid,URL])
 
     ///// 유효성 검사 메세지들
     const [pwMes,setpwMes] = useState<String>()
@@ -287,10 +286,6 @@ export default function ProfileModal() {
                         <div >
                             <label htmlFor="companyNumber"> 사업자 번호 : </label>
                             <input name="companyNumber" id="companyNumber" value={companyNumber} placeholder="000-00-00000 형식으로 입력하세요" readOnly/>
-                        </div>
-                        <div >
-                            <label htmlFor="companyAddress"> 사업자 주소 : </label>
-                            <input name="companyAddress" id="companyAddress" value={companyAddress} readOnly/>
                         </div>
                     </> 
                 :

@@ -45,7 +45,7 @@
     height: 34px;
     align-items: center;
     justify-content: center;
-    color: rgb(219, 112, 147);
+    color: #aaa
   }
   
   .Confirm {
@@ -56,5 +56,13 @@
     justify-content: center;
     color: #45a049;
   }
-   
+  
+  .unAttendace{
+    display: flex;
+    width: 56px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    color: rgb(219, 112, 147);
+  }
 }
