@@ -136,7 +136,7 @@ function CalendarCon(props: CalendarConProps) {
   });
 
   const [worker, setWorker] = useState<string>("");
-  const [startwork, setStartWork] = useState<string>("");
+  const [gowork, setowork] = useState<string>("");
   const [leavework, setLeaveWork] = useState<string>("");
 
   const { UserType } = UserTypeState((state) => state);
@@ -227,7 +227,7 @@ function CalendarCon(props: CalendarConProps) {
           const start: Date =
             UserType === "admin"
               ? new Date(item.start as string)
-              : new Date(item.startwork as string);
+              : new Date(item.gowork as string);
           const end: Date =
             UserType === "admin"
               ? new Date(item.end as string)
@@ -272,7 +272,7 @@ function CalendarCon(props: CalendarConProps) {
 
           const start: Date = new Date(item.start as string);
           const end: Date = new Date(item.end as string);
-          const startwork: Date = new Date(item.startwork as string);
+          const gowork: Date = new Date(item.gowork as string);
           const leavework: Date = new Date(item.leavework as string);
           return {
             title: workerName ? workerName : item.worker,
@@ -281,7 +281,7 @@ function CalendarCon(props: CalendarConProps) {
             attendid: item.attendid,
             wage: item.wage,
             worker: item.worker,
-            startwork: startwork,
+            gowork: gowork,
             leavework: leavework,
           };
         });
@@ -312,7 +312,7 @@ function CalendarCon(props: CalendarConProps) {
     // 퇴근 시간을 이벤트 종료 시간으로 사용
     const end = new Date(data.end);
     const start = new Date(data.start);
-    const startwork = new Date(data.startwork);
+    const gowork = new Date(data.gowork);
     const leavework = new Date(data.leavework);
     const wage = data.wage;
     const worker = data.worker;
@@ -323,11 +323,25 @@ function CalendarCon(props: CalendarConProps) {
       end: end,
       wage: wage,
       worker: worker,
-      startwork: startwork,
+      gowork: gowork,
       leavework: leavework,
     };
 
     setEvents([...events, newEvent]);
+  }
+
+  // gowork , leavework
+
+  function updateEvent(newEvent: any) {
+    // attendid가 같은 이벤트 찾기
+    const updatedEvents = events.map((event: any) => {
+      if (event.attendid === newEvent.attendid) {
+        return newEvent; // attendid가 같으면 업데이트
+      }
+      return event;
+    });
+
+    setEvents(updatedEvents); // 업데이트된 이벤트로 상태 업데이트
   }
 
   function handleEventClick(arg: any) {
@@ -348,7 +362,7 @@ function CalendarCon(props: CalendarConProps) {
         attendid: attendid, // attendid 추가
         wage: arg.event.wage,
         worker: worker,
-        startwork: arg.event.startwork,
+        gowork: arg.event.gowork,
         leavework: arg.event.leavework,
         // 이벤트에서 가져와야 하는 다른 속성들을 추가할 수 있습니다.
       });
@@ -371,7 +385,7 @@ function CalendarCon(props: CalendarConProps) {
         attendid: attendid,
         wage: arg.event.wage,
         worker: worker,
-        startwork: arg.event.startwork,
+        gowork: arg.event.gowork,
         leavework: arg.event.leavework,
       });
       console.log(events);

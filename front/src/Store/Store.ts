@@ -158,6 +158,7 @@ export interface CalendarData {
     start?: string | Date | null;
     end?: string | Date | null;
     startwork?: string | Date | null;
+    gowork?: string | Date | null;
     leavework?: string | Date | null;
     registertime?: string | Date | null;
   }
