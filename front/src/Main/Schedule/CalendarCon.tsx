@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import { EventApi } from "@fullcalendar/core";
 import CalendarMo from "./CalendarMo";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -224,14 +225,10 @@ function CalendarCon(props: CalendarConProps) {
         const eventsArray = calendarData.data.data.map((item: CalendarData) => {
           const workerName = WorkerList[item.worker];
 
-          const start: Date =
-            UserType === "admin"
-              ? new Date(item.start as string)
-              : new Date(item.gowork as string);
-          const end: Date =
-            UserType === "admin"
-              ? new Date(item.end as string)
-              : new Date(item.leavework as string);
+          const start: Date = new Date(item.start as string);
+          const end: Date = new Date(item.end as string);
+          const gowork: Date = new Date(item.gowork as string);
+          const leavework: Date = new Date(item.leavework as string);
 
           return {
             title: workerName ? workerName : item.worker,
@@ -240,6 +237,8 @@ function CalendarCon(props: CalendarConProps) {
             attendid: item.attendid,
             wage: item.wage,
             worker: item.worker,
+            gowork: gowork,
+            leavework: leavework,
           };
         });
 
@@ -270,10 +269,14 @@ function CalendarCon(props: CalendarConProps) {
         const eventsArray = calendarData.data.data.map((item: CalendarData) => {
           const workerName = WorkerList[item.worker];
 
-          const start: Date = new Date(item.start as string);
-          const end: Date = new Date(item.end as string);
-          const gowork: Date = new Date(item.gowork as string);
-          const leavework: Date = new Date(item.leavework as string);
+          const start: Date | null = item.start ? new Date(item.start) : null;
+          const end: Date | null = item.end ? new Date(item.end) : null;
+          const gowork: Date | null = item.gowork
+            ? new Date(item.gowork)
+            : null;
+          const leavework: Date | null = item.leavework
+            ? new Date(item.leavework)
+            : null;
           return {
             title: workerName ? workerName : item.worker,
             start: start,
@@ -310,10 +313,10 @@ function CalendarCon(props: CalendarConProps) {
 
     // 출근 시간을 이벤트 시작 시간으로 사용
     // 퇴근 시간을 이벤트 종료 시간으로 사용
-    const end = new Date(data.end);
-    const start = new Date(data.start);
-    const gowork = new Date(data.gowork);
-    const leavework = new Date(data.leavework);
+    const end = data.end !== "" ? new Date(data.end) : null;
+    const start = data.start !== "" ? new Date(data.start) : null;
+    const gowork = data.gowork !== "" ? new Date(data.gowork) : null;
+    const leavework = data.leavework !== "" ? new Date(data.leavework) : null;
     const wage = data.wage;
     const worker = data.worker;
 
@@ -327,26 +330,34 @@ function CalendarCon(props: CalendarConProps) {
       leavework: leavework,
     };
 
-    setEvents([...events, newEvent]);
+    // setEvents([...events, newEvent]);
+    updateEvent(newEvent);
   }
-
-  // gowork , leavework
-
   function updateEvent(newEvent: any) {
     // attendid가 같은 이벤트 찾기
     const updatedEvents = events.map((event: any) => {
       if (event.attendid === newEvent.attendid) {
-        return newEvent; // attendid가 같으면 업데이트
+        return { ...event, ...newEvent }; // attendid가 같으면 업데이트
       }
       return event;
     });
 
+    console.log("Updated Events:", updatedEvents);
+
     setEvents(updatedEvents); // 업데이트된 이벤트로 상태 업데이트
   }
 
+  // gowork , leavework
+
   function handleEventClick(arg: any) {
+    console.log("selectedEvent : ", selectedEvent);
+    console.log("Click Event Extended Props:", arg.event.extendedProps);
+
+    // 확인용으로 arg.event 출력
+    console.log("arg.event:", arg.event);
+
     const clickedEvent = arg.event.extendedProps;
-    const attendid = clickedEvent.attendid; // attendid 가져오기
+    const attendid = clickedEvent.attendid;
     const worker = clickedEvent.worker;
 
     if (UserType === "admin") {
@@ -362,8 +373,16 @@ function CalendarCon(props: CalendarConProps) {
         attendid: attendid, // attendid 추가
         wage: arg.event.wage,
         worker: worker,
-        gowork: arg.event.gowork,
-        leavework: arg.event.leavework,
+        gowork:
+          arg.event.extendedProps.gowork ==
+          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+            ? null
+            : arg.event.extendedProps.gowork,
+        leavework:
+          arg.event.extendedProps.leavework ==
+          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+            ? null
+            : arg.event.extendedProps.leavework,
         // 이벤트에서 가져와야 하는 다른 속성들을 추가할 수 있습니다.
       });
       const extendedProps = arg.event.extendedProps;
@@ -383,17 +402,81 @@ function CalendarCon(props: CalendarConProps) {
         start: arg.event.start,
         end: arg.event.end,
         attendid: attendid,
-        wage: arg.event.wage,
+        wage: arg.event.extendedProps.wage,
         worker: worker,
-        gowork: arg.event.gowork,
-        leavework: arg.event.leavework,
+        gowork:
+          arg.event.extendedProps.gowork ==
+          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+            ? null
+            : arg.event.extendedProps.gowork,
+        leavework:
+          arg.event.extendedProps.leavework ==
+          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+            ? null
+            : arg.event.extendedProps.leavework,
       });
-      console.log(events);
-      const clickedEvent = arg.event.extendedProps;
-      console.log(clickedEvent);
-      console.log("Click Event Extended Props:", arg.event.extendedProps);
     }
   }
+  const handleEdit = () => {};
+
+  const changeSchedule = async (event: EventApi) => {
+    try {
+      // const start = event.start?.toLocaleDateString;
+      // 서버로 전송할 데이터
+
+      const localStart = event.start
+        ? new Date(event.start.getTime() + 9 * 60 * 60 * 1000)
+        : null;
+      const localEnd = event.end
+        ? new Date(event.end.getTime() + 9 * 60 * 60 * 1000)
+        : null;
+
+      const eventData = {
+        memberid: memberid,
+        storeid: storeid,
+        worker: event.extendedProps.worker,
+        start: localStart,
+        end: localEnd,
+        attendid: event.extendedProps.attendid,
+        wage: event.extendedProps.wage,
+        gowork:
+          event.extendedProps.gowork ==
+          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+            ? null
+            : event.extendedProps.gowork,
+        leavework:
+          event.extendedProps.leavework ==
+          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+            ? null
+            : event.extendedProps.leavework,
+        // 이벤트에서 가져와야 하는 다른 속성들을 추가할 수 있습니다.
+        // 다른 필요한 데이터가 있다면 추가
+      };
+
+      // 서버에 데이터 전송
+      const response = await axios.patch(
+        `${URL}/admin/attendance/update`,
+        eventData
+      );
+
+      console.log("서버 응답:", response.data);
+      console.log("되는중");
+    } catch (error) {
+      console.error("서버 요청 실패:", error);
+    }
+  };
+
+  const calendarOptions = {
+    // ... (기존 옵션 유지)
+    eventChange: (info: { event: EventApi }) => {
+      console.log("이벤트가 변경되었습니다.");
+      const changedEvent = info.event;
+
+      // changeSchedule 함수 호출 시 info.event를 전달
+      changeSchedule(changedEvent);
+    },
+    // ... (기존 옵션 유지)
+  };
 
   /// return 시작
   return (
@@ -412,15 +495,21 @@ function CalendarCon(props: CalendarConProps) {
           headerToolbar={{
             left: "prev today",
             center: "title",
-            right: "next",
+            right: "handleEdit next",
           }}
           events={events}
-          eventChange={() => {
-            console.log("dkssud");
-          }}
+          eventChange={calendarOptions.eventChange}
           // customButtons={CustomButtons}
           datesSet={handleDatesSet}
           viewDidMount={handleDidMount}
+          customButtons={{
+            handleEdit: {
+              text: "저장하기",
+              click: function () {
+                handleEdit();
+              },
+            },
+          }}
         />
       </FullCalendarContainer>
       {isDateModalOpen && (
