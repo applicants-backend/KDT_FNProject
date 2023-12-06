@@ -33,8 +33,7 @@ export default function HomeData () {
               } 
             
             setAttend(AttendMonthRes.data.data)
-            setPayment(PaymentMonthRes.data.data.month)
-            
+            setPayment(PaymentMonthRes.data.data)            
 
         }
         loadData()
