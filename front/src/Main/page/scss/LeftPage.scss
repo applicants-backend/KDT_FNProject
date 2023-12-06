@@ -1,7 +1,8 @@
 
 
 .left-page-contents {
-   width: 90%; margin: auto;
+   width: 90%; 
+   //margin: auto;
    .hamberger {
       cursor: pointer;
    }
@@ -9,8 +10,34 @@
 
 
 @media (min-width:1440px) {
+   
    .left-page-contents {
       width: 80%; 
+   }
+   .profile-line{
+      width: 100%;
+      border: rgba(255, 255, 255, 0.095) solid 0.5px;
+      margin: 20px 0;
+      //color: white;
+   }
+
+   .profile-img {
+      border-radius: 50%;
+      border: 2px solid #eee; 
+      background-color: #fff;
+      width: 36px; padding: 0px;height: 36px;
+      border-radius: 12px;
+      margin: 10px 0;
+      cursor: pointer; 
+      img {
+         width: 100%; height: 100%;
+         object-fit: contain;
+      }
+   }
+
+   .main-logo {
+      margin: 10px !important;  
+     
    }
 }
 
@@ -19,11 +46,14 @@
    .left-page-contents {
       width: 100%; height: 100%; margin: auto;
       .container {
+         position: relative;
          width: 100%; height: 100%;
          display: flex; align-items: center; justify-content: space-between;
          padding: 0 2em;
          .main-logo {
-            margin: 0 !important; padding: 0;
+            
+            margin: 0 !important; 
+            padding: 0;
          }
          .main-header-icon {
             display: flex; align-items: center; margin: 0; padding: 0;
@@ -45,7 +75,8 @@
                background-color: #fff;
                width: 36px; padding: 0px;height: 36px;
                border-radius: 12px;
-               cursor: pointer; ov
+
+               cursor: pointer; 
                img {
                   width: 100%; height: 100%;
                   object-fit: contain;

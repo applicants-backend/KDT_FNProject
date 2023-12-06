@@ -2,14 +2,14 @@
 .profile {
     display: flex; flex-direction: column; align-items: center;
     margin-bottom: 5%; position: relative;
-    padding: 35px 30px;
-    border-radius: 10%;
-    background-color: rgba(255, 255, 255, 0.3); 
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    border: 1px solid transparent; 
-
+    padding: 50px 0;
+    // padding: 35px 30px;
+    // border-radius: 10%;
+    // background-color: rgba(255, 255, 255, 0.3); 
+    // box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    // border: 1px solid transparent; 
     .profile-img {
-        width: 128px; height: 128px; background-color: #fff;
+        width: 100px; height: 100px; background-color: #fff;
         border-radius: 50%; border: 1px solid #eee;
         overflow: hidden;
         img {
@@ -21,27 +21,53 @@
     .profile-info {
         color: #eee; padding-top: 0.5em; 
         p {
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
             margin: 0; padding: 0; text-align: center; 
-            font-size: 0.8em;
+            font-size: 1em;
+            font-weight: 700;
         }
-    }
+        .profile-name p {
 
+            // font-weight: 800;
+        }
+        .profile-companyName{
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.389)
+
+        }
+
+
+    }
+    .profile-info > p :nth-child(2) {
+        font-weight: 200;
+    }
     .profile-icon-box {
         display: flex; justify-content: center; margin-top: 10px;
+       
         div {
             cursor: pointer;
-            width: 34px; height: 34px; padding: 5px; background-color: #fff; border-radius: 50%;
+            width: 34px; height: 34px; padding: 5px; background-color: #ffffff00; 
             img {
                 width: 100%; height: 100%; 
                 object-fit: cover; object-position: center;
             }
         }
-        .invite-icon {
+        div :hover{
+            background-color: rgba(255, 255, 255, 0.128); 
+            border-radius: 5px;
         }
+
+
         .profile-icon {
             opacity: 0.9; margin: 0 8px;
         }
         .logout-icon {
+            
+        }
+        .material-symbols-outlined{
+            
+        }
+        .invite-icon {
         }
     }
 
@@ -60,8 +86,6 @@
         width: 88%; margin: auto;
 
     }
-
-
 }
 
 @media (min-width:768px) and (max-width:1225px) {
