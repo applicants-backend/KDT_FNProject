@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import UserTypeState, { URLstate, UserDataState } from "../../Store/Store"
 import axios from "axios"
-import './scss/History.scss'
+import './scss/PaymentHistory.scss'
 
 interface UserPaypentinterface {
     payid : number,
@@ -115,7 +115,7 @@ export default function PaymentHistory () {
 
     return (
       UserType === "user" ? (
-        <div className="History">
+        <div className="PaymentHistory">
 
         <div className="top">
           <div>월</div>
@@ -134,7 +134,7 @@ export default function PaymentHistory () {
            
         </div>
       ) : (
-        <div className="History">
+        <div className="PaymentHistory">
 
           <div className="top">
             <div>월</div>

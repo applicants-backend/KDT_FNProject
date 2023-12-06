@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import UserTypeState, { URLstate, UserDataState, WorkerListState } from "../../Store/Store"
+import UserTypeState, { URLstate, UserDataState} from "../../Store/Store"
 import './scss/HomeData.scss'
 
 export default function HomeData () {
@@ -19,11 +19,13 @@ export default function HomeData () {
             const month =  new Date().getMonth()+1;
 
             const AttendMonthRes = await axios.get(UserType === 'admin' ? `${URL}/admin/attendance/data/${Memberid}/${Storeid}` : `${URL}/user/attendance/month/${Memberid}/${Storeid}` )
-
-            const PaymentMonthRes = await axios.post(UserType === 'admin' ? `${URL}/admin/allpayment`: `${URL}/allpayment`, UserType === 'admin' ? {memberid: Memberid,month} :{memberid: Memberid} )
-
             const FirstWorkRes = await axios.get(`${URL}/work/boards/${Storeid}/0`)
 
+          
+            const PaymentMonthRes = UserType === 'admin'
+            ? await axios.get(`${URL}/admin/allpayment/${Memberid}/${month}`)
+            : await axios.post(`${URL}/allpayment`, { memberid: Memberid });
+          
             if (FirstWorkRes && FirstWorkRes.data.data.content[0]?.workid) {
                 const WorkListRes = await axios.get(`${URL}/work/boards/detail/${FirstWorkRes.data.data.content[0].workid}`);
                 // 여기에 WorkListRes를 사용하는 코드 추가
@@ -33,7 +35,7 @@ export default function HomeData () {
               } 
             
             setAttend(AttendMonthRes.data.data)
-            setPayment(PaymentMonthRes.data.data)            
+            setPayment(UserType === 'admin' ? PaymentMonthRes.data.data : PaymentMonthRes.data.data.month)            
 
         }
         loadData()
