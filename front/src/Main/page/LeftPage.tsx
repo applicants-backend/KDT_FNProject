@@ -68,35 +68,41 @@ export default function LeftPage (): ReturnType<FC>  {
         <div className="left-page-contents">
             {windowWidth > 768 ?
                 <div className="container">
-                     <h2 className="main-logo">
+                    <h2 className="main-logo">
+                        
                         <Link to={"/"}> 
+                        
                             <img src="https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/logo_white_small.png" alt="logo"/>
                         </Link>
                     </h2>
+
+
                     <Profile logout={() => logout()} setmodalOpenis={(pros) => setmodalOpenis(pros)}/>
+
                     <NaviCon location = {location}/>
+                    
                 </div>
                 :
                 windowWidth <= 768 && (
                     <>
                         <div className="container">
-
                             <h2 className="main-logo">
                                 <Link to={"/"}> 
                                     <img src="https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/logo_white_small.png" alt="logo"/>
                                 </Link>
                             </h2>
                             <div className="main-header-icon">
-
+                        
                                 <div className="logout-icon" onClick={() => {if (logout) logout()}}>
                                     <img src={"https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/shutdown_icon.png"} alt="shutdown_icon" />
                                 </div>
-
+                                
                                 <div className="profile-img" onClick={() => setmodalOpenis(true)}>
                                     <img src={UserType ==="admin" ? companyImg === null ? "" : companyImg : userImg === null ? "" : userImg } 
                                             alt='profile-image' 
                                             onError={defalutImg}/>
                                 </div>
+                              
                                 <div className="hamberger" onClick={onClickHambeger}>
                                     <img src={"https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/hanberger_icon.png"} alt="icon"/>
                                 </div>

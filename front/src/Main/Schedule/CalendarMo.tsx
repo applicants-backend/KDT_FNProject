@@ -60,6 +60,24 @@ function CalendarMo({
     console.log("Worker in adminAdditonalPost:", worker); // 디버깅용 콘솔 로그
     console.log("WorkerList : ", WorkerList);
 
+    // const start = (start: string) => {
+    //   // 입력된 문자열을 Date 객체로 파싱합니다.
+    //   const localTime = new Date(start);
+    //   // const utcTime2 = localTime.toUTCString();
+    //   // const utcTime3 = localTime.getTimezoneOffset();
+    //   const newDate = localTime.toISOString().slice(0, 16);
+
+    //   // 로컬 시간을 UTC로 변환합니다.
+    //   // const utcTime = new Date(
+    //   //   localTime.getTime() - localTime.getTimezoneOffset() * 60000
+    //   // );
+
+    //   // UTC로 변환된 시간을 setStart에 설정합니다.
+    //   setStart(newDate);
+    // };
+    const newStart = new Date(start);
+    const utcStart = newStart.toISOString().slice(0, 16);
+
     // axios.post(`${URL}/admin/attendance`)
     console.log("Data sent from CalendarMo:", {
       member: Memberid,
@@ -75,7 +93,7 @@ function CalendarMo({
       memberid: Memberid,
       storeid: Storeid,
       worker: worker,
-      start: start,
+      start: utcStart,
       end: end,
       gowork: gowork,
       leavework: leavework,
@@ -93,10 +111,10 @@ function CalendarMo({
     });
     try {
       console.log("데이터 전송 요청");
-      const res = await axios.post(
-        `${URL}/admin/attendance/create`,
-        sendAdminData
-      );
+      // const res = await axios.post(
+      //   `${URL}/admin/attendance/create`,
+      //   sendAdminData
+      // );
       console.log("sendAdminData : ", sendAdminData);
       // console.log("res : ", res);
       // window.location.reload();
@@ -105,6 +123,7 @@ function CalendarMo({
     }
     setAdditionalContent("추가 작업이 수행되었습니다.");
     closeModal();
+    // window.location.reload();
   }
 
   const eventDetails = selectedEvent ? (
@@ -158,6 +177,7 @@ function CalendarMo({
       setAdditionalContent("삭제할 이벤트가 선택되지 않았습니다.");
     }
     closeModal();
+    window.location.reload();
   }
 
   const defaultDate = selectedDate
@@ -282,8 +302,9 @@ function CalendarMo({
 
       // 시간 설정하기
       const now = new Date();
+      const nowDate = new Date(now);
       const formattedTime = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
-      setGowork(formattedTime);
+      setGowork(now.toLocaleDateString());
 
       const sendUserData = {
         memberid: Memberid,
@@ -302,7 +323,7 @@ function CalendarMo({
         worker: Memberid,
         start: start,
         end: end,
-        gowork: formattedTime,
+        gowork: nowDate,
         leavework: leavework,
         attendid: attendid,
         wage: selectedEvent.wage,
@@ -313,7 +334,7 @@ function CalendarMo({
         worker: Memberid,
         start: start,
         end: end,
-        gowork: formattedTime,
+        gowork: nowDate,
         leavework: leavework,
         attendid: attendid,
         wage: selectedEvent.wage,
@@ -326,6 +347,8 @@ function CalendarMo({
           sendUserData
         );
         console.log("res : ", res);
+        console.log("sendUserDate : ", sendUserData);
+        console.log("sendDataToCon : ", sendDataToCon);
       } catch (error) {
         console.error("gowork 요청 중 오류 발생:", error);
       }
@@ -334,6 +357,7 @@ function CalendarMo({
       setAdditionalContent("이벤트가 선택되지 않았습니다.");
     }
     closeModal();
+    // window.location.reload();
   }
 
   async function getCurrentTimeEnd() {
@@ -387,6 +411,7 @@ function CalendarMo({
       setAdditionalContent("이벤트가 선택되지 않았습니다.");
     }
     closeModal();
+    window.location.reload();
   }
 
   const renderUserForm = () => (
@@ -471,6 +496,7 @@ function CalendarMo({
     }
     setEditMode(false); // 수정 완료 후 editMode를 비활성화
     closeModal();
+    window.location.reload();
   }
 
   const updateForm = () => (

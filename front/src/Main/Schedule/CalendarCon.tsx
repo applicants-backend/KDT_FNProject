@@ -228,6 +228,7 @@ function CalendarCon(props: CalendarConProps) {
           // const workerName = WorkerList[item.worker];
 
           const start: Date = new Date(item.start as string);
+          const newStart = start.toLocaleString().slice(0, 16);
           const end: Date = new Date(item.end as string);
           const gowork: Date = new Date(item.gowork as string);
           const leavework: Date = new Date(item.leavework as string);
@@ -272,6 +273,8 @@ function CalendarCon(props: CalendarConProps) {
           const workerName =
             UserType === "admin" ? WorkerList[item.worker] : Name;
           const start: Date | null = item.start ? new Date(item.start) : null;
+          const newStart = start ? start.toLocaleString().slice(0, 16) : null;
+
           const end: Date | null = item.end ? new Date(item.end) : null;
           const gowork: Date | null = item.gowork
             ? new Date(item.gowork)
@@ -368,6 +371,31 @@ function CalendarCon(props: CalendarConProps) {
       // console.log(events);
       // const clickedEvent = arg.event.extendedProps;
       // console.log(clickedEvent);
+      const timezoneOffset = 9 * 60; // 한국은 UTC+9
+
+      const goworkValue = arg.event.extendedProps.gowork;
+      const leaveworkValue = arg.event.extendedProps.leavework;
+
+      const newGowork = arg.event.extendedProps.gowork.toUTCString();
+      const utcDateGowork = new Date(newGowork);
+      const localTimeGowork = new Date(
+        utcDateGowork.getTime() + timezoneOffset * 60 * 1000
+      );
+      // 한국 로컬 시간으로 변환
+      const localTimeStringStart = goworkValue
+        ? localTimeGowork.toLocaleString("ko-KR")
+        : null;
+
+      const newLeavework = arg.event.extendedProps.leavework.toUTCString();
+      const utcDateLeavework = new Date(newLeavework);
+      const localTimeLeavework = new Date(
+        utcDateLeavework.getTime() + timezoneOffset * 60 * 1000
+      );
+      // 한국 로컬 시간으로 변환
+      const localTimeStringLeave = leaveworkValue
+        ? localTimeLeavework.toLocaleString("ko-KR")
+        : null;
+
       setSelectedEvent({
         title: arg.event.title,
         start: arg.event.start,
@@ -379,12 +407,12 @@ function CalendarCon(props: CalendarConProps) {
           arg.event.extendedProps.gowork ==
           "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
             ? null
-            : arg.event.extendedProps.gowork,
+            : localTimeStringStart,
         leavework:
           arg.event.extendedProps.leavework ==
           "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
             ? null
-            : arg.event.extendedProps.leavework,
+            : localTimeStringLeave,
         // 이벤트에서 가져와야 하는 다른 속성들을 추가할 수 있습니다.
       });
       const extendedProps = arg.event.extendedProps;
@@ -397,6 +425,24 @@ function CalendarCon(props: CalendarConProps) {
       // }
       console.log("extendedProps : ", extendedProps);
     } else {
+      const timezoneOffset = 9 * 60; // 한국은 UTC+9
+
+      const newGowork = arg.event.extendedProps.gowork.toUTCString();
+      const utcDateGowork = new Date(newGowork);
+      const localTimeGowork = new Date(
+        utcDateGowork.getTime() + timezoneOffset * 60 * 1000
+      );
+      // 한국 로컬 시간으로 변환
+      const localTimeStringStart = localTimeGowork.toLocaleString("ko-KR");
+
+      const newLeavework = arg.event.extendedProps.leavework.toUTCString();
+      const utcDateLeavework = new Date(newLeavework);
+      const localTimeLeavework = new Date(
+        utcDateLeavework.getTime() + timezoneOffset * 60 * 1000
+      );
+      // 한국 로컬 시간으로 변환
+      const localTimeStringLeave = localTimeLeavework.toLocaleString("ko-KR");
+
       setEventModalOpen(true);
       setDateModalOpen(false); // 모달이 열릴 때 다른 모달은 닫아줍니다.)
       setSelectedEvent({
@@ -410,16 +456,18 @@ function CalendarCon(props: CalendarConProps) {
           arg.event.extendedProps.gowork ==
           "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
             ? null
-            : arg.event.extendedProps.gowork,
+            : localTimeStringStart,
         leavework:
           arg.event.extendedProps.leavework ==
           "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
             ? null
-            : arg.event.extendedProps.leavework,
+            : localTimeStringLeave,
       });
     }
   }
-  const handleEdit = () => {};
+  const handleEdit = () => {
+    window.location.reload();
+  };
 
   const changeSchedule = async (event: EventApi) => {
     try {
@@ -497,21 +545,21 @@ function CalendarCon(props: CalendarConProps) {
           headerToolbar={{
             left: "prev today",
             center: "title",
-            right: "next",
+            right: "handleEdit next",
           }}
           events={events}
           eventChange={calendarOptions.eventChange}
           // customButtons={CustomButtons}
           datesSet={handleDatesSet}
           viewDidMount={handleDidMount}
-          // customButtons={{
-          //   handleEdit: {
-          //     text: "저장하기",
-          //     click: function () {
-          //       handleEdit();
-          //     },
-          //   },
-          // }}
+          customButtons={{
+            handleEdit: {
+              text: "저장하기",
+              click: function () {
+                handleEdit();
+              },
+            },
+          }}
         />
       </FullCalendarContainer>
       {isDateModalOpen && (
