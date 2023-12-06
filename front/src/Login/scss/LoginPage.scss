@@ -43,11 +43,11 @@
             height: 42px; text-align: center; border: 1px solid $bordercolor1;
             line-height: 42px; cursor: pointer; border-radius: 3px;
             &.on {
-                background-color: #eee; font-weight: bold;
+                background-color: #dcdcdc; font-weight: bold;
             }
 
             &:hover {
-                background-color: #eee; font-weight: bold; border: 1px solid #ccc;
+                font-weight: bold; border: 1px solid #ccc;
             }
         }
     }
