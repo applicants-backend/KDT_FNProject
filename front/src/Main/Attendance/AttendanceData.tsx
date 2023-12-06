@@ -3,6 +3,7 @@ import UserTypeState, { URLstate, UserDataState } from "../../Store/Store"
 import axios from "axios"
 import { ChartPolar } from "./ChartPoloar"
 import { Chartex } from "../Payment/Chart"
+import './scss/AttendanceData.scss';
 
 export default function AttendanceData () {
 
@@ -75,10 +76,10 @@ export default function AttendanceData () {
       
     return(
         UserType === 'admin' ? (
-        <div>
+          <div className="DataCon">
           <ChartPolar data={AdminEachData}/>
         </div> ) : (
-         <div>
+         <div className="DataCon">
             <Chartex data={Userdata}/>
          </div>
         )

@@ -35,7 +35,7 @@ export default function HistoryCompo(props : HistoryInterface) {
       const hours = String(date.getHours()).padStart(2, '0');
       const minutes = String(date.getMinutes()).padStart(2, '0');
   
-      return `${year}- ${month}-${day} ${hours}:${minutes}`;
+      return `${year}-${month}-${day} ${hours}:${minutes}`;
     }
 
     return (
@@ -47,8 +47,8 @@ export default function HistoryCompo(props : HistoryInterface) {
             return <div key={key} className="name">{WorkerList[key]}</div>;
           }
         }): <div className="name">{Name}</div>}
-        <div className="gowork">{props.gowork && formatDateString(props.gowork)}</div>
-        <div className="leavework">{props.leavework && formatDateString(props.leavework)}</div>
+        <div className="gowork">{props.gowork ? formatDateString(props.gowork) : <div className="Unwork">출근예정</div>}</div>
+        <div className="leavework">{props.leavework ? formatDateString(props.leavework) : <div className="Unwork">퇴근예정</div>}</div>
         <div className="wage">{props.wage}</div>
         { UserType === "admin" ? props.gowork && props.leavework ? comfirm === 0 ? <button onClick={()=>AttendanceComfirm(props.attendid)}>승인</button> : <div className="Confirm"> 승인완료</div>:
         <div className="unAttendace"> 승인불가</div> :

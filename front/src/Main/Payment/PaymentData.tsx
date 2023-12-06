@@ -3,6 +3,7 @@ import UserTypeState, { URLstate, UserDataState } from "../../Store/Store"
 import axios from "axios"
 import {Chartex} from "./Chart"
 import { ChartDoughut } from "./Doughnut"
+import './scss/PaymentData.scss';
 
 interface valueinterface {
     month : number,
@@ -100,10 +101,10 @@ export default function PaymentData () {
       
     return(
        UserType === 'user' ? (
-       <div>
+       <div className="DataCon">
            <Chartex data={Userdata}/>       
        </div> ) : (
-        <div>
+        <div className="DataCon">
             <ChartDoughut data={AdminEachData}/>
         </div>
        )

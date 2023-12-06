@@ -49,6 +49,7 @@ export default function AttendanceCon () {
                 이번달 일한 시간
                 <div>{AttendMonth}</div>
             </div> 
+           
             <div>지난 달에 비해 얼마나 더 일했지?</div>
             <div>
                 <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>{AttendPercent}%</div>
@@ -76,11 +77,12 @@ export default function AttendanceCon () {
                 이번달 총 출근시간
                 <div>{AttendMonth}</div>
             </div> 
-            <div>지난 달에 비해 얼마나 더 일했지?
-            <div>
+            
+                <div>지난 달에 비해 얼마나 더 일했지?
+                <div>
                 <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>{AttendPercent}%</div>
                 <div style={{color : Color ? "green" : "red"}}> {Color ? "늘었어요!" : "줄었어요!"}</div>
-            </div> 
+                </div> 
             </div>
             </div>
         </div>
