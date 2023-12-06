@@ -108,7 +108,7 @@ export default function PaymentCon () {
               </div>
 
               <div>
-                <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>{PercentData} %</div>
+                <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>{PercentData}%</div>
                 <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>
                   {Color ? "늘었어요!" : "줄었어요!"}
                 </div>
@@ -141,7 +141,7 @@ export default function PaymentCon () {
               </div>
 
               <div>
-                <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>{PercentData}</div>
+                <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>{PercentData}%</div>
                 <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>
                   {Color ? "늘었어요!" : "줄었어요!"}
                 </div>
