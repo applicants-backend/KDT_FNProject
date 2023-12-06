@@ -31,10 +31,9 @@ export default function HomeData () {
                 setChecked(WorkListRes.data.data.contents.filter((value : any) => value.checked !== null && value.checked.trim() !=='').length)
                 setUnchecked(WorkListRes.data.data.contents.length)
               } 
-            
-            setAttend(AttendMonthRes.data.data)
-            setPayment(PaymentMonthRes.data.data)            
-
+              setPayment(UserType==='admin'? PaymentMonthRes.data.data : PaymentMonthRes.data.data.month)            
+              
+              setAttend(AttendMonthRes.data.data)
         }
         loadData()
     },[])
