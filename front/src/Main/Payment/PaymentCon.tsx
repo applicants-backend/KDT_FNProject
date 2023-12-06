@@ -92,45 +92,76 @@ export default function PaymentCon () {
     };
 
     return (
-        UserType === "user" ? (
-            <div className="PaymentConWrapUser">
+      UserType === "user" ? (
+        <div className="PaymentConWrapUser">
+
               <div>
-                이번주 급여
-                <div>{PaymentData?.week}</div>
+                <div className="category">
+                  <div className="material-symbols-outlined icon">schedule</div>
+                  <div className="categoryName">이번주 예상 급여</div>
+                </div>
+                <div className="data">{PaymentData?.week} 원</div>
               </div>
 
               <div>
-                이번달 총 급여
-                <div>{PaymentData?.month}</div>
+                <div className="category">
+                    <div className="material-symbols-outlined icon">calendar_clock</div>
+                    <div className="categoryName">이번달 예상 급여</div>
+                </div>
+                <div className="data">{PaymentData?.month} 원</div>
               </div> 
 
-              <div>
-                지난 달에 비해 얼마나 더 벌었지?
+              <div className="category">
+                <div className="material-symbols-outlined icon">more_time</div>
+                <div className="categoryName">지난 달에 비해 </div>
+                <div className="datatext">얼마나 더 벌었지?</div>
               </div>
 
-              <div>
-                <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>{PercentData}%</div>
-                <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>
-                  {Color ? "늘었어요!" : "줄었어요!"}
-                </div>
-              </div>
+              {Color ? (
+            <div className="category">
+                <div className="material-symbols-outlined icon" style={{color : "#45a049"}}>trending_up</div>
+                <div className="data" style={{color : "#45a049"}}>{PercentData} %</div>
+                <div className="data" style={{color : "#45a049" }}>늘었어요!</div>
+            </div>
+            ): 
+            (<div>
+                <div className="material-symbols-outlined icon" style={{color : "rgb(219, 112, 147)"}}>trending_down</div>
+                <div className="data" style={{color : "rgb(219, 112, 147)"}}>{PercentData} %</div>
+                <div className="data" style={{color : "rgb(219, 112, 147)" }}>줄었어요!</div>
+            </div>)}
               
             </div>
           )
           :(
             <div className="PaymentConWrapAdmin">
-              <div>
-                이번달 총 인건비 지출
-                <div>{adminMonth}</div>
-              </div>
 
               <div>
-                <div>지난 달에 비해 얼마나 더 지출했지?</div>
-                <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>{PercentData}%</div>
-                <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>
-                  {Color ? "늘었어요!" : "줄었어요!"}
+                <div className="category">
+                  <div className="material-symbols-outlined icon">schedule</div>
+                  <div className="categoryName">이번달 총 급여</div>
                 </div>
+                <div className="data">{adminMonth} 원</div>
               </div>
+
+              <div className="category">
+                <div className="material-symbols-outlined icon">more_time</div>
+                <div className="categoryName">지난 달에 비해 </div>
+                <div className="datatext">얼마나 더 늘었지?</div>
+              </div>
+
+
+              {Color ? (
+            <div className="category">
+                <div className="material-symbols-outlined icon" style={{color : "#45a049"}}>trending_up</div>
+                <div className="data" style={{color : "#45a049"}}>{PercentData} %</div>
+                <div className="data" style={{color : "#45a049" }}>늘었어요!</div>
+            </div>
+            ): 
+            (<div>
+                <div className="material-symbols-outlined icon" style={{color : "rgb(219, 112, 147)"}}>trending_down</div>
+                <div className="data" style={{color : "rgb(219, 112, 147)"}}>{PercentData} %</div>
+                <div className="data" style={{color : "rgb(219, 112, 147)" }}>줄었어요!</div>
+            </div>)}
 
               <div>
                   알바별 이번달 급여

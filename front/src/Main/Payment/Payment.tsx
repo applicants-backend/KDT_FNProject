@@ -6,10 +6,8 @@ import "./scss/PaymentAllParent.scss";
 
 export default function Payment() {
     return(
-        <div>
-            <div className="PaymentConWrap">
+        <div className="PaymentConWrap">
                 <PaymentCon></PaymentCon>
-            </div>
 
             <div className="PaymentListAndData">
                 <PaymentHistory></PaymentHistory>
