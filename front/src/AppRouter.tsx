@@ -3,22 +3,13 @@ import { BrowserRouter , Route, Routes } from 'react-router-dom'
 import Loginpage from './Login/Loginpage'
 import Register from './Register/Register'
 
-import Profile from './Navi/Profile/Profile'
-import CalendarCon from './Main/Schedule/CalendarCon'
-import WorkCon from './Main/Work/WorkCon'
-import WorkDetail from './WorkDetail/WorkDetail'
-import Payment from './Main/Payment/Payment'
-import App from './App'
-import Attendance from './Main/Attendance/Attendance'
-
-
 import MainPage from './Main/page/MainPage'
 import FindPw from './findpw/FindPw'
 
 import {Cookies} from 'react-cookie';
 import "./App.css"
 
-
+import axios from 'axios'
 
 
 export default function AppRouter() {
@@ -34,6 +25,7 @@ export default function AppRouter() {
        const token = cookies.get("token");
        if (token !== undefined) {
             // TOKEN 검증 API 필요
+            //axios.post("/tokenValidToken",)
             setIslogin(true);
        }
     }
