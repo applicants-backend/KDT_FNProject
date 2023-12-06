@@ -117,7 +117,6 @@ export default function AttendanceHistory () {
     }
 
 
-
     return (
       <div className="History">
 

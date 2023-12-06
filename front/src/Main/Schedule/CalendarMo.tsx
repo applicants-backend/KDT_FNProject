@@ -7,6 +7,7 @@ import UserTypeState, {
   WorkerListState,
 } from "../../Store/Store";
 import axios from "axios";
+import "./scss/calendarMoStyle.scss";
 
 interface CalendarMoProps {
   isOpen: boolean;
@@ -16,32 +17,16 @@ interface CalendarMoProps {
   selectedDate: Date | null;
 }
 
-const ModalContainer = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 20px;
-  width: 50vh;
-  height: 50vh;
-  z-index: 1000;
+const DateTimeLabel = styled.label`
+  margin-bottom: 5px;
+  font-weight: bold;
 `;
 
-const ModalHeader = styled.h2`
-  margin-bottom: 10px;
-`;
-
-const ModalContent = styled.p`
-  margin-bottom: 20px;
-`;
-
-const CloseButton = styled.button`
-  background-color: #3498db;
-  color: white;
-  padding: 10px;
-  cursor: pointer;
+const DateTimeInput = styled.input`
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 `;
 
 function CalendarMo({
@@ -53,7 +38,8 @@ function CalendarMo({
 }: CalendarMoProps) {
   const [start, setStart] = useState<string>("");
   const [end, setEnd] = useState<string>("");
-  const [startwork, setStartWork] = useState<string>("");
+  const [gowork, setGowork] = useState<string>("");
+  // const [gowork, setgowork] = useState<string>("");
   const [leavework, setLeaveWork] = useState<string>("");
   const [wage, setWage] = useState<string>("");
   const [additionalContent, setAdditionalContent] = useState<string>("");
@@ -62,23 +48,42 @@ function CalendarMo({
   const { Storeid, Memberid, Name } = UserDataState((state) => state);
 
   const { WorkerList } = WorkerListState((state) => state);
-  // const [worker, setWorker] = useState<string>(Object.keys(WorkerList)[0]);
-  const [worker, setWorker] = useState<string>("");
+  const [worker, setWorker] = useState<string>(Object.keys(WorkerList)[0]);
+  // const [worker, setWorker] = useState<string>("");
   const { URL } = URLstate((state) => state);
+
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {});
 
   async function adminAdditonalPost() {
     console.log("Worker in adminAdditonalPost:", worker); // 디버깅용 콘솔 로그
     console.log("WorkerList : ", WorkerList);
-    console.log("안녕하세요");
+
+    // const start = (start: string) => {
+    //   // 입력된 문자열을 Date 객체로 파싱합니다.
+    //   const localTime = new Date(start);
+    //   // const utcTime2 = localTime.toUTCString();
+    //   // const utcTime3 = localTime.getTimezoneOffset();
+    //   const newDate = localTime.toISOString().slice(0, 16);
+
+    //   // 로컬 시간을 UTC로 변환합니다.
+    //   // const utcTime = new Date(
+    //   //   localTime.getTime() - localTime.getTimezoneOffset() * 60000
+    //   // );
+
+    //   // UTC로 변환된 시간을 setStart에 설정합니다.
+    //   setStart(newDate);
+    // };
+    const newStart = new Date(start);
+    const utcStart = newStart.toISOString().slice(0, 16);
 
     // axios.post(`${URL}/admin/attendance`)
     console.log("Data sent from CalendarMo:", {
       member: Memberid,
       storeid: Storeid,
       worker: worker,
-      startwork: startwork,
+      gowork: gowork,
       leavework: leavework,
       start: start,
       end: end,
@@ -88,9 +93,9 @@ function CalendarMo({
       memberid: Memberid,
       storeid: Storeid,
       worker: worker,
-      start: start,
+      start: utcStart,
       end: end,
-      startwork: startwork,
+      gowork: gowork,
       leavework: leavework,
       wage: wage,
     };
@@ -100,70 +105,25 @@ function CalendarMo({
       worker: worker,
       start: start,
       end: end,
-      startwork: startwork,
+      gowork: gowork,
       leavework: leavework,
       wage: wage,
     });
     try {
       console.log("데이터 전송 요청");
-      const res = await axios.post(
-        `${URL}/admin/attendance/create`,
-        sendAdminData
-      );
+      // const res = await axios.post(
+      //   `${URL}/admin/attendance/create`,
+      //   sendAdminData
+      // );
       console.log("sendAdminData : ", sendAdminData);
-      console.log("res : ", res);
+      // console.log("res : ", res);
       // window.location.reload();
     } catch (error) {
       console.log("에러 발생");
     }
     setAdditionalContent("추가 작업이 수행되었습니다.");
-  }
-
-  async function userAdditonalPost() {
-    console.log("유저 additional post 입니다");
-
-    const sendUserData = {
-      memberid: Memberid,
-      storeid: Storeid,
-      worker: worker,
-      start: start,
-      end: end,
-      startwork: startwork,
-      leavework: leavework,
-      wage: wage,
-    };
-    // try {
-    //   const patchData = await axios.patch(
-    //     `${URL}/user/attendance/update`,
-    //     sendUserData
-    //   );
-    //   console.log(patchData.data);
-    // } catch (error) {
-    //   console.log("에러 발생");
-    // }
-    // axios.post(`${URL}/admin/attendance`);
-    console.log("Data sent from CalendarMo:", {
-      member: Memberid,
-      storeid: Storeid,
-      worker: worker,
-      startwork: startwork,
-      leavework: leavework,
-      start: start,
-      end: end,
-      wage: wage,
-    });
-    sendDataToCon({
-      member: Memberid,
-      storeid: Storeid,
-      worker: worker,
-      start: start,
-      end: end,
-      startwork: startwork,
-      leavework: leavework,
-      wage: wage,
-    });
-
-    setAdditionalContent("추가 작업이 수행되었습니다.");
+    closeModal();
+    // window.location.reload();
   }
 
   const eventDetails = selectedEvent ? (
@@ -171,18 +131,14 @@ function CalendarMo({
       <p>근무자 : {selectedEvent.title}</p>
       <p>사장님이 등록한 출근시간 : {selectedEvent.start?.toLocaleString()}</p>
       <p>사장님이 등록한 퇴근시간 : {selectedEvent.end?.toLocaleString()}</p>
-      <p>
-        근무자가 입력한 출근시간 : {selectedEvent.startwork?.toLocaleString()}
-      </p>
+      <p>근무자가 입력한 출근시간 : {selectedEvent.gowork?.toLocaleString()}</p>
       <p>
         근무자가 입력한 퇴근시간 : {selectedEvent.leavework?.toLocaleString()}
       </p>
+      <p>시급 : {selectedEvent.wage}</p>
+      {UserType === "admin" && <button onClick={handleDelete}>삭제하기</button>}
     </>
   ) : null;
-
-  function handleUpdate() {
-    // 수정 로직 추가
-  }
 
   async function handleDelete(arg: any) {
     console.log("selectedEvent", selectedEvent);
@@ -200,7 +156,7 @@ function CalendarMo({
         worker: worker,
         start: start,
         end: end,
-        startwork: startwork,
+        gowork: gowork,
         leavework: leavework,
         attendid: attendid,
         wage: wage,
@@ -220,6 +176,8 @@ function CalendarMo({
       // 선택된 이벤트가 없을 경우 에러 메시지를 설정합니다.
       setAdditionalContent("삭제할 이벤트가 선택되지 않았습니다.");
     }
+    closeModal();
+    window.location.reload();
   }
 
   const defaultDate = selectedDate
@@ -227,6 +185,72 @@ function CalendarMo({
         .toISOString()
         .slice(0, 16)
     : ""; // 선택된 날짜가 있을 때는 하루를 더한 값을, 없을 때는 빈 문자열을 기본값으로 설정
+
+  const newDefaultDate = selectedDate
+    ? (() => {
+        const nextDay = new Date(selectedDate.getTime());
+        const year = nextDay.getFullYear();
+        const month = String(nextDay.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 1을 더하고 두 자리로 패딩
+        const day = String(nextDay.getDate()).padStart(2, "0"); // 날짜를 두 자리로 패딩
+        return `${year}년 ${month}월 ${day}일`;
+      })()
+    : "";
+
+  const newSelectedDate = selectedEvent
+    ? (() => {
+        if (typeof selectedEvent.start === "string") {
+          // start가 string인 경우 처리
+          return selectedEvent.start;
+        } else {
+          // start가 Date인 경우 처리
+          const startDate = selectedEvent.start as Date;
+          const year = startDate.getFullYear();
+          const month = String(startDate.getMonth() + 1).padStart(2, "0");
+          const day = String(startDate.getDate()).padStart(2, "0");
+          return `${year}년 ${month}월 ${day}일`;
+        }
+      })()
+    : "";
+
+  const newEventDefaultDateStart = selectedEvent
+    ? (() => {
+        if (typeof selectedEvent.start === "string") {
+          return selectedEvent.start;
+        } else {
+          const startDate = selectedEvent.start as Date | null;
+          if (startDate) {
+            const year = startDate.getFullYear();
+            const month = String(startDate.getMonth() + 1).padStart(2, "0");
+            const day = String(startDate.getDate()).padStart(2, "0");
+            return `${year}-${month}-${day}T${startDate
+              .toTimeString()
+              .slice(0, 5)}`;
+          } else {
+            return "";
+          }
+        }
+      })()
+    : "";
+
+  const newEventDefaultDateEnd = selectedEvent
+    ? (() => {
+        if (typeof selectedEvent.end === "string") {
+          return selectedEvent.end;
+        } else {
+          const endDate = selectedEvent.end as Date | null;
+          if (endDate) {
+            const year = endDate.getFullYear();
+            const month = String(endDate.getMonth() + 1).padStart(2, "0");
+            const day = String(endDate.getDate()).padStart(2, "0");
+            return `${year}-${month}-${day}T${endDate
+              .toTimeString()
+              .slice(0, 5)}`;
+          } else {
+            return "";
+          }
+        }
+      })()
+    : "";
 
   const renderAdminForm = () => (
     <>
@@ -246,15 +270,15 @@ function CalendarMo({
           })}
       </select>
 
-      <label htmlFor="start">출근 시간 : </label>
-      <input
+      <DateTimeLabel htmlFor="start">출근 시간 : </DateTimeLabel>
+      <DateTimeInput
         type="datetime-local"
         id="start"
         value={start || defaultDate}
         onChange={(e) => setStart(e.target.value)}
       />
-      <label htmlFor="end">퇴근 시간 : </label>
-      <input
+      <DateTimeLabel htmlFor="end">퇴근 시간 : </DateTimeLabel>
+      <DateTimeInput
         type="datetime-local"
         id="end"
         value={end || defaultDate}
@@ -268,32 +292,6 @@ function CalendarMo({
     </>
   );
 
-  // async function getCurrentTimeStart(arg: any) {
-  //   const now = new Date();
-  //   const formattedTime = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
-  //   setStartWork(formattedTime);
-  //   if (selectedEvent && selectedEvent.attendid) {
-  //     const attendid = selectedEvent.attendid;
-  //   }
-  //   const sendUserData = {
-  //     memberid: Memberid,
-  //     storeid: Storeid,
-  //     worker: worker,
-  //     start: start,
-  //     end: end,
-  //     startwork: startwork,
-  //     leavework: leavework,
-  //     wage: wage,
-  //     attendid: selectedEvent?.attendid,
-  //   };
-  //   console.log("setStawrkWork : ", sendUserData);
-  //   try {
-  //     await axios.patch(`${URL}/user/attendance/gowork`, sendUserData);
-  //   } catch (error) {
-  //     console.error("gowork 도중에 오류발생 :", error);
-  //   }
-  // }
-
   async function getCurrentTimeStart(arg: any) {
     console.log("selectedEvent", selectedEvent);
 
@@ -304,8 +302,9 @@ function CalendarMo({
 
       // 시간 설정하기
       const now = new Date();
+      const nowDate = new Date(now);
       const formattedTime = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
-      setStartWork(formattedTime);
+      setGowork(now.toLocaleDateString());
 
       const sendUserData = {
         memberid: Memberid,
@@ -313,20 +312,32 @@ function CalendarMo({
         worker: Memberid,
         start: start,
         end: end,
-        startwork: formattedTime,
+        gowork: formattedTime,
         leavework: leavework,
         attendid: attendid,
         wage: selectedEvent.wage,
       };
       sendDataToCon({
-        member: Memberid,
+        memberid: Memberid,
         storeid: Storeid,
-        worker: worker,
+        worker: Memberid,
         start: start,
         end: end,
-        startwork: startwork,
+        gowork: nowDate,
         leavework: leavework,
-        wage: wage,
+        attendid: attendid,
+        wage: selectedEvent.wage,
+      });
+      console.log("Data sent to GetCurrentStart :", {
+        memberid: Memberid,
+        storeid: Storeid,
+        worker: Memberid,
+        start: start,
+        end: end,
+        gowork: nowDate,
+        leavework: leavework,
+        attendid: attendid,
+        wage: selectedEvent.wage,
       });
       try {
         console.log("gowork 요청중");
@@ -336,6 +347,8 @@ function CalendarMo({
           sendUserData
         );
         console.log("res : ", res);
+        console.log("sendUserDate : ", sendUserData);
+        console.log("sendDataToCon : ", sendDataToCon);
       } catch (error) {
         console.error("gowork 요청 중 오류 발생:", error);
       }
@@ -343,6 +356,8 @@ function CalendarMo({
       // 선택된 이벤트가 없을 경우 에러 메시지를 설정합니다.
       setAdditionalContent("이벤트가 선택되지 않았습니다.");
     }
+    closeModal();
+    // window.location.reload();
   }
 
   async function getCurrentTimeEnd() {
@@ -364,20 +379,21 @@ function CalendarMo({
         worker: Memberid,
         start: start,
         end: end,
-        startwork: startwork,
+        gowork: gowork,
         leavework: formattedTime,
         attendid: attendid,
         wage: selectedEvent.wage,
       };
       sendDataToCon({
-        member: Memberid,
+        memberid: Memberid,
         storeid: Storeid,
-        worker: worker,
+        worker: Memberid,
         start: start,
         end: end,
-        startwork: startwork,
-        leavework: leavework,
-        wage: wage,
+        gowork: gowork,
+        leavework: formattedTime,
+        attendid: attendid,
+        wage: selectedEvent.wage,
       });
       try {
         console.log("leavework 요청중");
@@ -394,35 +410,27 @@ function CalendarMo({
       // 선택된 이벤트가 없을 경우 에러 메시지를 설정합니다.
       setAdditionalContent("이벤트가 선택되지 않았습니다.");
     }
+    closeModal();
+    window.location.reload();
   }
 
   const renderUserForm = () => (
     <>
-      <label htmlFor="worker">근무자 : {worker}</label>
-      <label htmlFor="startwork">출근 시간 : {startwork}</label>
-      <button type="button" onClick={getCurrentTimeStart}>
-        출근 시간 저장하기
-      </button>
-      <label htmlFor="leavework">퇴근 시간 : {leavework}</label>
-      <button type="button" onClick={getCurrentTimeEnd}>
-        퇴근 시간 저장하기
-      </button>
-      <label htmlFor="wage">시급 : {wage}</label>
+      <div>등록은 사장님만 가능합니다.</div>
     </>
   );
 
   const adminEventForm = () => (
     <>
       {/* <label htmlFor="worker">근무자 : {worker}</label>
-      <label htmlFor="startwork">근무자가 입력한 출근 시간 : {startwork}</label>
+      <label htmlFor="gowork">근무자가 입력한 출근 시간 : {gowork}</label>
       <label htmlFor="leavework">퇴근 시간 : {leavework}</label> */}
     </>
   );
 
   const userEventForm = () => (
     <>
-      {/* <label htmlFor="worker">근무자 : {worker}</label> */}
-      <label htmlFor="startwork">출근 시간 : {startwork}</label>
+      <label htmlFor="gowork">출근 시간 : {gowork}</label>
       <button type="button" onClick={getCurrentTimeStart}>
         출근
       </button>
@@ -430,35 +438,138 @@ function CalendarMo({
       <button type="button" onClick={getCurrentTimeEnd}>
         퇴근
       </button>
-      {/* <button type="button" onClick={userAdditonalPost}>
-        저장하기
-      </button> */}
-      {/* <label htmlFor="wage">시급 : {wage}</label> */}
+    </>
+  );
+
+  const handleEdit = () => {
+    setEditMode(true);
+  };
+
+  async function handleUpdate(arg: any) {
+    if (selectedEvent && selectedEvent.attendid) {
+      const attendid = selectedEvent.attendid;
+
+      const updateData = {
+        memberid: Memberid,
+        storeid: Storeid,
+        worker: worker,
+        start: start,
+        end: end,
+        gowork: gowork,
+        leavework: leavework,
+        attendid: attendid,
+        wage: wage,
+      };
+      console.log("Data sent by update :", {
+        memberid: Memberid,
+        storeid: Storeid,
+        worker: Memberid,
+        start: start,
+        end: end,
+        gowork: gowork,
+        leavework: leavework,
+        attendid: attendid,
+        wage: wage,
+      });
+      sendDataToCon({
+        memberid: Memberid,
+        storeid: Storeid,
+        worker: Memberid,
+        start: start,
+        end: end,
+        gowork: gowork,
+        leavework: leavework,
+        attendid: attendid,
+        wage: wage,
+      });
+      try {
+        console.log("update 요청중");
+        // UserType에 따라 다른 엔드포인트를 사용할 수 있습니다.
+        const res = await axios.patch(
+          `${URL}/admin/attendance/update`,
+          updateData
+        );
+        console.log("res : ", res);
+      } catch (error) {
+        console.error("update 요청 중 오류 발생:", error);
+      }
+    }
+    setEditMode(false); // 수정 완료 후 editMode를 비활성화
+    closeModal();
+    window.location.reload();
+  }
+
+  const updateForm = () => (
+    <>
+      <label htmlFor="worker">근무자 : {worker}</label>
+      <select
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+          setWorker(e.target.value)
+        }
+      >
+        {WorkerList &&
+          Object.entries(WorkerList).map(([key, value]: [string, string]) => {
+            return (
+              <option key={key} value={key}>
+                {value}
+              </option>
+            );
+          })}
+      </select>
+
+      <label htmlFor="start">출근 시간 : </label>
+      <input
+        type="datetime-local"
+        id="start"
+        value={start || newEventDefaultDateStart}
+        onChange={(e) => setStart(e.target.value)}
+      />
+      <label htmlFor="end">퇴근 시간 : </label>
+      <input
+        type="datetime-local"
+        id="end"
+        value={end || newEventDefaultDateEnd}
+        onChange={(e) => setEnd(e.target.value)}
+      />
+      <label htmlFor="wage">급여 : </label>
+      <input type="text" id="wage" onChange={(e) => setWage(e.target.value)} />
+      <button type="button" onClick={handleUpdate}>
+        수정하기
+      </button>
     </>
   );
 
   return (
     <>
       {isOpen && selectedDate && (
-        <ModalContainer>
-          <ModalHeader>선택된 날짜</ModalHeader>
+        <div className="modal-container">
+          <h2>{newDefaultDate}</h2>
           <form name="RegisterForm">
             {UserType === "admin" ? renderAdminForm() : renderUserForm()}
           </form>
-          <CloseButton onClick={closeModal}>닫기</CloseButton>
-        </ModalContainer>
+          <button className="close-button" onClick={closeModal}>
+            닫기
+          </button>
+        </div>
       )}
+
       {isOpen && selectedEvent && (
-        <ModalContainer>
-          <ModalHeader>선택된 날짜</ModalHeader>
+        <div className="modal-container">
+          <h2>{newSelectedDate}</h2>
           <form name="EventForm">
             {UserType === "admin" ? adminEventForm() : userEventForm()}
           </form>
-          {eventDetails}
-          <ModalContent>{additionalContent}</ModalContent>
-          <button onClick={handleDelete}>삭제하기</button>
-          <CloseButton onClick={closeModal}>닫기</CloseButton>
-        </ModalContainer>
+          {!editMode && eventDetails}
+          <p>{additionalContent}</p>
+
+          {UserType === "admin" && !editMode && (
+            <button onClick={handleEdit}>수정하기</button>
+          )}
+          {editMode && updateForm()}
+          <button className="close-button" onClick={closeModal}>
+            닫기
+          </button>
+        </div>
       )}
     </>
   );

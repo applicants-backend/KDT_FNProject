@@ -158,6 +158,7 @@ export interface CalendarData {
     start?: string | Date | null;
     end?: string | Date | null;
     startwork?: string | Date | null;
+    gowork?: string | Date | null;
     leavework?: string | Date | null;
     registertime?: string | Date | null;
   }
@@ -222,7 +223,7 @@ export const ProfileState = create<Profileinterface>((set)=>({
     setCEO : res => set({CEO : res}),
     setcompanyNumber :res => set({companyNumber : res}),
     setcompanyAddress :res => set({companyAddress : res}),
-    setcompanyToken : res => set({companyToken : res})
+    setcompanyToken : res => set({companyToken : res}),
 }))
 
 interface WorkerListInerface {

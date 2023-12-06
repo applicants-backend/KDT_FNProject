@@ -5,23 +5,25 @@ import React, { useCallback, useState, useRef, useMemo, SyntheticEvent} from "re
 import "./scss/ProfileModal.scss"
 
 export default function ProfileModal() {
-    const {userImg,companyImg,setuserImg, setcompanyImg ,setname, setphonenumber} = ProfileState(state=>state)
+    const {userImg, companyImg, setuserImg, setcompanyImg ,setname, setphonenumber} = ProfileState(state=>state)
 
     const {URL} = URLstate(state=>state)
     const {UserType} = UserTypeState(state => state)
     const {Memberid, Storeid, setName} = UserDataState(state=>state)
 
-    const[userPw, setUserpw]=useState<string>()
-    const[userPwre, setUserpwre]=useState<string>()
+    const[userPw, setUserpw]=useState<string>("")
+    const[userPwre, setUserpwre]=useState<string>("")
 
-    const[userName, setuserName] = useState<string>()
-    const[phoneNumber, setphoneNumber] =useState<string>()
+    const[userName, setuserName] = useState<string>("")
+    const[phoneNumber, setphoneNumber] =useState<string>("")
     
-    const[companyName, setCompanyName] =useState<string>()
-    const[companyNumber, setCompanyNumber] =useState<string>()
-    const[companyAddress, setcompanyAddress] =useState<string>()
-    const[companyToken, setcompanyToken] =useState<string>()
-    const[CEO, setCEO] =useState<string>()
+    const[companyName, setCompanyName] =useState<string>("")
+    const[companyNumber, setCompanyNumber] =useState<string>("")
+    const[companyAddress, setcompanyAddress] =useState<string>("")
+    const[companyToken, setcompanyToken] =useState<string>("")
+    const[CEO, setCEO] =useState<string>("")
+
+    const [email, setEmail] = useState<string>("");
 
     useMemo(()=> {
         ///// 유저데이터 로드
@@ -29,22 +31,22 @@ export default function ProfileModal() {
             const UserRes = await axios.post(`${URL}/detail`,{memberid:Memberid})
             const Userprofile = UserRes.data.data.member
             const Storeprofile = UserRes.data.data.store
-
-            setUserpw(Userprofile.password)
+            setUserpw(Userprofile.password || ""); // 여기 수정
 
             setuserImg(Userprofile.memberimg)
             setuserName(Userprofile.name)
             setphoneNumber(Userprofile.phonenumber)
-
+            setEmail(Userprofile.email)
             setCompanyName(Storeprofile.companyname)
             setCEO(Storeprofile.ceo)
             setCompanyNumber(Storeprofile.companynumber)
             setcompanyAddress(Storeprofile.companyAddress)
             setcompanyImg(Storeprofile.companyimg)
             setcompanyToken(Storeprofile.companToken)
+          
         }
         loadUserData()
-    },[Memberid,URL,])
+    },[Memberid,URL])
 
     ///// 유효성 검사 메세지들
     const [pwMes,setpwMes] = useState<String>()
@@ -90,12 +92,15 @@ export default function ProfileModal() {
     ///// 업데이트 시 빈값 보내지 않기위한 장치
     const pwInputRef = useRef<HTMLInputElement | null>(null);
     const repwInputRef = useRef<HTMLInputElement | null>(null);
+    const emailInputRef = useRef<HTMLInputElement | null>(null);
     const nameInputRef = useRef<HTMLInputElement | null>(null);
     const phoneNumberInputRef = useRef<HTMLInputElement | null>(null);
 
     const UpdateMemberData = async () => {
         /////// 빈값에 focus 
         ////// 공통
+
+       
         if (!userPw) {
             pwInputRef.current && pwInputRef.current.focus();
             return;
@@ -112,6 +117,12 @@ export default function ProfileModal() {
             phoneNumberInputRef.current && phoneNumberInputRef.current.focus();
             return;
         }   
+
+        if (!email) {
+            emailInputRef.current && emailInputRef.current.focus();
+            return;
+        }
+
         ///// 유효성 통과검사
         if(!pwIs){
             pwInputRef.current && pwInputRef.current.focus();
@@ -119,12 +130,16 @@ export default function ProfileModal() {
             return;
         }
 
-        const updateUserdata = await axios.patch(`${URL}/update`,{memberid : Memberid, password : userPw, phonenumber :phoneNumber, name : userName, role : UserType, memberimg :""})
-        setname(userName)
-        setName(userName)
-        setphonenumber(phoneNumber)
+        const updateUserdata = await axios.patch(`${URL}/update`,{memberid : Memberid, password : userPw, email:email, phonenumber :phoneNumber, name : userName, role : UserType, memberimg :""})
         
-        console.log(updateUserdata)
+        if (updateUserdata.data.message === "수정 완료") {
+
+            setname(userName)
+            setName(userName)
+            setphonenumber(phoneNumber)
+            alert("수정 완료");
+        }
+      
     }
      
     const DeleteMemberData = async () => {
@@ -209,7 +224,6 @@ export default function ProfileModal() {
                         alt='profile-image' 
                         onError={defalutImg}/>
                 </div>
-          
                 <div className="profile-image-input"> 
                     <input  id="profileFile" type='file' 
                             accept='image/jpg, impge/png, image/jpeg, image/gif' 
@@ -224,25 +238,32 @@ export default function ProfileModal() {
             <div className="input-box">
                 <div>
                     <label htmlFor="id"> 아이디 : </label>
-                    <input name="memberid" value={Memberid} id="id" placeholder="아이디" readOnly/>
+                    <input name="memberid" value={Memberid ? Memberid : "" } id="id" placeholder="아이디" readOnly/>
                 </div>
 
                 <div>
                     <label htmlFor="pw"> 비밀번호 : </label>
                     <input  name="password" type="password" id="pw"  
-                            autoComplete="new-password" placeholder="비밀번호" ref={pwInputRef} onChange={e=>handlePassWordVail(e)}/>
-                    <div style={{ color: pwIs ? 'green' : 'red' }}>{pwMes}</div>
+                            autoComplete="new-password" 
+                            placeholder="비밀번호" ref={pwInputRef} onChange={ e=> handlePassWordVail(e)}/>
+                    <span style={{ color: pwIs ? 'green' : 'red' }}>{pwMes}</span>
                 </div>
 
                 <div>   
                     <label htmlFor="PWre"> 비밀번호 확인 : </label>
-                    <input name="pwre" type="password" id="PWre" value={userPwre} placeholder="비밀번호 확인" autoComplete="new-password" ref={repwInputRef} onChange={e=>handlePassWordConfirm(e)}/>
-                    <div style={{ color: repwIs ? 'green' : 'red'}}>{repwMes}</div>
+                    <input name="pwre" type="password" id="PWre" 
+                    value={userPwre} placeholder="비밀번호 확인" autoComplete="new-password" ref={repwInputRef} onChange={e=>handlePassWordConfirm(e)}/>
+                    <span style={{ color: repwIs ? 'green' : 'red'}}>{repwMes}</span>
                 </div>
                 
                 <div >
                     <label htmlFor="name"> 이름 : </label>
                     <input name="name" id="name" placeholder="이름" value={userName} ref={nameInputRef} onChange={e=>setuserName(e.target.value)}/>
+                </div>
+
+                <div >
+                    <label htmlFor="email"> 이메일 : </label>
+                    <input name="email" id="email" placeholder="이메일" value={email} ref={emailInputRef} onChange={e=>setEmail(e.target.value)}/>
                 </div>
             
                 <div >
@@ -266,10 +287,6 @@ export default function ProfileModal() {
                         <div >
                             <label htmlFor="companyNumber"> 사업자 번호 : </label>
                             <input name="companyNumber" id="companyNumber" value={companyNumber} placeholder="000-00-00000 형식으로 입력하세요" readOnly/>
-                        </div>
-                        <div >
-                            <label htmlFor="companyAddress"> 사업자 주소 : </label>
-                            <input name="companyAddress" id="companyAddress" value={companyAddress} readOnly/>
                         </div>
                     </> 
                 :

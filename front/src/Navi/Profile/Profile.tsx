@@ -4,8 +4,7 @@ import axios from "axios"
 import "./scss/Profile.scss"
 
 import ReactModal from "react-modal"
-
-import customModalStyles from "./scss/Modal"
+import inviteModalStyles from './scss/InviteModal';
 
 interface profileProps {
     setmodalOpenis?:React.Dispatch<React.SetStateAction<boolean>>;
@@ -67,33 +66,39 @@ export default function Profile ({setmodalOpenis, logout}:profileProps):ReturnTy
     }
 
     return (
+        
         <div className="profile">
-            
+            <div className="profile-line"></div>
             <div className="profile-img">
+                
                 <img src={UserType ==="admin" ? companyImg === null ? "" : companyImg : userImg === null ? "" : userImg } 
                         alt='profile-image' 
                         onError={defalutImg}/>
             </div>
+            
             <div className="profile-info">
-                <p> Name : {name}</p>
-                <p> Phone : {phonenumber}</p>
-                <p> Company : {companyName}</p>
+                <p className="profile-name"> {name}</p>
+                {/* <p> {phonenumber}</p> */}
+                <p className="profile-companyName"> {companyName}</p>
                 {UserType === "admin" ?  <p> Number : {companyNumber}</p> : <></>}
             </div>
-
+            <div className="profile-line"></div>
             <div className="profile-icon-box" >
                 { UserType === "admin" ? 
                     <div className="invite-icon" onClick={(e)=>{setInviteModal(true)}}>
-                        <img src={"https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/invitation_icon.png"} alt="icon" />
+                      <span className="material-symbols-outlined">vpn_key</span>
+                        {/* <img src={"https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/invitation_icon.png"} alt="icon" /> */}
                     </div>
                     :
                     <></>
                 }
                 <div className="profile-icon" onClick={(e)=>{editProfle()}}>
-                    <img src={"https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/edit_icon.png"} alt="edit_icon" />
+                    <span className="material-symbols-outlined">settings</span>
+                    {/* <img src={"https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/edit_icon.png"} alt="edit_icon" /> */}
                 </div>
                 <div className="logout-icon" onClick={() => {if (logout) logout()}}>
-                    <img src={"https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/shutdown_icon.png"} alt="shutdown_icon" />
+                <span className="material-symbols-outlined">logout</span>
+                    {/* <img src={"https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/shutdown_icon.png"} alt="shutdown_icon" /> */}
                 </div>
             </div>
           
@@ -104,11 +109,30 @@ export default function Profile ({setmodalOpenis, logout}:profileProps):ReturnTy
                     overlayClassName= "invite-modal"
                     ariaHideApp={false}
                     shouldCloseOnOverlayClick={true}
-                    style={customModalStyles}
+                    style={inviteModalStyles}
                 >
-                <div className="">
-                    <div >{Token}</div>
-                    <button onClick={(e)=>CodeGenerater()}>초대코드 발급</button>
+                <div style={{
+                    width : "100%",
+                    height: "100%",
+                    display : "flex", alignItems:"center",
+                    textAlign:"center"
+                }}>
+                <div style={{
+                    width:"80%",
+                    margin:"auto"
+                }}>
+                    <div style={{
+                            width: "100%",
+                            height: "50px",
+
+                    }}>
+                        {Token}
+                    </div>
+                    <button  
+                        style={{backgroundColor:"rgb(94, 53, 177)", color:"#fff", padding:"0.3em", borderColor:"#eee"}}
+                     onClick={(e)=>CodeGenerater()}>초대코드 발급</button>
+                </div>
+        
                 </div>
             </ReactModal>
 

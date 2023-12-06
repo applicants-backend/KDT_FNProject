@@ -1,5 +1,5 @@
 .HistoryCompo {
-    background-color: #fff;
+    background-color:rgb(238, 242, 246);
     border-radius: 10px;
     padding: 1rem;
     display: flex;
@@ -10,9 +10,6 @@
     color: rgb(54, 65, 82);
     font-size: small;
     margin-bottom: 5px;
-
-  
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
     transition: transform 0.3s ease-in-out;
   
     &:hover {
@@ -45,7 +42,7 @@
     height: 34px;
     align-items: center;
     justify-content: center;
-    color: rgb(219, 112, 147);
+    color: #aaa
   }
   
   .Confirm {
@@ -56,5 +53,16 @@
     justify-content: center;
     color: #45a049;
   }
-   
+  
+  .unAttendace{
+    display: flex;
+    width: 56px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    color: rgb(219, 112, 147);
+  }
+  .Unwork {
+    color: #aaa;
+  }
 }

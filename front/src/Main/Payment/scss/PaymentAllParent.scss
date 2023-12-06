@@ -3,7 +3,6 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
-      gap: 10px;
       height: 400px;
       width: 100%;
     
@@ -12,9 +11,6 @@
           grid-row: 1 / span 2;
         }
         > div:nth-child(2) {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             grid-column: 2 / span 2; 
             grid-row: 1 / span 2;
         }

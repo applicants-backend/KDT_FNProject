@@ -136,6 +136,7 @@ export default function RegiInformation (): ReturnType<FC> {
     const repwInputRef = useRef<HTMLInputElement | null>(null);
     const nameInputRef = useRef<HTMLInputElement | null>(null);
     const phoneNumberInputRef = useRef<HTMLInputElement | null>(null);
+    const emailInputRef = useRef<HTMLInputElement | null>(null);
     const companyNameInputRef = useRef<HTMLInputElement | null>(null);
     const CEOInputRef = useRef<HTMLInputElement | null>(null);
     const companyNumberInputRef = useRef<HTMLInputElement | null>(null);
@@ -167,14 +168,15 @@ export default function RegiInformation (): ReturnType<FC> {
             return;
         }
 
-        setNextStage(true)
+        if (duplicate)  setNextStage(true)
+     
     }
 
     const Register = async () => {
         /////// 빈값에 focus 
         ////// 공통
         if (!userForm.email) {
-            phoneNumberInputRef.current && phoneNumberInputRef.current.focus();
+            emailInputRef.current && emailInputRef.current.focus();
             return;
         }
 
@@ -198,10 +200,6 @@ export default function RegiInformation (): ReturnType<FC> {
                 companyNumberInputRef.current && companyNumberInputRef.current.focus();
                 return;
             }
-            // if (!userForm.companyAddress) {
-            //     companyAddressInputRef.current && companyAddressInputRef.current.focus();
-            //     return;
-            // }
         }      
         ///// 유효성 통과검사
         if(!duplicate){
@@ -315,7 +313,7 @@ export default function RegiInformation (): ReturnType<FC> {
                         <input name="email" id="email" placeholder="이메일" 
                                 onFocus={(e) => onfocusBluer(e,"focus")}
                                 onBlur={(e) => onfocusBluer(e,"blur")}
-                                //ref={companyNameInputRef} onChange={InputHandle}
+                                ref={emailInputRef} onChange={InputHandle}
                                 />
                     </div>
                     {usertype === "admin" ? (
@@ -345,14 +343,6 @@ export default function RegiInformation (): ReturnType<FC> {
                                         onBlur={(e) => onfocusBluer(e,"blur")}
                                         ref={companyNumberInputRef} onChange={e=>handleCompanyNumber(e)}/>
                                 <span className="warning_text-span" style={{ color: companyNumIs ? 'green' : 'red' }}>{companyNum}</span>
-                            </div>
-
-                            <div className="input-label">
-                                <label htmlFor="companyAddress"> 사업자 주소 : </label>
-                                <input name="companyAddress" id="companyAddress"        
-                                        onFocus={(e) => onfocusBluer(e, "focus")}
-                                        onBlur={(e) => onfocusBluer(e, "blur")}
-                                        ref={companyAddressInputRef} onChange={InputHandle}/>
                             </div>
 
                         </> 

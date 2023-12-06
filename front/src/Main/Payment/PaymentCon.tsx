@@ -54,7 +54,8 @@ export default function PaymentCon () {
                 setLabel(adminMonthDataRes.data.data.content.slice(-5).map((value:valueinterface)=> value.month))
                 setData(adminMonthDataRes.data.data.content.slice(-5).map((value:valueinterface)=> value.sum))
 
-                const adminMonthRes = await axios.post(`${URL}/admin/allpayment`,{memberid: Memberid,month})
+                const adminMonthPostRes = await axios.post(`${URL}/admin/allpayment`,{memberid: Memberid,month})
+                const adminMonthRes = await axios.get(`${URL}/admin/allpayment/${Memberid}/${month}`)
                 const adminEachRes = await axios.get(`${URL}/admin/each/${Memberid}/${month}`)
                 const CompareDataRes = await axios.post(`${URL}/admin/percent`, {memberid: Memberid,month})
                 console.log(adminEachRes.data.data)
@@ -108,7 +109,7 @@ export default function PaymentCon () {
               </div>
 
               <div>
-                <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>{PercentData} %</div>
+                <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>{PercentData}%</div>
                 <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>
                   {Color ? "늘었어요!" : "줄었어요!"}
                 </div>
@@ -124,6 +125,14 @@ export default function PaymentCon () {
               </div>
 
               <div>
+                <div>지난 달에 비해 얼마나 더 지출했지?</div>
+                <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>{PercentData}%</div>
+                <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>
+                  {Color ? "늘었어요!" : "줄었어요!"}
+                </div>
+              </div>
+
+              <div>
                   알바별 이번달 급여
                   {adminEach &&
                   Object.entries(adminEach).map(([key, value]: [string, string]) => {
@@ -134,17 +143,6 @@ export default function PaymentCon () {
                       </div>
                     );
                   })}
-              </div>  
-
-              <div>
-                지난 달에 비해 얼마나 더 지출했지?
-              </div>
-
-              <div>
-                <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>{PercentData}</div>
-                <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>
-                  {Color ? "늘었어요!" : "줄었어요!"}
-                </div>
               </div>
 
               <div>

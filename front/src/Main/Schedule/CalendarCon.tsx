@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import { EventApi } from "@fullcalendar/core";
 import CalendarMo from "./CalendarMo";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -136,7 +137,7 @@ function CalendarCon(props: CalendarConProps) {
   });
 
   const [worker, setWorker] = useState<string>("");
-  const [startwork, setStartWork] = useState<string>("");
+  const [gowork, setowork] = useState<string>("");
   const [leavework, setLeaveWork] = useState<string>("");
 
   const { UserType } = UserTypeState((state) => state);
@@ -222,16 +223,15 @@ function CalendarCon(props: CalendarConProps) {
               );
 
         const eventsArray = calendarData.data.data.map((item: CalendarData) => {
-          const workerName = WorkerList[item.worker];
+          const workerName =
+            UserType === "admin" ? WorkerList[item.worker] : Name;
+          // const workerName = WorkerList[item.worker];
 
-          const start: Date =
-            UserType === "admin"
-              ? new Date(item.start as string)
-              : new Date(item.startwork as string);
-          const end: Date =
-            UserType === "admin"
-              ? new Date(item.end as string)
-              : new Date(item.leavework as string);
+          const start: Date = new Date(item.start as string);
+          const newStart = start.toLocaleString().slice(0, 16);
+          const end: Date = new Date(item.end as string);
+          const gowork: Date = new Date(item.gowork as string);
+          const leavework: Date = new Date(item.leavework as string);
 
           return {
             title: workerName ? workerName : item.worker,
@@ -240,6 +240,8 @@ function CalendarCon(props: CalendarConProps) {
             attendid: item.attendid,
             wage: item.wage,
             worker: item.worker,
+            gowork: gowork,
+            leavework: leavework,
           };
         });
 
@@ -268,12 +270,18 @@ function CalendarCon(props: CalendarConProps) {
               );
 
         const eventsArray = calendarData.data.data.map((item: CalendarData) => {
-          const workerName = WorkerList[item.worker];
+          const workerName =
+            UserType === "admin" ? WorkerList[item.worker] : Name;
+          const start: Date | null = item.start ? new Date(item.start) : null;
+          const newStart = start ? start.toLocaleString().slice(0, 16) : null;
 
-          const start: Date = new Date(item.start as string);
-          const end: Date = new Date(item.end as string);
-          const startwork: Date = new Date(item.startwork as string);
-          const leavework: Date = new Date(item.leavework as string);
+          const end: Date | null = item.end ? new Date(item.end) : null;
+          const gowork: Date | null = item.gowork
+            ? new Date(item.gowork)
+            : null;
+          const leavework: Date | null = item.leavework
+            ? new Date(item.leavework)
+            : null;
           return {
             title: workerName ? workerName : item.worker,
             start: start,
@@ -281,7 +289,7 @@ function CalendarCon(props: CalendarConProps) {
             attendid: item.attendid,
             wage: item.wage,
             worker: item.worker,
-            startwork: startwork,
+            gowork: gowork,
             leavework: leavework,
           };
         });
@@ -310,10 +318,10 @@ function CalendarCon(props: CalendarConProps) {
 
     // 출근 시간을 이벤트 시작 시간으로 사용
     // 퇴근 시간을 이벤트 종료 시간으로 사용
-    const end = new Date(data.end);
-    const start = new Date(data.start);
-    const startwork = new Date(data.startwork);
-    const leavework = new Date(data.leavework);
+    const end = data.end !== "" ? new Date(data.end) : null;
+    const start = data.start !== "" ? new Date(data.start) : null;
+    const gowork = data.gowork !== "" ? new Date(data.gowork) : null;
+    const leavework = data.leavework !== "" ? new Date(data.leavework) : null;
     const wage = data.wage;
     const worker = data.worker;
 
@@ -323,16 +331,38 @@ function CalendarCon(props: CalendarConProps) {
       end: end,
       wage: wage,
       worker: worker,
-      startwork: startwork,
+      gowork: gowork,
       leavework: leavework,
     };
 
-    setEvents([...events, newEvent]);
+    // setEvents([...events, newEvent]);
+    updateEvent(newEvent);
+  }
+  function updateEvent(newEvent: any) {
+    // attendid가 같은 이벤트 찾기
+    const updatedEvents = events.map((event: any) => {
+      if (event.attendid === newEvent.attendid) {
+        return { ...event, ...newEvent }; // attendid가 같으면 업데이트
+      }
+      return event;
+    });
+
+    console.log("Updated Events:", updatedEvents);
+
+    setEvents(updatedEvents); // 업데이트된 이벤트로 상태 업데이트
   }
 
+  // gowork , leavework
+
   function handleEventClick(arg: any) {
+    console.log("selectedEvent : ", selectedEvent);
+    console.log("Click Event Extended Props:", arg.event.extendedProps);
+
+    // 확인용으로 arg.event 출력
+    console.log("arg.event:", arg.event);
+
     const clickedEvent = arg.event.extendedProps;
-    const attendid = clickedEvent.attendid; // attendid 가져오기
+    const attendid = clickedEvent.attendid;
     const worker = clickedEvent.worker;
 
     if (UserType === "admin") {
@@ -341,6 +371,31 @@ function CalendarCon(props: CalendarConProps) {
       // console.log(events);
       // const clickedEvent = arg.event.extendedProps;
       // console.log(clickedEvent);
+      const timezoneOffset = 9 * 60; // 한국은 UTC+9
+
+      const goworkValue = arg.event.extendedProps.gowork;
+      const leaveworkValue = arg.event.extendedProps.leavework;
+
+      const newGowork = arg.event.extendedProps.gowork.toUTCString();
+      const utcDateGowork = new Date(newGowork);
+      const localTimeGowork = new Date(
+        utcDateGowork.getTime() + timezoneOffset * 60 * 1000
+      );
+      // 한국 로컬 시간으로 변환
+      const localTimeStringStart = goworkValue
+        ? localTimeGowork.toLocaleString("ko-KR")
+        : null;
+
+      const newLeavework = arg.event.extendedProps.leavework.toUTCString();
+      const utcDateLeavework = new Date(newLeavework);
+      const localTimeLeavework = new Date(
+        utcDateLeavework.getTime() + timezoneOffset * 60 * 1000
+      );
+      // 한국 로컬 시간으로 변환
+      const localTimeStringLeave = leaveworkValue
+        ? localTimeLeavework.toLocaleString("ko-KR")
+        : null;
+
       setSelectedEvent({
         title: arg.event.title,
         start: arg.event.start,
@@ -348,8 +403,16 @@ function CalendarCon(props: CalendarConProps) {
         attendid: attendid, // attendid 추가
         wage: arg.event.wage,
         worker: worker,
-        startwork: arg.event.startwork,
-        leavework: arg.event.leavework,
+        gowork:
+          arg.event.extendedProps.gowork ==
+          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+            ? null
+            : localTimeStringStart,
+        leavework:
+          arg.event.extendedProps.leavework ==
+          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+            ? null
+            : localTimeStringLeave,
         // 이벤트에서 가져와야 하는 다른 속성들을 추가할 수 있습니다.
       });
       const extendedProps = arg.event.extendedProps;
@@ -362,6 +425,24 @@ function CalendarCon(props: CalendarConProps) {
       // }
       console.log("extendedProps : ", extendedProps);
     } else {
+      const timezoneOffset = 9 * 60; // 한국은 UTC+9
+
+      const newGowork = arg.event.extendedProps.gowork.toUTCString();
+      const utcDateGowork = new Date(newGowork);
+      const localTimeGowork = new Date(
+        utcDateGowork.getTime() + timezoneOffset * 60 * 1000
+      );
+      // 한국 로컬 시간으로 변환
+      const localTimeStringStart = localTimeGowork.toLocaleString("ko-KR");
+
+      const newLeavework = arg.event.extendedProps.leavework.toUTCString();
+      const utcDateLeavework = new Date(newLeavework);
+      const localTimeLeavework = new Date(
+        utcDateLeavework.getTime() + timezoneOffset * 60 * 1000
+      );
+      // 한국 로컬 시간으로 변환
+      const localTimeStringLeave = localTimeLeavework.toLocaleString("ko-KR");
+
       setEventModalOpen(true);
       setDateModalOpen(false); // 모달이 열릴 때 다른 모달은 닫아줍니다.)
       setSelectedEvent({
@@ -369,17 +450,83 @@ function CalendarCon(props: CalendarConProps) {
         start: arg.event.start,
         end: arg.event.end,
         attendid: attendid,
-        wage: arg.event.wage,
+        wage: arg.event.extendedProps.wage,
         worker: worker,
-        startwork: arg.event.startwork,
-        leavework: arg.event.leavework,
+        gowork:
+          arg.event.extendedProps.gowork ==
+          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+            ? null
+            : localTimeStringStart,
+        leavework:
+          arg.event.extendedProps.leavework ==
+          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+            ? null
+            : localTimeStringLeave,
       });
-      console.log(events);
-      const clickedEvent = arg.event.extendedProps;
-      console.log(clickedEvent);
-      console.log("Click Event Extended Props:", arg.event.extendedProps);
     }
   }
+  const handleEdit = () => {
+    window.location.reload();
+  };
+
+  const changeSchedule = async (event: EventApi) => {
+    try {
+      // const start = event.start?.toLocaleDateString;
+      // 서버로 전송할 데이터
+
+      const localStart = event.start
+        ? new Date(event.start.getTime() + 9 * 60 * 60 * 1000)
+        : null;
+      const localEnd = event.end
+        ? new Date(event.end.getTime() + 9 * 60 * 60 * 1000)
+        : null;
+
+      const eventData = {
+        memberid: memberid,
+        storeid: storeid,
+        worker: event.extendedProps.worker,
+        start: localStart,
+        end: localEnd,
+        attendid: event.extendedProps.attendid,
+        wage: event.extendedProps.wage,
+        gowork:
+          event.extendedProps.gowork ==
+          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+            ? null
+            : event.extendedProps.gowork,
+        leavework:
+          event.extendedProps.leavework ==
+          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+            ? null
+            : event.extendedProps.leavework,
+        // 이벤트에서 가져와야 하는 다른 속성들을 추가할 수 있습니다.
+        // 다른 필요한 데이터가 있다면 추가
+      };
+
+      // 서버에 데이터 전송
+      const response = await axios.patch(
+        `${URL}/admin/attendance/update`,
+        eventData
+      );
+
+      console.log("서버 응답:", response.data);
+      console.log("되는중");
+    } catch (error) {
+      console.error("서버 요청 실패:", error);
+    }
+  };
+
+  const calendarOptions = {
+    // ... (기존 옵션 유지)
+    eventChange: (info: { event: EventApi }) => {
+      console.log("이벤트가 변경되었습니다.");
+      const changedEvent = info.event;
+
+      // changeSchedule 함수 호출 시 info.event를 전달
+      changeSchedule(changedEvent);
+    },
+    // ... (기존 옵션 유지)
+  };
 
   /// return 시작
   return (
@@ -398,15 +545,21 @@ function CalendarCon(props: CalendarConProps) {
           headerToolbar={{
             left: "prev today",
             center: "title",
-            right: "next",
+            right: "handleEdit next",
           }}
           events={events}
-          eventChange={() => {
-            console.log("dkssud");
-          }}
+          eventChange={calendarOptions.eventChange}
           // customButtons={CustomButtons}
           datesSet={handleDatesSet}
           viewDidMount={handleDidMount}
+          customButtons={{
+            handleEdit: {
+              text: "저장하기",
+              click: function () {
+                handleEdit();
+              },
+            },
+          }}
         />
       </FullCalendarContainer>
       {isDateModalOpen && (
