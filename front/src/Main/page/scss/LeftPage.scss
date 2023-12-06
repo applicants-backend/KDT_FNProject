@@ -1,18 +1,22 @@
 
-
+.left-page{
+   z-index: 100;
+}
 .left-page-contents {
    width: 90%; 
    //margin: auto;
    .hamberger {
       cursor: pointer;
    }
+   z-index: 1002;
 }
 
 
 @media (min-width:1440px) {
    
    .left-page-contents {
-      width: 80%; 
+      width: 80%;
+      
    }
    .profile-line{
       width: 100%;
@@ -36,8 +40,7 @@
    }
 
    .main-logo {
-      margin: 10px !important;  
-     
+      margin: 10px !important;
    }
 }
 

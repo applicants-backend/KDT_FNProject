@@ -542,7 +542,9 @@ function CalendarMo({
   return (
     <>
       {isOpen && selectedDate && (
+        
         <div className="modal-container">
+          <div className="modal-wrap">
           <h2>{newDefaultDate}</h2>
           <form name="RegisterForm">
             {UserType === "admin" ? renderAdminForm() : renderUserForm()}
@@ -550,12 +552,18 @@ function CalendarMo({
           <button className="close-button" onClick={closeModal}>
             닫기
           </button>
+          </div>
         </div>
       )}
 
       {isOpen && selectedEvent && (
+       
         <div className="modal-container">
-          <h2>{newSelectedDate}</h2>
+           <div className="modal-wrap">
+           <div className="modal-h2">
+             <h2 className="modal-date-h2">{newSelectedDate}</h2>
+          </div>
+          
           <form name="EventForm">
             {UserType === "admin" ? adminEventForm() : userEventForm()}
           </form>
@@ -570,6 +578,8 @@ function CalendarMo({
             닫기
           </button>
         </div>
+        </div>
+
       )}
     </>
   );

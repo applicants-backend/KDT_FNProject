@@ -80,7 +80,7 @@ export default function Profile ({setmodalOpenis, logout}:profileProps):ReturnTy
                 <p className="profile-name"> {name}</p>
                 {/* <p> {phonenumber}</p> */}
                 <p className="profile-companyName"> {companyName}</p>
-                {UserType === "admin" ?  <p> Number : {companyNumber}</p> : <></>}
+                {/* {UserType === "admin" ?  <p> Number : {companyNumber}</p> : <></>} */}
             </div>
             <div className="profile-line"></div>
             <div className="profile-icon-box" >
