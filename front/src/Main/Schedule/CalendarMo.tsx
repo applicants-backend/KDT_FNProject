@@ -78,6 +78,9 @@ function CalendarMo({
     const newStart = new Date(start);
     const utcStart = newStart.toISOString().slice(0, 16);
 
+    const newEnd = new Date(end);
+    const utcEnd = newEnd.toISOString().slice(0, 16);
+
     // axios.post(`${URL}/admin/attendance`)
     console.log("Data sent from CalendarMo:", {
       member: Memberid,
@@ -94,7 +97,7 @@ function CalendarMo({
       storeid: Storeid,
       worker: worker,
       start: utcStart,
-      end: end,
+      end: utcEnd,
       gowork: gowork,
       leavework: leavework,
       wage: wage,
@@ -111,30 +114,28 @@ function CalendarMo({
     });
     try {
       console.log("데이터 전송 요청");
-      // const res = await axios.post(
-      //   `${URL}/admin/attendance/create`,
-      //   sendAdminData
-      // );
+      const res = await axios.post(
+        `${URL}/admin/attendance/create`,
+        sendAdminData
+      );
       console.log("sendAdminData : ", sendAdminData);
-      // console.log("res : ", res);
+      console.log("res : ", res);
       // window.location.reload();
     } catch (error) {
       console.log("에러 발생");
     }
     setAdditionalContent("추가 작업이 수행되었습니다.");
     closeModal();
-    // window.location.reload();
+    window.location.reload();
   }
 
   const eventDetails = selectedEvent ? (
     <>
       <p>근무자 : {selectedEvent.title}</p>
-      <p>사장님이 등록한 출근시간 : {selectedEvent.start?.toLocaleString()}</p>
-      <p>사장님이 등록한 퇴근시간 : {selectedEvent.end?.toLocaleString()}</p>
-      <p>근무자가 입력한 출근시간 : {selectedEvent.gowork?.toLocaleString()}</p>
-      <p>
-        근무자가 입력한 퇴근시간 : {selectedEvent.leavework?.toLocaleString()}
-      </p>
+      <p>사장님이 등록한 출근시간 : {selectedEvent.start?.toString()}</p>
+      <p>사장님이 등록한 퇴근시간 : {selectedEvent.end?.toString()}</p>
+      <p>근무자가 입력한 출근시간 : {selectedEvent.gowork?.toString()}</p>
+      <p>근무자가 입력한 퇴근시간 : {selectedEvent.leavework?.toString()}</p>
       <p>시급 : {selectedEvent.wage}</p>
       {UserType === "admin" && <button onClick={handleDelete}>삭제하기</button>}
     </>
@@ -163,6 +164,7 @@ function CalendarMo({
       };
       try {
         console.log("삭제요청중");
+        console.log("sendDeleteData : ", sendDeleteData);
         // UserType에 따라 다른 엔드포인트를 사용할 수 있습니다.
         const res = await axios.patch(
           `${URL}/admin/attendance/delete`,
@@ -177,7 +179,7 @@ function CalendarMo({
       setAdditionalContent("삭제할 이벤트가 선택되지 않았습니다.");
     }
     closeModal();
-    window.location.reload();
+    // window.location.reload();
   }
 
   const defaultDate = selectedDate
@@ -447,14 +449,20 @@ function CalendarMo({
 
   async function handleUpdate(arg: any) {
     if (selectedEvent && selectedEvent.attendid) {
+      const newStart = new Date(start);
+      const utcStart = newStart.toISOString().slice(0, 16);
+
+      const newEnd = new Date(end);
+      const utcEnd = newEnd.toISOString().slice(0, 16);
+
       const attendid = selectedEvent.attendid;
 
       const updateData = {
         memberid: Memberid,
         storeid: Storeid,
         worker: worker,
-        start: start,
-        end: end,
+        start: utcStart,
+        end: utcEnd,
         gowork: gowork,
         leavework: leavework,
         attendid: attendid,
@@ -496,7 +504,7 @@ function CalendarMo({
     }
     setEditMode(false); // 수정 완료 후 editMode를 비활성화
     closeModal();
-    window.location.reload();
+    // window.location.reload();
   }
 
   const updateForm = () => (
