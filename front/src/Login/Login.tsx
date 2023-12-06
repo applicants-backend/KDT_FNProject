@@ -58,9 +58,11 @@ export default function Login({type, img, onLoginSuccess} : props) {
 
     if (type === "focus" && e.target.parentElement) {
         e.target.parentElement.style.borderColor = "rgb(94, 53, 177)";
+        e.target.parentElement.style.borderWidth = "1.5px"
     }
     if (type === "blur" && e.target.parentElement) {
         e.target.parentElement.style.borderColor = "#ccc";
+        e.target.parentElement.style.borderWidth = "1px"
     }
   }
 

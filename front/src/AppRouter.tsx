@@ -9,26 +9,36 @@ import FindPw from './findpw/FindPw'
 import {Cookies} from 'react-cookie';
 import "./App.css"
 
-import axios from 'axios'
+import axios from './common/handler/axios'
 
 
 export default function AppRouter() {
 
     const [isLogin, setIslogin] = useState<boolean>(false);
     const cookies = new Cookies();
-
     useLayoutEffect(() => {
         islogin();
     },[])
 
-    const islogin = () => {
+    const islogin = async () => {
        const token = cookies.get("token");
        if (token !== undefined) {
-            // TOKEN 검증 API 필요
-            //axios.post("/tokenValidToken",)
-            setIslogin(true);
+            const Pram = {
+                URL :"/tokenValidation",
+                DATA : {
+                    token : token
+                }
+            }
+
+            const result = await axios.post(Pram)
+            if (result.data && result.data.data === true) {
+                setIslogin(true);
+            } else {
+                cookies.remove("token");
+            }
        }
     }
+    
     return (
         <>
             <BrowserRouter>

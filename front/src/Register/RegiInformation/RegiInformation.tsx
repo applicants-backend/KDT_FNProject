@@ -23,7 +23,7 @@ interface UserData {
 
 export default function RegiInformation (): ReturnType<FC> {
     const navigate = useNavigate();
-    const {URL} = URLstate(state=>state)
+    const {URL} = URLstate((state: any) => state)
 
     const [usertype, setUsertype] = useState<String>("user");
     const [nextstage, setNextStage] = useState<boolean>(false);
@@ -235,9 +235,11 @@ export default function RegiInformation (): ReturnType<FC> {
 
         if (type === "focus" && e.target.parentElement) {
             e.target.parentElement.style.borderColor = "rgb(94, 53, 177)";
+            e.target.parentElement.style.borderWidth = "1.5px"
         }
         if (type === "blur" && e.target.parentElement) {
             e.target.parentElement.style.borderColor = "#ccc";
+            e.target.parentElement.style.borderWidth = "1px"
         }
       }
 

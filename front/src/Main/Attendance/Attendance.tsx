@@ -4,16 +4,12 @@ import AttendanceHistory from "./AttendanceHistory";
 import "./scss/Attendance.scss"
 export default function Attendance() {
     return (
-        <div>
-            <div className="AttendanceConWrap">
+        <div className="Attendance">
             <AttendanceCon/>
-            </div>
             <div className="AttendanceListAndData">
             <AttendanceHistory/>
             <AttendanceData/>
             </div>
         </div>
-       
-
     )
 }

@@ -1,8 +1,15 @@
+.Attendance {
+  width: 100%;
+  height: 100%;
+}
+
+
+
 .AttendanceListAndData{
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  height: 400px;
+  height: 50%;
   width: 100%;
 
     > div:nth-child(1) {
@@ -29,72 +36,52 @@
     }
 }
 
-.AttendanceConAdmin{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr; 
-    height: 400px;
-    width: 100%;
-    
-    > div:nth-child(1) {
-      grid-column: 1 / span 1; 
-      grid-row: 1 / span 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    > div:nth-child(2) {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        grid-column: 2 / span 2; 
-        grid-row: 1 / span 2;
-    }
-  
-    > div:nth-child(3) {
-      grid-column: 1 / span 1; 
-      grid-row: 2 / span 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-}
-  > div {
-    background-color:#fff;
-    border-radius: 10px;
-    color: #333; /* 글자 색상 */
-    font-size: 1.5rem;
-    padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약한 그림자 효과 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease-in-out; /* 확대 효과를 위한 애니메이션 */
-    margin: 20px;
-    }
-}
 
-.AttendanceConUser {
+
+.AttendanceCon {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   width: 100%;
-  margin-top: 20px;
+  height: 30%;
+
+  .icon {
+    color: #333;
+    font-size: 48px;
+    margin-right: 0;
+  }
+  .category {
+    display: flex;
+    align-items: center;
+  }
+  .categoryName{
+    font-weight: 600;
+  }
+  .data {
+    font-size: 3rem;
+    color: rgb(34, 51, 84);
+  }
+  .datatext{
+    font-size: 1.5rem;
+    color: rgb(34, 51, 84);
+  }
 
 
   > div {
     background-color:#fff;
     border-radius: 10px;
-    color: #333; /* 글자 색상 */
-    font-size: 1.5rem;
     padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약한 그림자 효과 */
+    margin: 20px;
+
+    color: rgba(34, 51, 84, 0.7);/* 글자 색상 */
+    font-weight: 700;
+    
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
     transition: transform 0.3s ease-in-out; /* 확대 효과를 위한 애니메이션 */
-    margin: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약한 그림자 효과 */
 
     &:hover {
       transform: scale(1.02); /* 호버 시 약간 확대 */
@@ -122,10 +109,10 @@
 }
 
 .select-wrapper {
+  margin-top: 10px;
   position: relative;
   display: inline-block;
   width: 10%;
-  margin-bottom: 10px;
 }
 
 .custom-select {

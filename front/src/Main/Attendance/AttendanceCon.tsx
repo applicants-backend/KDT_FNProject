@@ -40,22 +40,43 @@ export default function AttendanceCon () {
 
     return (
       UserType === 'user' ? (
-        <div className="AttendanceConUser">
+        <div className="AttendanceCon">
             <div>
-                이번주 일한 시간
-                <div>{AttendWeek}</div>
-            </div>          
+                <div className="category">
+                <div className="material-symbols-outlined icon">schedule</div>
+                <div className="categoryName">이번주 일한 시간</div>
+                </div>
+                <div className="data">{AttendWeek} h</div>
+            </div>
+
             <div>
-                이번달 일한 시간
-                <div>{AttendMonth}</div>
+                <div className="category">
+                    <div className="material-symbols-outlined icon">calendar_clock</div>
+                    <div className="categoryName">이번달 일한 시간</div>
+                </div>
+                <div className="data">{AttendMonth} h</div>
             </div> 
            
-            <div>지난 달에 비해 얼마나 더 일했지?</div>
-            <div>
-                <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>{AttendPercent}%</div>
-                <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}> {Color ? "늘었어요!" : "줄었어요!"}</div>
-            </div> 
-        </div>
+            <div className="category">
+                <div className="material-symbols-outlined icon">more_time</div>
+                <div className="categoryName">지난 달에 비해 </div>
+                <div className="datatext">얼마나 더 일했지?</div>
+            </div>
+
+            {Color ? (
+            <div className="category">
+                <div className="material-symbols-outlined icon" style={{color : "#45a049"}}>trending_up</div>
+                <div className="data" style={{color : "#45a049"}}>{AttendPercent} %</div>
+                <div className="data" style={{color : "#45a049" }}>늘었어요!</div>
+            </div>
+            ): 
+            (<div>
+                <div className="material-symbols-outlined icon" style={{color : "rgb(219, 112, 147)"}}>trending_down</div>
+                <div className="data" style={{color : "rgb(219, 112, 147)"}}>{AttendPercent} %</div>
+                <div className="data" style={{color : "rgb(219, 112, 147)" }}>줄었어요!</div>
+            </div>)}
+        </div> 
+   
       ) : (
         <div>
             <div className="select-wrapper">
@@ -68,23 +89,45 @@ export default function AttendanceCon () {
                 </select>
                 <div className="custom-select-arrow">▼</div>
             </div>
-           <div className="AttendanceConAdmin">
+
+           <div className="AttendanceCon">
+           <div>
+                <div className="category">
+                <div className="material-symbols-outlined icon">schedule</div>
+                <div className="categoryName">이번주 일한 시간</div>
+                </div>
+                <div className="data">{AttendWeek} h</div>
+            </div>
+
             <div>
-                이번주 총 출근시간
-                <div>{AttendWeek}</div>
-            </div>          
-            <div>
-                이번달 총 출근시간
-                <div>{AttendMonth}</div>
+                <div className="category">
+                    <div className="material-symbols-outlined icon">calendar_clock</div>
+                    <div className="categoryName">이번달 일한 시간</div>
+                </div>
+                <div className="data">{AttendMonth} h</div>
             </div> 
+           
+            <div className="category">
+                <div className="material-symbols-outlined icon">more_time</div>
+                <div className="categoryName">지난 달에 비해 </div>
+                <div className="datatext">얼마나 더 일했지?</div>
+            </div>
+
+                {Color ? (
+                <div className="category">
+                    <div className="material-symbols-outlined icon" style={{color : "#45a049"}}>trending_up</div>
+                    <div className="data" style={{color : "#45a049"}}>{AttendPercent} %</div>
+                    <div className="data" style={{color : "#45a049" }}>늘었어요!</div>
+                </div>
+                ): 
+                (<div>
+                    <div className="material-symbols-outlined icon" style={{color : "rgb(219, 112, 147)"}}>trending_down</div>
+                    <div className="data" style={{color : "rgb(219, 112, 147)"}}>{AttendPercent} %</div>
+                    <div className="data" style={{color : "rgb(219, 112, 147)" }}>줄었어요!</div>
+                </div>)}
             
-                <div>지난 달에 비해 얼마나 더 일했지?
-                <div>
-                <div style={{color : Color ? "#45a049" : "rgb(219, 112, 147)"}}>{AttendPercent}%</div>
-                <div style={{color : Color ? "green" : "red"}}> {Color ? "늘었어요!" : "줄었어요!"}</div>
-                </div> 
             </div>
-            </div>
+
         </div>
       )
     )

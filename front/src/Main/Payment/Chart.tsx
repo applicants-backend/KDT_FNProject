@@ -30,7 +30,7 @@ export function Chartex(props : any) {
   const options = {
     // 옵션 (1)
     // responsive: true,
-    maintainAspectRatio : true,
+    maintainAspectRatio : false,
     // responsiveAnimationDuration : 10,
     // 옵션 (2)
     interaction: {

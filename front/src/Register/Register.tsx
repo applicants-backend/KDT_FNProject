@@ -11,7 +11,7 @@ export default function Register () : ReturnType<FC> {
         <div className="register-wrap">
             <div className="register_contents-box">
                 <h2 className="register-title">회원가입</h2>
-                <div className="register-back" onClick={() =>navigate('/')}>x</div>
+                <div className="register-back material-symbols-outlined" onClick={() =>navigate('/')}>close</div>
                 <RegiInformation/>
             </div>
         </div>
