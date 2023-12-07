@@ -30,9 +30,16 @@
       color: #333; /* 글자 색상 */
       font-size: 1.5rem;
       padding: 1rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약한 그림자 효과 */
+      backdrop-filter: blur(10px); /* 배경 흐림 효과 */
+      background-color: rgba(255, 255, 255, 0.5); /* 투명한 배경 색상 */
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.3); /* 테두리 스타일 */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
       transition: transform 0.3s ease-in-out; /* 확대 효과를 위한 애니메이션 */
       margin: 20px;
+
+      min-width: 564px;
+      min-height: 470px;
     }
 }
 
@@ -43,7 +50,6 @@
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   width: 100%;
-
 
   .icon {
     color: #333;
@@ -58,8 +64,11 @@
     font-weight: 600;
   }
   .data {
-    font-size: 3rem;
+    font-size: 2rem;
     color: rgb(34, 51, 84);
+  }
+  .percent {
+    font-size: 3rem;
   }
   .datatext{
     font-size: 1.5rem;
@@ -87,6 +96,8 @@
     border-radius: 10px;
     padding: 1rem;
     margin: 20px;
+    min-height: 240px;
+    min-width: 240px;
 
     color: rgba(34, 51, 84, 0.7);/* 글자 색상 */
     font-weight: 700;
@@ -97,7 +108,12 @@
     justify-content: center;
 
     transition: transform 0.3s ease-in-out; /* 확대 효과를 위한 애니메이션 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약한 그림자 효과 */
+
+    backdrop-filter: blur(10px); /* 배경 흐림 효과 */
+    background-color: rgba(255, 255, 255, 0.5); /* 투명한 배경 색상 */
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* 테두리 스타일 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
 
     &:hover {
       transform: scale(1.02); /* 호버 시 약간 확대 */
@@ -139,6 +155,13 @@
   position: relative;
   display: inline-block;
   width: 10%;
+
+  backdrop-filter: blur(10px); /* 배경 흐림 효과 */
+  background-color: rgba(255, 255, 255, 0.5); /* 투명한 배경 색상 */
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* 테두리 스타일 */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
+
 }
 
 .custom-select {
@@ -159,4 +182,73 @@
   top: 50%;
   right: 0;
   transform: translateY(-50%);
+}
+
+@media (max-width:1090px) {
+  .AttendanceCon {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr ;
+    grid-template-rows: 1fr 1fr 1fr;
+    width: 100%;
+
+    > div:nth-child(4) {
+      grid-column: 3 / span 1;
+      grid-row: 2 /span 1;
+      
+    }
+
+    > div:nth-child(6) {
+      grid-column: 1 / span 2;
+      grid-row: 3 / span 1;
+      
+    }
+  }
+
+  .AttendanceListAndData{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  
+      > div:nth-child(1) {
+        grid-column: 1 / span 2; 
+        grid-row: 1 / span 1;
+      }
+      > div:nth-child(2) {
+          grid-column: 1 / span 2; 
+          grid-row: 2 / span 2;
+      }
+  }
+}
+
+@media (max-width:856px) {
+  .AttendanceCon {
+    display: grid;
+    grid-template-columns: 1fr 1fr ;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    width: 100%;
+
+    > div:nth-child(3) {
+      grid-column: 1 / span 1;
+      grid-row: 2 /span 1;
+      
+    }
+
+    > div:nth-child(4) {
+      grid-column: 2 / span 1;
+      grid-row: 2 / span 1;
+      
+    }
+
+    > div:nth-child(5) {
+      grid-column: 1 / span 2;
+      grid-row: 3 /span 1;
+      
+    }
+
+    > div:nth-child(6) {
+      grid-column: 1 / span 2;
+      grid-row: 4 / span 1;
+      
+    }
+  }
 }
