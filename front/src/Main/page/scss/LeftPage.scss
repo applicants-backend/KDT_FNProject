@@ -40,7 +40,6 @@
 
    .profile-img {
       border-radius: 50%;
-      border: 2px solid #eee; 
       background-color: #fff;
       width: 36px; padding: 0px;height: 36px;
       border-radius: 12px;
@@ -76,18 +75,21 @@
 
             .logout-icon {
                width: 36px; height: 36px; cursor: pointer; 
-               border: 2px solid #eee;  margin-right: 10px;
-               background-color: #fff;   border-radius: 12px;
+               border: 2px solid rgba(255, 255, 255, 0.477);  margin-right: 10px;
+               color: rgba(255, 255, 255, 0.777);
+               border-radius: 12px;
                display: flex; align-items: center; justify-content: center;
                img {
                    width: 90%; height: 90%; 
                    object-fit: cover; object-position: center;
                }
+               &:hover {
+                  background-color: rgba(255, 255, 255, 0.1);
+               }
             }
 
             .profile-img {
                border-radius: 50%;
-               border: 2px solid #eee; 
                background-color: #fff;
                width: 36px; padding: 0px;height: 36px;
                border-radius: 12px;
