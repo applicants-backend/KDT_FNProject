@@ -140,7 +140,7 @@ function CalendarMo({
       <div className="modal-worker"><p>실제 출근시간  {selectedEvent.gowork?.toString()}</p></div>
       <div className="modal-worker"><p>실제 퇴근시간  {selectedEvent.leavework?.toString()}</p></div>
       <div className="modal-worker"><p>시급 : {selectedEvent.wage}</p></div>
-      {UserType === "admin" && <button onClick={handleDelete}>삭제하기</button>}
+    
     </>
   ) : null;
 
@@ -601,18 +601,22 @@ savings
       {isOpen && selectedDate && (
         <div className="modal-container" onClick={closeModal}>
           <div className="modal-wrap" onClick={(e) => e.stopPropagation()}>
-                <div className="modal-cancle">
-                    <div className="close-button" onClick={closeModal}>
-                    <span className="material-symbols-outlined">arrow_back_ios</span>
+                <div className="modal-title">   
+                    <div className="modal-cancle">
+                        <div className="close-button" onClick={closeModal}>
+                            <span className="material-symbols-outlined">arrow_back_ios</span>
+                        </div>
                     </div>
+                    <h2>{newSelectedDate}</h2>
                 </div>
-                <h2>{newDefaultDate}</h2>
-                <div className="modal-line"></div>
+                
 
                 <div className="modal-RegisterForm">
-                    <form name="RegisterForm">
-                    {UserType === "admin" ? renderAdminForm() : renderUserForm()}
-                    </form>
+                    <div className="admin-register">  
+                        <form name="RegisterForm">
+                        {UserType === "admin" ? renderAdminForm() : renderUserForm()}
+                        </form>
+                    </div>
                 </div>
 
             </div>
@@ -634,13 +638,18 @@ savings
               
                 <div className="user-detail-box">
                     {!editMode && eventDetails}
+                    {UserType === "admin" && <button onClick={handleDelete}>삭제하기</button>}
                 </div>
 
                 <div className="user-register-btn">
+                  
                     {UserType === "admin" ? 
-                        <form name="EventForm">
-                            {adminEventForm()} 
-                        </form>
+                        <div className="admin-register">   
+                            <form name="EventForm">
+                                {adminEventForm()} 
+                            </form>
+                        </div>
+                     
                     :
                     <div>
                         <button type="button" onClick={getCurrentTimeStart}>
@@ -652,11 +661,18 @@ savings
                     </div>
                     }  
                 </div>
+
                 <p>{additionalContent}</p>
-                {UserType === "admin" && !editMode && (
-                    <button onClick={handleEdit}>수정하기</button>
-                )}
-                {editMode && updateForm()}
+              
+                <div className="admin-register-btn">
+              
+
+                    {UserType === "admin" && !editMode && (
+                        <button onClick={handleEdit}>수정하기</button>
+                    )}
+                    {editMode && updateForm()}
+                </div>
+         
         </div>
       </div>
       )}
