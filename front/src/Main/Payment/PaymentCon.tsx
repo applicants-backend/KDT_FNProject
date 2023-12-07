@@ -52,16 +52,25 @@ export default function PaymentCon () {
                     setColor(false)
                 }
             } else if (UserType === 'admin') {
-                const month =  new Date().getMonth()+1;
+                const month1 =  new Date().getMonth()+1;
+                const month2 =  new Date().getMonth();
+                const month3 =  new Date().getMonth()-1;
+                const month4 =  new Date().getMonth()-2;
+                const month5 =  new Date().getMonth()-3;
 
                 const adminMonthDataRes = await axios.get(`${URL}/admin/findall/${Memberid}/0`)
                 setLabel(adminMonthDataRes.data.data.content.slice(-5).map((value:valueinterface)=> value.month))
                 setData(adminMonthDataRes.data.data.content.slice(-5).map((value:valueinterface)=> value.sum))
 
-                const adminMonthPostRes = await axios.post(`${URL}/admin/allpayment`,{memberid: Memberid,month})
-                const adminMonthRes = await axios.get(`${URL}/admin/allpayment/${Memberid}/${month}`)
-                const adminEachRes = await axios.get(`${URL}/admin/each/${Memberid}/${month}`)
-                const CompareDataRes = await axios.post(`${URL}/admin/percent`, {memberid: Memberid,month})
+                const adminMonthPostRes1 = await axios.post(`${URL}/admin/allpayment`,{memberid: Memberid,month:month1})
+                const adminMonthPostRes2 = await axios.post(`${URL}/admin/allpayment`,{memberid: Memberid,month:month2})
+                const adminMonthPostRes3 = await axios.post(`${URL}/admin/allpayment`,{memberid: Memberid,month:month3})
+                const adminMonthPostRes4 = await axios.post(`${URL}/admin/allpayment`,{memberid: Memberid,month:month4})
+                const adminMonthPostRes5 = await axios.post(`${URL}/admin/allpayment`,{memberid: Memberid,month:month5})
+
+                const adminMonthRes = await axios.get(`${URL}/admin/allpayment/${Memberid}/${month1}`)
+                const adminEachRes = await axios.get(`${URL}/admin/each/${Memberid}/${month1}`)
+                const CompareDataRes = await axios.post(`${URL}/admin/percent`, {memberid: Memberid,month1})
 
                 setAdminEach(adminEachRes.data.data)
                 setAdminMonth(adminMonthRes.data.data)
