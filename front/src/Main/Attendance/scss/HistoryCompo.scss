@@ -11,6 +11,10 @@
     font-size: small;
     margin-bottom: 5px;
     transition: transform 0.3s ease-in-out;
+
+    >div {
+     width: 20%;
+    }
   
     &:hover {
       transform: scale(1.02); /* Add a slight scale effect on hover */

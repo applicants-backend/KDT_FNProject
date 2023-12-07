@@ -1,110 +1,192 @@
-.HomeDataCon {
-    display: flex;
-    width: 100%;
-    justify-content: space-around;
-    align-items: center;
-    //background-color: rgb(238, 242, 246);
-    border-radius: 10px;
-    color: rgb(54, 65, 82);
-    color: rgb(255, 144, 144);
-    font-size: medium;
-  
-    > div {
-      display: flex;
-      width: 300px;
-      height: 110px;
-      background-color: white;
-      border-radius: 20px;
-      margin-top: 2%;
-      margin-bottom: 2%;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 15px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-      font-weight: bold;
-      font-size: 1.2rem;
-      > div {
-        margin-top: 0.5rem;
-        color: #333;
-      }
-    }
-  
-    .attendance {
-      flex-direction: column;
-      align-items: center;
-      overflow-y: auto;
+// .HomeDataCon {
+//     display: flex;
+//     width: 100%;
+//     justify-content: space-around;
+//     align-items: center;
+//     background-color: rgb(238, 242, 246);
+//     border-radius: 10px;
+//     color: rgb(54, 65, 82);
+//     font-size: medium;
 
+//     .icon {
+//       color: #333;
+//       font-size: 48px;
+//       margin-right: 0;
+//     }
+//     .category {
+//       display: flex;
+//       align-items: center;
+//     }
+//     .categoryName{
+//       font-weight: 600;
+//     }
+//     .data {
+//       font-size: 3rem;
+//       color: rgb(34, 51, 84);
+//     }
+//     .datatext{
+//       font-size: 1.5rem;
+//       color: rgb(34, 51, 84);
+//     }
+  
+//     > div {
+//       display: flex;
+//       width: 300px;
+//       height: 110px;
+
+//       background-color: white;
+//       border-radius: 20px;
+//       margin-top: 2%;
+//       margin-bottom: 2%;
+
+//       flex-direction: column;
+//       align-items: center;
+//       justify-content: center;
+
+//       padding: 15px;
+//       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
+//       > div {
+//         margin-top: 0.5rem;
+//         color: #333;
+//       }
+//     }
+  
+//     .attendance {
+//       flex-direction: column;
+//       align-items: center;
+//       overflow-y: auto;
+
+//       &::-webkit-scrollbar{
+//         display: none;
+//       }
+//       .info{
+//         display: flex;
+//         flex-direction: row;
+//         justify-content: flex-start;
+//         align-items: center;
+//         font-weight: bold;
+//         font-size: 1.3rem;
+//         @media (max-width: 768px) {
+//           font-size: 0.8rem; /* 작은 화면에서 줄어든 텍스트 크기 */
+//           /* 다른 요소들의 스타일을 여기에 추가할 수 있습니다 */
+//       }
+//         .div{
+//           font-weight: bold;
+//         }
+//       }
+  
+//       .compo {
+//         width: 100%;
+//         display: flex;
+//         flex-direction: row;
+//         justify-content: space-around;
+//         align-items: center;
+//       }
+//     }
+  
+//     .payment {
+//       justify-content: center;
+//       align-items: center;
+//       flex-direction: column;
+//       .payinfo{
+//         display: flex;
+//         flex-direction: row;
+//         justify-content: flex-start;
+//         align-items: center;
+//         font-weight: bold;
+//         font-size: 1.3rem;
+//         @media (max-width: 768px) {
+//           font-size: 0.8rem; /* 작은 화면에서 줄어든 텍스트 크기 */
+//           /* 다른 요소들의 스타일을 여기에 추가할 수 있습니다 */
+//       }
+//       }
+//     }
+  
+//     .work {
+//       justify-content: center;
+//       align-items: center;
+//       flex-direction: column;
+//       .workinfo{
+//         display: flex;
+//         flex-direction: row;
+//         justify-content: flex-start;
+//         align-items: center;
+//         font-weight: bold;
+//         font-size: 1.3rem;
+//         @media (max-width: 768px) {
+//           font-size: 0.8rem; /* 작은 화면에서 줄어든 텍스트 크기 */
+//           /* 다른 요소들의 스타일을 여기에 추가할 수 있습니다 */
+//       }
+//       }
+//     }
+//   }
+//   @media (max-width:768px) {
+//     .HomeDataCon{
+//       > div{
+//         width: 200px;
+//         font-size: small;
+//       }
+//     }
+//   }
+  
+.HomeDataCon {
+  display: flex;
+  width: 100%;
+  height: 30%;
+  margin-top: 20px;
+
+  .icon {
+    color: #333;
+    font-size: 48px;
+    margin-right: 0;
+  }
+  .category {
+    display: flex;
+    align-items: center;
+    width: 30%;
+  }
+  .categoryName{
+    font-weight: 600;
+  }
+  .data {
+    font-size: 2rem;
+    color: rgb(34, 51, 84);
+  }
+  .datatext{
+    font-size: 1.5rem;
+    color: rgb(34, 51, 84);
+  }
+  .Eachdata{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    overflow-y: scroll;
+    
       &::-webkit-scrollbar{
-        display: none;
-      }
-      .info{
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-        font-weight: bold;
-        font-size: 1.3rem;
-        @media (max-width: 768px) {
-          font-size: 0.8rem; /* 작은 화면에서 줄어든 텍스트 크기 */
-          /* 다른 요소들의 스타일을 여기에 추가할 수 있습니다 */
-      }
-        .div{
-          font-weight: bold;
-        }
-      }
-  
-      .compo {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-      }
-    }
-  
-    .payment {
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      .payinfo{
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-        font-weight: bold;
-        font-size: 1.3rem;
-        @media (max-width: 768px) {
-          font-size: 0.8rem; /* 작은 화면에서 줄어든 텍스트 크기 */
-          /* 다른 요소들의 스타일을 여기에 추가할 수 있습니다 */
-      }
-      }
-    }
-  
-    .work {
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      .workinfo{
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-        font-weight: bold;
-        font-size: 1.3rem;
-        @media (max-width: 768px) {
-          font-size: 0.8rem; /* 작은 화면에서 줄어든 텍스트 크기 */
-          /* 다른 요소들의 스타일을 여기에 추가할 수 있습니다 */
-      }
-      }
+      display: none;
     }
   }
-  @media (max-width:768px) {
-    .HomeDataCon{
-      > div{
-        width: 200px;
-        font-size: small;
-      }
+
+  > div {
+    background-color:#fff;
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 20px;
+
+    color: rgba(34, 51, 84, 0.7);/* 글자 색상 */
+    font-weight: 700;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    transition: transform 0.3s ease-in-out; /* 확대 효과를 위한 애니메이션 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약한 그림자 효과 */
+
+    &:hover {
+      transform: scale(1.02); /* 호버 시 약간 확대 */
     }
   }
-  
+}

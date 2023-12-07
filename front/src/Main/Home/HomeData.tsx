@@ -46,12 +46,12 @@ export default function HomeData () {
     return (
         UserType === 'user' ? (
         <div className="HomeDataCon">
-            <div><div className="info"><div className="material-symbols-outlined"style={{color:"black"}}>work</div>이번달 일한 시간은 ? </div>
+            <div><div className="info"><div className="material-symbols-outlined icon">work</div>이번달 일한 시간은 ? </div>
                 <div>{attend}</div>
             </div>
 
             <div><div className="payinfo">
-                <div className="material-symbols-outlined" style={{color:"black"}}>payments</div>
+                <div className="material-symbols-outlined icon">payments</div>
                 이번달 예상 월급은 ?
                 </div> 
                 <div>{payment}</div>
@@ -59,7 +59,7 @@ export default function HomeData () {
 
             <div>
             <div className="workinfo">
-                <div className="material-symbols-outlined" style={{color:"black"}}>work_history</div>
+                <div className="material-symbols-outlined icon">work_history</div>
                 오늘 업무 일지
                 </div>
                 <div> {checked} / {unchecked}</div>
@@ -68,14 +68,15 @@ export default function HomeData () {
         ) : (
         <div className="HomeDataCon">
 
-            <div className="attendance">
-                <div className="info"><div className="material-symbols-outlined"style={{color:"black"}}>work</div>
+            <div className="attendance category">
+                <div className="material-symbols-outlined icon">work</div>
+                <div className="categoryName">
             알바생 별 한달 출근 현황
             </div>
                 {attend &&
                 Object.entries(attend).map(([key, value]: [string, string]) => {
                 return (
-                    <div key={key} className="compo">
+                    <div key={key} className="Eachdata">
                         <div>{key}</div>
                         <div>{value} T</div>
                     </div>
@@ -83,20 +84,20 @@ export default function HomeData () {
                 })}
             </div>
 
-            <div className="payment">
-                <div className="payinfo">
-                <div className="material-symbols-outlined" style={{color:"black"}}>payments</div>
+            <div className="category">
+                <div className="material-symbols-outlined icon">payments</div>
+                <div className="categoryName">
                 이번달 예상 월급은 ? 
                 </div>
-                <div>₩ {payment}</div>
+                <div className="data">₩ {payment}</div>
             </div>
 
-            <div className="work">
-                <div className="workinfo">
-                <div className="material-symbols-outlined" style={{color:"black"}}>work_history</div>
+            <div className="category">
+                <div className="material-symbols-outlined icon">work_history</div>
+                <div className="catetgoryName">
                 오늘 업무 일지 
                 </div>
-                <div>{checked} / {unchecked}</div>
+                <div className="data">{checked} / {unchecked}</div>
             </div>
         </div>
         )
