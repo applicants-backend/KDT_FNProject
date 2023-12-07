@@ -135,7 +135,7 @@
       border: 0.1px rgba(0, 0, 0, 0.208) solid;
       width: 100%;
     }
-    .modal-RegisterForm{
+    .modal-RegisterForm {
 
         .admin-register {
             width: 80%; margin: auto; padding: 1em 0;
@@ -150,7 +150,6 @@
       width: 100%; padding: 1.8em 0;
       label {
         width: 40%;
-        margin-right: 250px;
       }
   
       input {
@@ -195,4 +194,30 @@
       width: 80vw; /* Adjusted width for smaller screens */
     }
   }
+}
+
+
+
+@media (max-width: 768px) {
+
+  .modal-container {
+    .modal-wrap {
+      .modal-RegisterForm {
+
+        .admin-register {
+
+            form {
+              .modal-worker {
+                label {
+                  margin-left: 0;
+                  margin-right: 0;
+                }
+              }
+            }
+    
+        }
+      }
+    }
+  }
+
 }

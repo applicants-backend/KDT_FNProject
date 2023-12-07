@@ -28,7 +28,8 @@
             padding: 0.8em; 
             width: 150px; border: 1px solid #eee;
             cursor: pointer; color: #fff;
-            background-color: rgb(94, 53, 177,0.9); 
+            background-color: #334557; 
+   
             &:hover {
                 opacity: 0.9;
             }
@@ -67,7 +68,7 @@
         width: 95%; height: 38px; border: 0; 
         margin-top: 0.8em;
         margin-bottom: 0.8em;
-        background-color:rgb(94, 53, 177,0.9); 
+        background-color: #334557; 
         color: #fff;
         border-radius: 3px;
         &:hover {

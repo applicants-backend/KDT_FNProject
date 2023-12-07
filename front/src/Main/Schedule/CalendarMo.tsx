@@ -194,7 +194,6 @@ function CalendarMo({
       setAdditionalContent("삭제할 이벤트가 선택되지 않았습니다.");
     }
     closeModal();
-    window.location.reload();
   }
 
   const defaultDate = selectedDate
@@ -477,7 +476,7 @@ savings
 
   const renderUserForm = () => (
     <>
-      <div>등록은 사장님만 가능합니다.</div>
+      <div style={{color:"#000", marginTop:"150px" }}>등록은 사장님만 가능합니다.</div>
     </>
   );
 
@@ -638,17 +637,18 @@ savings
               
                 <div className="user-detail-box">
                     {!editMode && eventDetails}
-                    {UserType === "admin" && <button onClick={handleDelete}>삭제하기</button>}
                 </div>
 
                 <div className="user-register-btn">
                   
                     {UserType === "admin" ? 
-                        <div className="admin-register">   
-                            <form name="EventForm">
-                                {adminEventForm()} 
-                            </form>
-                        </div>
+                        // <div className="admin-register">   
+                        //     <form name="EventForm">
+                        //         {adminEventForm()} 
+                        //     </form>
+                        // </div>
+                        <>
+                        </>
                      
                     :
                     <div>
@@ -666,9 +666,11 @@ savings
               
                 <div className="admin-register-btn">
               
-
                     {UserType === "admin" && !editMode && (
-                        <button onClick={handleEdit}>수정하기</button>
+                        <>
+                         <button onClick={handleEdit}>수정하기</button>
+                        <button onClick={handleDelete}>삭제하기</button>
+                        </>
                     )}
                     {editMode && updateForm()}
                 </div>
