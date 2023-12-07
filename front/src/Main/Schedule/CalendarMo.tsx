@@ -96,8 +96,8 @@ function CalendarMo({
       memberid: Memberid,
       storeid: Storeid,
       worker: worker,
-      start: utcStart,
-      end: utcEnd,
+      start: start,
+      end: end,
       gowork: gowork,
       leavework: leavework,
       wage: wage,
@@ -141,13 +141,25 @@ function CalendarMo({
     </>
   ) : null;
 
+  function formatDateForJSON(date: Date | null): string | null {
+    if (!date) return null;
+
+    const isoString = date.toISOString();
+    return isoString.slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
+  }
   async function handleDelete(arg: any) {
     console.log("selectedEvent", selectedEvent);
     if (selectedEvent && selectedEvent.attendid) {
       const attendid = selectedEvent.attendid;
       const worker = selectedEvent.worker;
-      const start = selectedEvent.start;
-      const end = selectedEvent.end;
+      const start =
+        selectedEvent.start instanceof Date
+          ? formatDateForJSON(selectedEvent.start)
+          : null;
+      const end =
+        selectedEvent.end instanceof Date
+          ? formatDateForJSON(selectedEvent.end)
+          : null;
       console.log("worker : ", worker);
 
       // 서버로 삭제 요청 보내기
@@ -179,7 +191,7 @@ function CalendarMo({
       setAdditionalContent("삭제할 이벤트가 선택되지 않았습니다.");
     }
     closeModal();
-    // window.location.reload();
+    window.location.reload();
   }
 
   const defaultDate = selectedDate
@@ -306,7 +318,20 @@ function CalendarMo({
       const now = new Date();
       const nowDate = new Date(now);
       const formattedTime = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
-      setGowork(now.toLocaleDateString());
+      const newData = new Date(formattedTime);
+      const format =
+        newData.toLocaleDateString() + newData.toLocaleTimeString();
+      const news = now.toString();
+
+      const isoString = now.toISOString();
+
+      // 9시간을 더하기
+      const newDate = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+      const newISOString = newDate.toISOString();
+
+      setGowork(newISOString);
+
+      // const newformat = newData.toUTCString();
 
       const sendUserData = {
         memberid: Memberid,
@@ -314,7 +339,7 @@ function CalendarMo({
         worker: Memberid,
         start: start,
         end: end,
-        gowork: formattedTime,
+        gowork: newISOString,
         leavework: leavework,
         attendid: attendid,
         wage: selectedEvent.wage,
@@ -325,7 +350,7 @@ function CalendarMo({
         worker: Memberid,
         start: start,
         end: end,
-        gowork: nowDate,
+        gowork: newISOString,
         leavework: leavework,
         attendid: attendid,
         wage: selectedEvent.wage,
@@ -336,7 +361,7 @@ function CalendarMo({
         worker: Memberid,
         start: start,
         end: end,
-        gowork: nowDate,
+        gowork: newISOString,
         leavework: leavework,
         attendid: attendid,
         wage: selectedEvent.wage,
@@ -359,7 +384,7 @@ function CalendarMo({
       setAdditionalContent("이벤트가 선택되지 않았습니다.");
     }
     closeModal();
-    // window.location.reload();
+    window.location.reload();
   }
 
   async function getCurrentTimeEnd() {
@@ -372,8 +397,19 @@ function CalendarMo({
 
       // 시간 설정하기
       const now = new Date();
+      const nowDate = new Date(now);
       const formattedTime = now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
-      setLeaveWork(formattedTime);
+      const newData = new Date(formattedTime);
+      const format =
+        newData.toLocaleDateString() + newData.toLocaleTimeString();
+      const news = now.toString();
+
+      const isoString = now.toISOString();
+
+      // 9시간을 더하기
+      const newDate = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+      const newISOString = newDate.toISOString();
+      setLeaveWork(newISOString);
 
       const sendUserData = {
         memberid: Memberid,
@@ -382,7 +418,7 @@ function CalendarMo({
         start: start,
         end: end,
         gowork: gowork,
-        leavework: formattedTime,
+        leavework: newISOString,
         attendid: attendid,
         wage: selectedEvent.wage,
       };
@@ -393,7 +429,7 @@ function CalendarMo({
         start: start,
         end: end,
         gowork: gowork,
-        leavework: formattedTime,
+        leavework: newISOString,
         attendid: attendid,
         wage: selectedEvent.wage,
       });
@@ -405,6 +441,8 @@ function CalendarMo({
           sendUserData
         );
         console.log("res : ", res);
+        console.log("sendUserDate : ", sendUserData);
+        console.log("sendDataToCon : ", sendDataToCon);
       } catch (error) {
         console.error("leavework 요청 중 오류 발생:", error);
       }
@@ -504,7 +542,7 @@ function CalendarMo({
     }
     setEditMode(false); // 수정 완료 후 editMode를 비활성화
     closeModal();
-    // window.location.reload();
+    window.location.reload();
   }
 
   const updateForm = () => (
@@ -550,44 +588,41 @@ function CalendarMo({
   return (
     <>
       {isOpen && selectedDate && (
-        
         <div className="modal-container">
           <div className="modal-wrap">
-          <h2>{newDefaultDate}</h2>
-          <form name="RegisterForm">
-            {UserType === "admin" ? renderAdminForm() : renderUserForm()}
-          </form>
-          <button className="close-button" onClick={closeModal}>
-            닫기
-          </button>
+            <h2>{newDefaultDate}</h2>
+            <form name="RegisterForm">
+              {UserType === "admin" ? renderAdminForm() : renderUserForm()}
+            </form>
+            <button className="close-button" onClick={closeModal}>
+              닫기
+            </button>
           </div>
         </div>
       )}
 
       {isOpen && selectedEvent && (
-       
         <div className="modal-container">
-           <div className="modal-wrap">
-           <div className="modal-h2">
-             <h2 className="modal-date-h2">{newSelectedDate}</h2>
+          <div className="modal-wrap">
+            <div className="modal-h2">
+              <h2 className="modal-date-h2">{newSelectedDate}</h2>
+            </div>
+
+            <form name="EventForm">
+              {UserType === "admin" ? adminEventForm() : userEventForm()}
+            </form>
+            {!editMode && eventDetails}
+            <p>{additionalContent}</p>
+
+            {UserType === "admin" && !editMode && (
+              <button onClick={handleEdit}>수정하기</button>
+            )}
+            {editMode && updateForm()}
+            <button className="close-button" onClick={closeModal}>
+              닫기
+            </button>
           </div>
-          
-          <form name="EventForm">
-            {UserType === "admin" ? adminEventForm() : userEventForm()}
-          </form>
-          {!editMode && eventDetails}
-          <p>{additionalContent}</p>
-
-          {UserType === "admin" && !editMode && (
-            <button onClick={handleEdit}>수정하기</button>
-          )}
-          {editMode && updateForm()}
-          <button className="close-button" onClick={closeModal}>
-            닫기
-          </button>
         </div>
-        </div>
-
       )}
     </>
   );

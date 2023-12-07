@@ -275,16 +275,32 @@ function CalendarCon(props: CalendarConProps) {
           const workerName =
             UserType === "admin" ? WorkerList[item.worker] : Name;
 
-          const start: Date | null = item.start ? new Date(item.start) : null;
-          const newStart = start ? start.toLocaleString().slice(0, 16) : null;
+          // const start: Date | null = item.start ? new Date(item.start) : null;
+          // const newStart = start ? start.toLocaleString().slice(0, 16) : null;
 
-          const end: Date | null = item.end ? new Date(item.end) : null;
+          // const end: Date | null = item.end ? new Date(item.end) : null;
           const gowork: Date | null = item.gowork
             ? new Date(item.gowork)
             : null;
           const leavework: Date | null = item.leavework
             ? new Date(item.leavework)
             : null;
+          const start: Date = new Date(item.start as string);
+          // start.setHours(start.getHours() + 9); // Add 9 hours to the start time
+          // const newStart = start.toISOString(); // Use ISO string to maintain UTC information
+
+          const end: Date = new Date(item.end as string);
+          // end.setHours(end.getHours() + 9); // Add 9 hours to the end time
+          // const newEnd = end.toISOString(); // Use ISO string to maintain UTC information
+
+          // const gowork: Date = new Date(item.gowork as string);
+          // gowork.setHours(gowork.getHours() + 9); // Add 9 hours to the gowork time
+          // const newGowork = gowork.toISOString(); // Use ISO string to maintain UTC information
+
+          // const leavework: Date = new Date(item.leavework as string);
+          // leavework.setHours(leavework.getHours() + 9); // Add 9 hours to the leavework time
+          // const newLeavework = leavework.toISOString(); // Use ISO string to maintain UTC information
+          // return
 
           // return
           return {
@@ -323,98 +339,98 @@ function CalendarCon(props: CalendarConProps) {
 
     // 출근 시간을 이벤트 시작 시간으로 사용
     // 퇴근 시간을 이벤트 종료 시간으로 사용
-    const timezoneOffset = 9 * 60; // 한국은 UTC+9
+    // const timezoneOffset = 9 * 60; // 한국은 UTC+9
 
-    // start 시간 변환
-    const startValue = data.start;
-    const startDate = new Date(startValue);
-    const newStart =
-      startDate &&
-      startDate.toUTCString() !==
-        "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
-        ? startDate.toUTCString()
-        : null;
-    const utcDateStart = newStart ? new Date(newStart) : null;
-    const localTimeStartGet = utcDateStart
-      ? new Date(utcDateStart.getTime() + timezoneOffset * 60 * 1000)
-      : null;
-    const localTimeStart = localTimeStartGet
-      ? localTimeStartGet.toLocaleString("ko-KR")
-      : null;
+    // // start 시간 변환
+    // const startValue = data.start;
+    // const startDate = new Date(startValue);
+    // const newStart =
+    //   startDate &&
+    //   startDate.toUTCString() !==
+    //     "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+    //     ? startDate.toUTCString()
+    //     : null;
+    // const utcDateStart = newStart ? new Date(newStart) : null;
+    // const localTimeStartGet = utcDateStart
+    //   ? new Date(utcDateStart.getTime() + timezoneOffset * 60 * 1000)
+    //   : null;
+    // const localTimeStart = localTimeStartGet
+    //   ? localTimeStartGet.toLocaleString("ko-KR")
+    //   : null;
 
-    // end 시간 변환
+    // // end 시간 변환
 
-    const endValue = data.end;
-    const endDate = new Date(endValue);
-    const newEnd =
-      endDate &&
-      endDate.toUTCString() !==
-        "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
-        ? endDate.toUTCString()
-        : null;
+    // const endValue = data.end;
+    // const endDate = new Date(endValue);
+    // const newEnd =
+    //   endDate &&
+    //   endDate.toUTCString() !==
+    //     "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+    //     ? endDate.toUTCString()
+    //     : null;
 
-    const utcDateEnd = newEnd ? new Date(newEnd) : null;
-    const localTimeEndGet = utcDateEnd
-      ? new Date(utcDateEnd.getTime() + timezoneOffset * 60 * 1000)
-      : null;
+    // const utcDateEnd = newEnd ? new Date(newEnd) : null;
+    // const localTimeEndGet = utcDateEnd
+    //   ? new Date(utcDateEnd.getTime() + timezoneOffset * 60 * 1000)
+    //   : null;
 
-    const localTimeEnd = localTimeEndGet
-      ? localTimeEndGet.toLocaleString("ko-KR")
-      : null;
+    // const localTimeEnd = localTimeEndGet
+    //   ? localTimeEndGet.toLocaleString("ko-KR")
+    //   : null;
 
     // gowork , leavework 변환
-    const goworkValue = data.gowork;
-    const leaveworkValue = data.leavework;
+    // const goworkValue = data.gowork;
+    // const leaveworkValue = data.leavework;
 
-    const newGowork = goworkValue
-      ? goworkValue.toUTCString() ===
-        "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
-        ? null
-        : goworkValue.toUTCString()
-      : null;
+    // const newGowork = goworkValue
+    //   ? goworkValue.toUTCString() ===
+    //     "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+    //     ? null
+    //     : goworkValue.toUTCString()
+    //   : null;
 
-    const utcDateGowork = new Date(newGowork);
-    const localTimeGowork = new Date(
-      utcDateGowork.getTime() + timezoneOffset * 60 * 1000
-    );
+    // const utcDateGowork = new Date(newGowork);
+    // const localTimeGowork = new Date(
+    //   utcDateGowork.getTime() + timezoneOffset * 60 * 1000
+    // );
 
-    // 한국 로컬 시간으로 변환
-    const localTimeStringStart = goworkValue
-      ? localTimeGowork.toLocaleString("ko-KR")
-      : null;
+    // // 한국 로컬 시간으로 변환
+    // const localTimeStringStart = goworkValue
+    //   ? localTimeGowork.toLocaleString("ko-KR")
+    //   : null;
 
-    const newLeavework = leaveworkValue
-      ? leaveworkValue.toUTCString() ===
-        "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
-        ? null
-        : leaveworkValue.toUTCString()
-      : null;
+    // const newLeavework = leaveworkValue
+    //   ? leaveworkValue.toUTCString() ===
+    //     "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+    //     ? null
+    //     : leaveworkValue.toUTCString()
+    //   : null;
 
-    const utcDateLeavework = new Date(newLeavework);
-    const localTimeLeavework = new Date(
-      utcDateLeavework.getTime() + timezoneOffset * 60 * 1000
-    );
+    // const utcDateLeavework = new Date(newLeavework);
+    // const localTimeLeavework = new Date(
+    //   utcDateLeavework.getTime() + timezoneOffset * 60 * 1000
+    // );
 
-    // 한국 로컬 시간으로 변환
-    const localTimeStringLeave = leaveworkValue
-      ? localTimeLeavework.toLocaleString("ko-KR")
-      : null;
+    // // 한국 로컬 시간으로 변환
+    // const localTimeStringLeave = leaveworkValue
+    //   ? localTimeLeavework.toLocaleString("ko-KR")
+    //   : null;
 
-    // const start = data.start !== "" ? new Date(data.start) : null;
-    // const end = data.end !== "" ? new Date(data.end) : null;
-    // const gowork = data.gowork !== "" ? new Date(data.gowork) : null;
-    // const leavework = data.leavework !== "" ? new Date(data.leavework) : null;
+    const start = data.start !== "" ? new Date(data.start) : null;
+    const end = data.end !== "" ? new Date(data.end) : null;
+    const gowork = data.gowork !== "" ? new Date(data.gowork) : null;
+    const leavework = data.leavework !== "" ? new Date(data.leavework) : null;
     const wage = data.wage;
     const worker = data.worker;
 
     const newEvent = {
       title: workerName ? workerName : data.worker,
-      start: localTimeStart,
-      end: localTimeEnd,
+      start: start,
+      end: end,
       wage: wage,
       worker: worker,
-      gowork: localTimeStringStart,
-      leavework: localTimeStringLeave,
+      gowork: gowork,
+      leavework: leavework,
     };
 
     // setEvents([...events, newEvent]);
@@ -453,193 +469,103 @@ function CalendarCon(props: CalendarConProps) {
       // console.log(events);
       // const clickedEvent = arg.event.extendedProps;
       // console.log(clickedEvent);
-      const timezoneOffset = 9 * 60; // 한국은 UTC+9
+      // const timezoneOffset = 9 * 60; // 한국은 UTC+9
 
-      // start , end 시간변환
-      const startValue = arg.event.start;
-      const newStart = startValue
-        ? startValue.toUTCString() ===
-          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
-          ? null
-          : startValue.toUTCString()
-        : null;
-      const utcDateStart = new Date(newStart);
-      const localTimeStartGet = new Date(
-        utcDateStart.getTime() + timezoneOffset * 60 * 1000
-      );
+      // // start , end 시간변환
+      // const startValue = arg.event.start;
+      // const newStart = startValue
+      //   ? startValue.toUTCString() ===
+      //     "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+      //     ? null
+      //     : startValue.toUTCString()
+      //   : null;
+      // const utcDateStart = new Date(newStart);
+      // const localTimeStartGet = new Date(
+      //   utcDateStart.getTime() + timezoneOffset * 60 * 1000
+      // );
 
-      // 한국 로컬 시간으로 변환
-      const localTimeStart = startValue
-        ? localTimeStartGet.toLocaleString("ko-KR")
-        : null;
+      // // 한국 로컬 시간으로 변환
+      // const localTimeStart = startValue
+      //   ? localTimeStartGet.toLocaleString("ko-KR")
+      //   : null;
 
-      // end 시간 변환
-      const endValue = arg.event.end;
-      const newEnd = endValue
-        ? endValue.toUTCString() ===
-          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
-          ? null
-          : endValue.toUTCString()
-        : null;
-      const utcDateEnd = new Date(newEnd);
-      const localTimeEndGet = new Date(
-        utcDateEnd.getTime() + timezoneOffset * 60 * 1000
-      );
+      // // end 시간 변환
+      // const endValue = arg.event.end;
+      // const newEnd = endValue
+      //   ? endValue.toUTCString() ===
+      //     "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+      //     ? null
+      //     : endValue.toUTCString()
+      //   : null;
+      // const utcDateEnd = new Date(newEnd);
+      // const localTimeEndGet = new Date(
+      //   utcDateEnd.getTime() + timezoneOffset * 60 * 1000
+      // );
 
-      // 한국 로컬 시간으로 변환
-      const localTimeEnd = endValue
-        ? localTimeEndGet.toLocaleString("ko-KR")
-        : null;
+      // // 한국 로컬 시간으로 변환
+      // const localTimeEnd = endValue
+      //   ? localTimeEndGet.toLocaleString("ko-KR")
+      //   : null;
 
-      // gowork , Leavework 시간 변환
+      // // gowork , Leavework 시간 변환
 
+      // const goworkValue = arg.event.extendedProps.gowork;
+      // const leaveworkValue = arg.event.extendedProps.leavework;
+
+      // const newGowork = goworkValue
+      //   ? goworkValue.toUTCString() ===
+      //     "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+      //     ? null
+      //     : goworkValue.toUTCString()
+      //   : null;
+
+      // const utcDateGowork = new Date(newGowork);
+      // const localTimeGowork = new Date(
+      //   utcDateGowork.getTime() + timezoneOffset * 60 * 1000
+      // );
+
+      // // 한국 로컬 시간으로 변환
+      // const localTimeStringGowork = goworkValue
+      //   ? localTimeGowork.toLocaleString("ko-KR")
+      //   : null;
+
+      // const newLeavework = leaveworkValue
+      //   ? leaveworkValue.toUTCString() ===
+      //     "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+      //     ? null
+      //     : leaveworkValue.toUTCString()
+      //   : null;
+
+      // const utcDateLeavework = new Date(newLeavework);
+      // const localTimeLeavework = new Date(
+      //   utcDateLeavework.getTime() + timezoneOffset * 60 * 1000
+      // );
+
+      // // 한국 로컬 시간으로 변환
+      // const localTimeStringLeave = leaveworkValue
+      //   ? localTimeLeavework.toLocaleString("ko-KR")
+      //   : null;
+      const start = arg.event.start.toLocaleString();
+      const end = arg.event.end.toLocaleString();
       const goworkValue = arg.event.extendedProps.gowork;
+      const gowork =
+        goworkValue !== null
+          ? goworkValue.toLocaleString()
+          : "출근 기록이 없습니다."; // 또는 다른 적절한 처리를 수행
       const leaveworkValue = arg.event.extendedProps.leavework;
-
-      const newGowork = goworkValue
-        ? goworkValue.toUTCString() ===
-          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
-          ? null
-          : goworkValue.toUTCString()
-        : null;
-
-      const utcDateGowork = new Date(newGowork);
-      const localTimeGowork = new Date(
-        utcDateGowork.getTime() + timezoneOffset * 60 * 1000
-      );
-
-      // 한국 로컬 시간으로 변환
-      const localTimeStringGowork = goworkValue
-        ? localTimeGowork.toLocaleString("ko-KR")
-        : null;
-
-      const newLeavework = leaveworkValue
-        ? leaveworkValue.toUTCString() ===
-          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
-          ? null
-          : leaveworkValue.toUTCString()
-        : null;
-
-      const utcDateLeavework = new Date(newLeavework);
-      const localTimeLeavework = new Date(
-        utcDateLeavework.getTime() + timezoneOffset * 60 * 1000
-      );
-
-      // 한국 로컬 시간으로 변환
-      const localTimeStringLeave = leaveworkValue
-        ? localTimeLeavework.toLocaleString("ko-KR")
-        : null;
-
-      setSelectedEvent({
-        title: arg.event.title,
-        start: localTimeStart,
-        end: localTimeEnd,
-        attendid: attendid, // attendid 추가
-        wage: arg.event.wage,
-        worker: worker,
-        gowork:
-          arg.event.extendedProps.gowork ==
-          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
-            ? null
-            : localTimeStringGowork,
-        leavework:
-          arg.event.extendedProps.leavework ==
-          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
-            ? null
-            : localTimeStringLeave,
-        // 이벤트에서 가져와야 하는 다른 속성들을 추가할 수 있습니다.
-      });
-      const extendedProps = arg.event.extendedProps;
-
-      // if (Object.keys(extendedProps).length > 0) {
-      //   console.log("Click Event Extended Props:", extendedProps);
-      //   // console.log("Extended Props:", extendedProps);
-      // } else {
-      // console.log("Extended Props is an empty object.");
-      // }
-      console.log("extendedProps : ", extendedProps);
-    } else {
-      const timezoneOffset = 9 * 60; // 한국은 UTC+9
-
-      // start , end 시간변환
-      const startValue = arg.event.start;
-      const newStart = startValue
-        ? startValue.toUTCString() ===
-          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
-          ? null
-          : startValue.toUTCString()
-        : null;
-      const utcDateStart = new Date(newStart);
-      const localTimeStartGet = new Date(
-        utcDateStart.getTime() + timezoneOffset * 60 * 1000
-      );
-
-      // 한국 로컬 시간으로 변환
-      const localTimeStart = startValue
-        ? localTimeStartGet.toLocaleString("ko-KR")
-        : null;
-
-      // end 시간 변환
-      const endValue = arg.event.start;
-      const newEnd = startValue
-        ? startValue.toUTCString() ===
-          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
-          ? null
-          : endValue.toUTCString()
-        : null;
-      const utcDateEnd = new Date(newEnd);
-      const localTimeEndGet = new Date(
-        utcDateEnd.getTime() + timezoneOffset * 60 * 1000
-      );
-
-      // 한국 로컬 시간으로 변환
-      const localTimeEnd = endValue
-        ? localTimeEndGet.toLocaleString("ko-KR")
-        : null;
-
-      const goworkValue = arg.event.extendedProps.gowork;
-      const leaveworkValue = arg.event.extendedProps.leavework;
-
-      const newGowork = goworkValue
-        ? goworkValue.toUTCString() ===
-          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
-          ? null
-          : goworkValue.toUTCString()
-        : null;
-
-      const utcDateGowork = new Date(newGowork);
-      const localTimeGowork = new Date(
-        utcDateGowork.getTime() + timezoneOffset * 60 * 1000
-      );
-
-      // 한국 로컬 시간으로 변환
-      const localTimeStringStart = goworkValue
-        ? localTimeGowork.toLocaleString("ko-KR")
-        : null;
-
-      const newLeavework = leaveworkValue
-        ? leaveworkValue.toUTCString() ===
-          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
-          ? null
-          : leaveworkValue.toUTCString()
-        : null;
-
-      const utcDateLeavework = new Date(newLeavework);
-      const localTimeLeavework = new Date(
-        utcDateLeavework.getTime() + timezoneOffset * 60 * 1000
-      );
-
-      // 한국 로컬 시간으로 변환
-      const localTimeStringLeave = leaveworkValue
-        ? localTimeLeavework.toLocaleString("ko-KR")
-        : null;
+      const leavework =
+        leaveworkValue !== null
+          ? leaveworkValue.toLocaleString()
+          : "퇴근 기록이 없습니다."; // 또는 다른 적절한 처리를 수행
+      // const gowork = arg.event.extendedProps.gowork.toLocaleString();
+      // const leavework = arg.event.extendedProps.leavework.toLocaleString();
 
       setEventModalOpen(true);
       setDateModalOpen(false); // 모달이 열릴 때 다른 모달은 닫아줍니다.)
       setSelectedEvent({
         title: arg.event.title,
-        start: localTimeStart,
-        end: localTimeEnd,
+        start: start,
+        end: end,
         attendid: attendid,
         wage: arg.event.extendedProps.wage,
         worker: worker,
@@ -647,12 +573,132 @@ function CalendarCon(props: CalendarConProps) {
           arg.event.extendedProps.gowork ==
           "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
             ? null
-            : localTimeStringStart,
+            : gowork,
         leavework:
           arg.event.extendedProps.leavework ==
           "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
             ? null
-            : localTimeStringLeave,
+            : leavework,
+      });
+      const extendedProps = arg.event.extendedProps;
+      // if (Object.keys(extendedProps).length > 0) {
+      //   console.log("Click Event Extended Props:", extendedProps);
+      //   // console.log("Extended Props:", extendedProps);
+      // } else {
+      // console.log("Extended Props is an empty object.");
+      // }
+      console.log("extendedProps : ", extendedProps);
+      console.log("arg . event : ", arg.event);
+    } else {
+      // const timezoneOffset = 9 * 60; // 한국은 UTC+9
+
+      // // start , end 시간변환
+      // const startValue = arg.event.start;
+      // const newStart = startValue
+      //   ? startValue.toUTCString() ===
+      //     "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+      //     ? null
+      //     : startValue.toUTCString()
+      //   : null;
+      // const utcDateStart = new Date(newStart);
+      // const localTimeStartGet = new Date(
+      //   utcDateStart.getTime() + timezoneOffset * 60 * 1000
+      // );
+
+      // // 한국 로컬 시간으로 변환
+      // const localTimeStart = startValue
+      //   ? localTimeStartGet.toLocaleString("ko-KR")
+      //   : null;
+
+      // // end 시간 변환
+      // const endValue = arg.event.end;
+      // const newEnd = endValue
+      //   ? endValue.toUTCString() ===
+      //     "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+      //     ? null
+      //     : endValue.toUTCString()
+      //   : null;
+      // const utcDateEnd = new Date(newEnd);
+      // const localTimeEndGet = new Date(
+      //   utcDateEnd.getTime() + timezoneOffset * 60 * 1000
+      // );
+
+      // // 한국 로컬 시간으로 변환
+      // const localTimeEnd = endValue
+      //   ? localTimeEndGet.toLocaleString("ko-KR")
+      //   : null;
+
+      // const goworkValue = arg.event.extendedProps.gowork;
+      // const leaveworkValue = arg.event.extendedProps.leavework;
+
+      // const newGowork = goworkValue
+      //   ? goworkValue.toUTCString() ===
+      //     "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+      //     ? null
+      //     : goworkValue.toUTCString()
+      //   : null;
+
+      // const utcDateGowork = new Date(newGowork);
+      // const localTimeGowork = new Date(
+      //   utcDateGowork.getTime() + timezoneOffset * 60 * 1000
+      // );
+
+      // // 한국 로컬 시간으로 변환
+      // const localTimeStringStart = goworkValue
+      //   ? localTimeGowork.toLocaleString("ko-KR")
+      //   : null;
+
+      // const newLeavework = leaveworkValue
+      //   ? leaveworkValue.toUTCString() ===
+      //     "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+      //     ? null
+      //     : leaveworkValue.toUTCString()
+      //   : null;
+
+      // const utcDateLeavework = new Date(newLeavework);
+      // const localTimeLeavework = new Date(
+      //   utcDateLeavework.getTime() + timezoneOffset * 60 * 1000
+      // );
+
+      // // 한국 로컬 시간으로 변환
+      // const localTimeStringLeave = leaveworkValue
+      //   ? localTimeLeavework.toLocaleString("ko-KR")
+      //   : null;
+
+      const start = arg.event.start.toLocaleString();
+      const end = arg.event.end.toLocaleString();
+      const goworkValue = arg.event.extendedProps.gowork;
+      const gowork =
+        goworkValue !== null
+          ? goworkValue.toLocaleString()
+          : "출근 기록이 없습니다."; // 또는 다른 적절한 처리를 수행
+      const leaveworkValue = arg.event.extendedProps.leavework;
+      const leavework =
+        leaveworkValue !== null
+          ? leaveworkValue.toLocaleString()
+          : "퇴근 기록이 없습니다."; // 또는 다른 적절한 처리를 수행
+      // const gowork = arg.event.extendedProps.gowork.toLocaleString();
+      // const leavework = arg.event.extendedProps.leavework.toLocaleString();
+
+      setEventModalOpen(true);
+      setDateModalOpen(false); // 모달이 열릴 때 다른 모달은 닫아줍니다.)
+      setSelectedEvent({
+        title: arg.event.title,
+        start: start,
+        end: end,
+        attendid: attendid,
+        wage: arg.event.extendedProps.wage,
+        worker: worker,
+        gowork:
+          arg.event.extendedProps.gowork ==
+          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+            ? null
+            : gowork,
+        leavework:
+          arg.event.extendedProps.leavework ==
+          "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
+            ? null
+            : leavework,
       });
     }
   }
@@ -671,7 +717,12 @@ function CalendarCon(props: CalendarConProps) {
       const localEnd = event.end
         ? new Date(event.end.getTime() + 9 * 60 * 60 * 1000)
         : null;
-
+      const localGowork = event.extendedProps.gowork
+        ? new Date(event.extendedProps.gowork.getTime() + 9 * 60 * 60 * 1000)
+        : null;
+      const localLeavework = event.extendedProps.leavework
+        ? new Date(event.extendedProps.leavework.getTime() + 9 * 60 * 60 * 1000)
+        : null;
       const eventData = {
         memberid: memberid,
         storeid: storeid,
@@ -684,12 +735,12 @@ function CalendarCon(props: CalendarConProps) {
           event.extendedProps.gowork ==
           "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
             ? null
-            : event.extendedProps.gowork,
+            : localGowork,
         leavework:
           event.extendedProps.leavework ==
           "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)"
             ? null
-            : event.extendedProps.leavework,
+            : localLeavework,
         // 이벤트에서 가져와야 하는 다른 속성들을 추가할 수 있습니다.
         // 다른 필요한 데이터가 있다면 추가
       };
