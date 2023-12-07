@@ -59,7 +59,7 @@ export default function HomeData () {
         UserType === 'user' ? (
         <div className="HomeDataCon">
             
-          <div><div className="fo"><div className="material-symbols-outlined icon">work</div>이번달 일한 시간은 ? </div>
+            <div><div className="info"><div className="material-symbols-outlined icon">work</div>이번달 일한 시간은 ? </div>
                 <div className="data">{attend as number/60}h</div>
             </div>
 
