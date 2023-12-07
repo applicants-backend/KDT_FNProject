@@ -69,8 +69,7 @@ export default function AttendanceHistory () {
     
         if (pageNumber === startPage && pageNumber !== 1) {
           return (
-            <div>
-              <span key="prev">...</span>
+            <div style={{display:"flex", alignItems:"center"}}>
               <button
                 onClick={() => pageHandle(pageNumber - 1)}
                 style={{ fontWeight: isCurrentPage ? "bold" : "normal" }}
@@ -82,7 +81,7 @@ export default function AttendanceHistory () {
           );
         } else if (pageNumber === endPage && pageNumber !== totalPage) {
           return (
-            <div>
+            <div style={{display:"flex", alignItems:"center"}}>
               <button
                 onClick={() => pageHandle(pageNumber - 1)}
                 style={{ fontWeight: isCurrentPage ? "bold" : "normal" }}
@@ -90,7 +89,6 @@ export default function AttendanceHistory () {
               >
                 {pageNumber}
               </button>
-              <span key="next">...</span>
             </div>
           );
         } else {

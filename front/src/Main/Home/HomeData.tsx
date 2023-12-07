@@ -86,6 +86,7 @@ export default function HomeData () {
                 <div className="categoryName">
             알바생 별 한달 출근 현황
             </div>
+                <div className="EachCon">
                 {attend &&
                 Object.entries(attend).map(([attendkey, value]: [string, string]) => {
                 return (
@@ -98,6 +99,7 @@ export default function HomeData () {
                     </div>
                 );
                 })}
+                </div>
             </div>
 
             <div className="category">
