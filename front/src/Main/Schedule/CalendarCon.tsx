@@ -25,6 +25,11 @@ const FullCalendarContainer = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;
+  //backdrop-filter: blur(8px);
+  background-color: rgb(255, 255, 255);
+  //border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 30px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
 
   // 캘린더 전체 사이즈 조정
   .fc {
@@ -87,13 +92,14 @@ const FullCalendarContainer = styled.div`
 
   // 오늘 날짜 배경색
   .fc .fc-daygrid-day.fc-day-today {
-    background-color: #fff8bd;
+    background-color: #238ba22a;
     color: #238ba2;
   }
 
   // 날짜별 그리드
   .fc .fc-daygrid-day-frame {
     padding: 5px;
+    
   }
 
   // 날짜  ex) 2일
@@ -110,12 +116,13 @@ const FullCalendarContainer = styled.div`
     border-radius: 4px;
     font-weight: 500;
     font-size: 11px;
+
   }
   .fc-day-sun a {
-    color: red;
+    color: rgb(255, 144, 144);
   }
   .fc-day-sat a {
-    color: blue;
+    color: rgb(85, 105, 255);
   }
 `;
 
