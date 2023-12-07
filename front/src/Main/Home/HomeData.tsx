@@ -1,18 +1,19 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import UserTypeState, { URLstate, UserDataState} from "../../Store/Store"
+import UserTypeState, { URLstate, UserDataState, WorkerListState} from "../../Store/Store"
 import './scss/HomeData.scss'
 
 export default function HomeData () {
     const {URL} = URLstate(state=>state)
     const {UserType} = UserTypeState(state=>state)
     const {Memberid, Storeid} = UserDataState(state=>state)
+    const {WorkerList}= WorkerListState(state=>state)
 
     const [attend,setAttend] = useState<number | [string,string]>()
     const [payment,setPayment] = useState()
 
-    const [checked, setChecked] = useState()
-    const [unchecked, setUnchecked] = useState()
+    const [checked, setChecked] = useState(0)
+    const [unchecked, setUnchecked] = useState(0)
 
     useEffect(()=>{
         const loadData = async () => {
@@ -58,15 +59,15 @@ export default function HomeData () {
         UserType === 'user' ? (
         <div className="HomeDataCon">
             
-            <div><div className="info"><div className="material-symbols-outlined icon">work</div>이번달 일한 시간은 ? </div>
-                <div>{attend}</div>
+          <div><div className="fo"><div className="material-symbols-outlined icon">work</div>이번달 일한 시간은 ? </div>
+                <div className="data">{attend as number/60}h</div>
             </div>
 
             <div><div className="payinfo">
                 <div className="material-symbols-outlined icon">payments</div>
                 이번달 예상 월급은 ?
                 </div> 
-                <div>{formatCurrency(payment? payment : 0)}</div>
+                <div className="data">{formatCurrency(payment? payment : 0)}</div>
             </div>
 
             <div>
@@ -74,7 +75,7 @@ export default function HomeData () {
                 <div className="material-symbols-outlined icon">work_history</div>
                 오늘 업무 일지
                 </div>
-                <div> {checked} / {unchecked}</div>
+                <div className="data"> {checked} / {unchecked}</div>
             </div>
         </div>
         ) : (
@@ -86,10 +87,13 @@ export default function HomeData () {
             알바생 별 한달 출근 현황
             </div>
                 {attend &&
-                Object.entries(attend).map(([key, value]: [string, string]) => {
+                Object.entries(attend).map(([attendkey, value]: [string, string]) => {
                 return (
-                    <div key={key} className="Eachdata">
-                        <div>{key}</div>
+                    <div key={attendkey} className="Eachdata">
+                  {Object.keys(WorkerList).map((key)=>{
+                    if(key === attendkey) {
+                        return <div key={key} className="name">{WorkerList[key]} </div>
+                    }})}
                         <div>{value} T</div>
                     </div>
                 );
