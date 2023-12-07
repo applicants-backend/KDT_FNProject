@@ -22,7 +22,7 @@ export default function PaymentCon () {
     const {UserType} =UserTypeState(state=>state)
 
     const [PaymentData, setPaymentData] = useState<Datainterface>()
-    const [PercentData, setPercentData] = useState()
+    const [PercentData, setPercentData] = useState<number>()
 
     const [adminMonth, setAdminMonth] = useState<number>()
     const [adminEach, setAdminEach] = useState<[string,string]>()
@@ -108,6 +108,17 @@ export default function PaymentCon () {
       ],
     };
 
+    function formatCurrency(amount : number) {
+      const formatter = new Intl.NumberFormat('ko-KR', {
+        style: 'currency',
+        currency: 'KRW',
+        currencyDisplay: 'code'
+      });
+    
+      const formattedAmount = formatter.format(amount);
+      return formattedAmount.slice(3); 
+    }
+
     return (
       UserType === "user" ? (
         <div className="PaymentConWrapUser">
@@ -117,7 +128,7 @@ export default function PaymentCon () {
                   <div className="material-symbols-outlined icon">schedule</div>
                   <div className="categoryName">이번주 예상 급여</div>
                 </div>
-                <div className="data">{PaymentData?.week} 원</div>
+                <div className="data">{formatCurrency(PaymentData?.week as number)} 원</div>
               </div>
 
               <div>
@@ -125,7 +136,7 @@ export default function PaymentCon () {
                     <div className="material-symbols-outlined icon">calendar_clock</div>
                     <div className="categoryName">이번달 예상 급여</div>
                 </div>
-                <div className="data">{PaymentData?.month} 원</div>
+                <div className="data">{formatCurrency(PaymentData?.month as number)} 원</div>
               </div> 
 
               <div className="realPaymentCon">
@@ -133,7 +144,7 @@ export default function PaymentCon () {
                   <div className="categoryName">이번달 예상 실수령액</div>
                   <div className="data">
                   {PaymentData?.month && IncomeRate !== undefined
-                  ? `${Math.floor(PaymentData.month * (1 - 0.045 - 0.03545 - 0.03545 * 0.1281 - 0.09 - IncomeRate - IncomeRate * 0.1))} 원`
+                  ? `${formatCurrency(Math.floor(PaymentData.month * (1 - 0.045 - 0.03545 - 0.03545 * 0.1281 - 0.09 - IncomeRate - IncomeRate * 0.1)))} 원`
                   : '금액을 계산할 수 없습니다'}
                   </div>
               </div>
@@ -146,7 +157,7 @@ export default function PaymentCon () {
                   <div className="datatext">세금은?</div>
                   <div className="data" style={{color:"rgb(219, 112, 147)"}}>
                   {PaymentData?.month && IncomeRate !== undefined
-                  ? `${Math.floor(PaymentData.month * ( 0.045 + 0.03545 + 0.03545 * 0.1281 + 0.09 - IncomeRate + IncomeRate * 0.1))} 원`
+                  ? `${formatCurrency(Math.floor(PaymentData.month * ( 0.045 + 0.03545 + 0.03545 * 0.1281 + 0.09 - IncomeRate + IncomeRate * 0.1)))} 원`
                   : '금액을 계산할 수 없습니다'}
                   </div>                
                 </div>
@@ -161,12 +172,12 @@ export default function PaymentCon () {
                       </div>
 
                       <div className="tex">
-                        <div>{PaymentData?.month ? (PaymentData.month * 0.045).toFixed(0) + '원' : '70000원'}</div>
-                        <div>{PaymentData?.month ? (PaymentData.month * 0.03545).toFixed(0) + '원' : '0원'}</div>
-                        <div>{PaymentData?.month ? (PaymentData.month * 0.03545 * 0.1281 ).toFixed(0) + '원' : '60000원'}</div>
-                        <div>{PaymentData?.month ? (PaymentData.month * 0.09).toFixed(0) + '원' : '60000원'}</div>
-                        <div>{PaymentData?.month && IncomeRate ? (PaymentData.month * IncomeRate).toFixed(0) + '원' : '60000원'}</div>
-                        <div>{PaymentData?.month && IncomeRate ? (PaymentData.month * IncomeRate * 0.1).toFixed(0) + '원' : '1312원'}</div>
+                        <div>{formatCurrency(PaymentData?.month ? (PaymentData.month * 0.045): 0)}원</div>
+                        <div>{formatCurrency(PaymentData?.month ? (PaymentData.month * 0.03545): 0)}원</div>
+                        <div>{formatCurrency(PaymentData?.month ? (PaymentData.month * 0.03545 * 0.1281 ): 0)}원</div>
+                        <div>{formatCurrency(PaymentData?.month ? (PaymentData.month * 0.09) : 0)}원</div>
+                        <div>{formatCurrency(PaymentData?.month && IncomeRate ? (PaymentData.month * IncomeRate) : 0)}원</div>
+                        <div>{formatCurrency(PaymentData?.month && IncomeRate ? (PaymentData.month * IncomeRate * 0.1) :0)}원</div>
                       </div>
               </div>
 
@@ -179,14 +190,14 @@ export default function PaymentCon () {
               {Color ? (
             <div className="category">
                 <div className="material-symbols-outlined icon" style={{color : "#45a049"}}>trending_up</div>
-                <div className="data" style={{color : "#45a049"}}>{PercentData} %</div>
-                <div className="data" style={{color : "#45a049" }}>늘었어요!</div>
+                <div className="data percent" style={{color : "#45a049"}}>{PercentData?.toFixed(0)}%</div>
+                <div className="data percent" style={{color : "#45a049" }}>늘었어요!</div>
             </div>
             ): 
             (<div>
                 <div className="material-symbols-outlined icon" style={{color : "rgb(219, 112, 147)"}}>trending_down</div>
-                <div className="data" style={{color : "rgb(219, 112, 147)"}}>{PercentData} %</div>
-                <div className="data" style={{color : "rgb(219, 112, 147)" }}>줄었어요!</div>
+                <div className="data percent" style={{color : "rgb(219, 112, 147)"}}>{PercentData?.toFixed(0)}%</div>
+                <div className="data percent" style={{color : "rgb(219, 112, 147)" }}>줄었어요!</div>
             </div>)}
               
             </div>
@@ -213,7 +224,7 @@ export default function PaymentCon () {
                   <div className="material-symbols-outlined icon">schedule</div>
                   <div className="categoryName">이번달 총 급여</div>
                 </div>
-                <div className="data">{adminMonth} 원</div>
+                <div className="data">{formatCurrency(adminMonth as number)} 원</div>
               </div>
 
 
@@ -227,14 +238,14 @@ export default function PaymentCon () {
               {Color ? (
             <div className="category">
                 <div className="material-symbols-outlined icon" style={{color : "#45a049"}}>trending_up</div>
-                <div className="data" style={{color : "#45a049"}}>{PercentData} %</div>
-                <div className="data" style={{color : "#45a049" }}>늘었어요!</div>
+                <div className="data percent" style={{color : "#45a049"}}>{PercentData?.toFixed(0)}%</div>
+                <div className="data percent" style={{color : "#45a049" }}>늘었어요!</div>
             </div>
             ): 
             (<div>
                 <div className="material-symbols-outlined icon" style={{color : "rgb(219, 112, 147)"}}>trending_down</div>
-                <div className="data" style={{color : "rgb(219, 112, 147)"}}>{PercentData} %</div>
-                <div className="data" style={{color : "rgb(219, 112, 147)" }}>줄었어요!</div>
+                <div className="data percent" style={{color : "rgb(219, 112, 147)"}}>{PercentData?.toFixed(0)}%</div>
+                <div className="data percent" style={{color : "rgb(219, 112, 147)" }}>줄었어요!</div>
             </div>)}
 
             <div className="texboxCon">
@@ -245,7 +256,7 @@ export default function PaymentCon () {
               <div className="datatext">세금은?</div>
               <div className="data" style={{color:"rgb(219, 112, 147)"}}>
                   {adminMonth && IncomeRate !== undefined
-                  ? `${Math.floor(adminMonth* ( 0.045 + 0.03545 + 0.03545 * 0.1281 + 0.09 - IncomeRate + IncomeRate * 0.1))} 원`
+                  ? `${formatCurrency(Math.floor(adminMonth* ( 0.045 + 0.03545 + 0.03545 * 0.1281 + 0.09 - IncomeRate + IncomeRate * 0.1)))} 원`
                   : '금액을 계산할 수 없습니다'}
               </div>    
             </div>
@@ -259,14 +270,14 @@ export default function PaymentCon () {
                     <div className="texcategory">지방소득세<div> 소득세의 10%</div></div>
             </div>
 
-                  <div className="tex">
-                    <div>{adminMonth? (adminMonth * 0.045).toFixed(0) + '원' : '70000원'}</div>
-                    <div>{adminMonth ? (adminMonth * 0.03545).toFixed(0) + '원' : '0원'}</div>
-                    <div>{adminMonth? (adminMonth * 0.03545 * 0.1281 ).toFixed(0) + '원' : '60000원'}</div>
-                    <div>{adminMonth ? (adminMonth * 0.09).toFixed(0) + '원' : '60000원'}</div>
-                    <div>{PaymentData?.month && IncomeRate ? (PaymentData.month * IncomeRate).toFixed(0) + '원' : '60000원'}</div>
-                    <div>{PaymentData?.month && IncomeRate ? (PaymentData.month * IncomeRate * 0.1).toFixed(0) + '원' : '1312원'}</div>
-                  </div>
+              <div className="tex">
+                  <div>{formatCurrency(adminMonth ? (adminMonth * 0.045): 0)}원</div>
+                  <div>{formatCurrency(adminMonth ? (adminMonth * 0.03545): 0)}원</div>
+                  <div>{formatCurrency(adminMonth ? (adminMonth * 0.03545 * 0.1281 ): 0)}원</div>
+                  <div>{formatCurrency(adminMonth ? (adminMonth * 0.09) : 0)}원</div>
+                  <div>{formatCurrency(adminMonth && IncomeRate? (adminMonth * IncomeRate) : 0)}원</div>
+                  <div>{formatCurrency(adminMonth && IncomeRate ? (adminMonth * IncomeRate * 0.1) :0)}원</div>
+              </div>
             </div>
 
 

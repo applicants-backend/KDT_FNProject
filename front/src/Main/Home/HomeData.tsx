@@ -41,11 +41,23 @@ export default function HomeData () {
         loadData()
     },[])
 
+    function formatCurrency(amount : number) {
+        const formatter = new Intl.NumberFormat('ko-KR', {
+          style: 'currency',
+          currency: 'KRW',
+          currencyDisplay: 'code'
+        });
+      
+        const formattedAmount = formatter.format(amount);
+        return formattedAmount.slice(3); 
+      }
+
 
 
     return (
         UserType === 'user' ? (
         <div className="HomeDataCon">
+            
             <div><div className="info"><div className="material-symbols-outlined icon">work</div>이번달 일한 시간은 ? </div>
                 <div>{attend}</div>
             </div>
@@ -54,7 +66,7 @@ export default function HomeData () {
                 <div className="material-symbols-outlined icon">payments</div>
                 이번달 예상 월급은 ?
                 </div> 
-                <div>{payment}</div>
+                <div>{formatCurrency(payment? payment : 0)}</div>
             </div>
 
             <div>
@@ -89,7 +101,7 @@ export default function HomeData () {
                 <div className="categoryName">
                 이번달 예상 월급은 ? 
                 </div>
-                <div className="data">₩ {payment}</div>
+                <div className="data">{formatCurrency(payment ? payment : 0)}원</div>
             </div>
 
             <div className="category">
