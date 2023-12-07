@@ -8,7 +8,6 @@
     height: 35%;
     padding-bottom: 6%;
     padding-top: 1%;
-
   
     .CommentCon {
       display: flex;
@@ -19,6 +18,11 @@
       background-color: #fff;
       overflow-y: auto;
       border-radius: 10px;
+      backdrop-filter: blur(10px); /* 배경 흐림 효과 */
+      background-color: rgba(255, 255, 255, 0.5); /* 투명한 배경 색상 */
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.3); /* 테두리 스타일 */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
   
       &::-webkit-scrollbar {
         display: none;

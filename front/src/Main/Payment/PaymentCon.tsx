@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import UserTypeState, { URLstate, UserDataState } from "../../Store/Store"
+import UserTypeState, { URLstate, UserDataState, WorkerListState } from "../../Store/Store"
 import {Chartex} from "./Chart"
 import axios from "axios"
 
@@ -20,6 +20,7 @@ export default function PaymentCon () {
     const {URL} = URLstate(state=>state)
     const {Memberid} = UserDataState(state=>state)
     const {UserType} =UserTypeState(state=>state)
+    const {WorkerList}= WorkerListState(state=>state)
 
     const [PaymentData, setPaymentData] = useState<Datainterface>()
     const [PercentData, setPercentData] = useState<number>()
@@ -51,16 +52,25 @@ export default function PaymentCon () {
                     setColor(false)
                 }
             } else if (UserType === 'admin') {
-                const month =  new Date().getMonth()+1;
+                const month1 =  new Date().getMonth()+1;
+                const month2 =  new Date().getMonth();
+                const month3 =  new Date().getMonth()-1;
+                const month4 =  new Date().getMonth()-2;
+                const month5 =  new Date().getMonth()-3;
 
                 const adminMonthDataRes = await axios.get(`${URL}/admin/findall/${Memberid}/0`)
                 setLabel(adminMonthDataRes.data.data.content.slice(-5).map((value:valueinterface)=> value.month))
                 setData(adminMonthDataRes.data.data.content.slice(-5).map((value:valueinterface)=> value.sum))
 
-                const adminMonthPostRes = await axios.post(`${URL}/admin/allpayment`,{memberid: Memberid,month})
-                const adminMonthRes = await axios.get(`${URL}/admin/allpayment/${Memberid}/${month}`)
-                const adminEachRes = await axios.get(`${URL}/admin/each/${Memberid}/${month}`)
-                const CompareDataRes = await axios.post(`${URL}/admin/percent`, {memberid: Memberid,month})
+                const adminMonthPostRes1 = await axios.post(`${URL}/admin/allpayment`,{memberid: Memberid,month:month1})
+                const adminMonthPostRes2 = await axios.post(`${URL}/admin/allpayment`,{memberid: Memberid,month:month2})
+                const adminMonthPostRes3 = await axios.post(`${URL}/admin/allpayment`,{memberid: Memberid,month:month3})
+                const adminMonthPostRes4 = await axios.post(`${URL}/admin/allpayment`,{memberid: Memberid,month:month4})
+                const adminMonthPostRes5 = await axios.post(`${URL}/admin/allpayment`,{memberid: Memberid,month:month5})
+
+                const adminMonthRes = await axios.get(`${URL}/admin/allpayment/${Memberid}/${month1}`)
+                const adminEachRes = await axios.get(`${URL}/admin/each/${Memberid}/${month1}`)
+                const CompareDataRes = await axios.post(`${URL}/admin/percent`, {memberid: Memberid,month1})
 
                 setAdminEach(adminEachRes.data.data)
                 setAdminMonth(adminMonthRes.data.data)
@@ -208,15 +218,20 @@ export default function PaymentCon () {
               <div className="category">
               <div className="material-symbols-outlined icon">work</div>
                   알바별 이번달 급여
+                  <div>
                   {adminEach &&
-                  Object.entries(adminEach).map(([key, value]: [string, string]) => {
+                  Object.entries(adminEach).map(([paykey, value]: [string, string]) => {
                     return (
-                      <div key={key} className="Eachdata">
-                        <div>{key}</div>
-                        <div>{value}</div>
+                      <div key={paykey} className="Eachdata">
+                    {Object.keys(WorkerList).map((key)=>{
+                    if(key === paykey) {
+                        return <div key={key} className="name">{WorkerList[key]} </div>
+                    }})}
+                        <div>{formatCurrency(value as unknown as number)}원</div>
                       </div>
                     );
                   })}
+                  </div>
               </div>
 
               <div>
@@ -256,7 +271,7 @@ export default function PaymentCon () {
               <div className="datatext">세금은?</div>
               <div className="data" style={{color:"rgb(219, 112, 147)"}}>
                   {adminMonth && IncomeRate !== undefined
-                  ? `${formatCurrency(Math.floor(adminMonth* ( 0.045 + 0.03545 + 0.03545 * 0.1281 + 0.09 - IncomeRate + IncomeRate * 0.1)))} 원`
+                  ? `${formatCurrency(Math.floor(adminMonth* ( 0.045 + 0.03545 + 0.03545 * 0.1281 + 0.09 - IncomeRate + IncomeRate * 0.1)))}원`
                   : '금액을 계산할 수 없습니다'}
               </div>    
             </div>

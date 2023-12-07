@@ -133,13 +133,30 @@ function CalendarMo({
 
   const eventDetails = selectedEvent ? (
     <>
-      <div className="modal-worker"><p>근무자  {selectedEvent.title}</p></div>
-      <div className="modal-worker">
-        <div className="modal-input"><p style={{marginRight:"50px"}}><span></span>예정 출근시간</p><p>{selectedEvent.start?.toString()}</p></div></div>
-      <div className="modal-worker"><p style={{marginRight:"50px"}}>예정 퇴근시간  {selectedEvent.end?.toString()}</p></div>
-      <div className="modal-worker"><p>실제 출근시간  {selectedEvent.gowork?.toString()}</p></div>
-      <div className="modal-worker"><p>실제 퇴근시간  {selectedEvent.leavework?.toString()}</p></div>
-      <div className="modal-worker"><p>시급 : {selectedEvent.wage}</p></div>
+        <div className="modal-worker">
+            <p>근무자  </p>
+            <p>{selectedEvent.title}</p>
+        </div>
+        <div className="modal-worker">
+            <p>예정 출근시간  </p>
+            <p>{selectedEvent.start?.toString()}</p>
+        </div>
+        <div className="modal-worker">
+            <p>예정 퇴근시간  </p> 
+            <p> {selectedEvent.end?.toString()}</p>
+        </div>
+        <div className="modal-worker">
+            <p>실제 출근시간  </p>
+            <p> {selectedEvent.gowork?.toString()}</p>
+        </div>
+        <div className="modal-worker">
+            <p>실제 퇴근시간  </p> 
+            <p> {selectedEvent.leavework?.toString()}</p>
+        </div>
+        <div className="modal-worker">
+            <p>시급  </p>
+            <p> {selectedEvent.wage}</p>
+        </div>
     
     </>
   ) : null;
@@ -194,7 +211,6 @@ function CalendarMo({
       setAdditionalContent("삭제할 이벤트가 선택되지 않았습니다.");
     }
     closeModal();
-    window.location.reload();
   }
 
   const defaultDate = selectedDate
@@ -273,7 +289,7 @@ function CalendarMo({
     <>
       <div className="modal-worker">      
       <label htmlFor="worker">
-      <p><span className="material-symbols-outlined">group</span> 근무자</p>
+      <span className="material-symbols-outlined">group</span> 근무자
       {/* {worker} */}
       </label>
 
@@ -477,7 +493,7 @@ savings
 
   const renderUserForm = () => (
     <>
-      <div>등록은 사장님만 가능합니다.</div>
+      <div style={{color:"#000", marginTop:"150px" }}>등록은 사장님만 가능합니다.</div>
     </>
   );
 
@@ -638,17 +654,18 @@ savings
               
                 <div className="user-detail-box">
                     {!editMode && eventDetails}
-                    {UserType === "admin" && <button onClick={handleDelete}>삭제하기</button>}
                 </div>
 
                 <div className="user-register-btn">
                   
                     {UserType === "admin" ? 
-                        <div className="admin-register">   
-                            <form name="EventForm">
-                                {adminEventForm()} 
-                            </form>
-                        </div>
+                        // <div className="admin-register">   
+                        //     <form name="EventForm">
+                        //         {adminEventForm()} 
+                        //     </form>
+                        // </div>
+                        <>
+                        </>
                      
                     :
                     <div>
@@ -666,9 +683,11 @@ savings
               
                 <div className="admin-register-btn">
               
-
                     {UserType === "admin" && !editMode && (
-                        <button onClick={handleEdit}>수정하기</button>
+                        <>
+                         <button onClick={handleEdit}>수정하기</button>
+                        <button onClick={handleDelete}>삭제하기</button>
+                        </>
                     )}
                     {editMode && updateForm()}
                 </div>

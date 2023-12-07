@@ -43,10 +43,9 @@
         bottom: 0;
 
         .pagination-button {
-            background-color: rgb(144, 202, 249);
             color: #fff;
             border: 0;
-            border-radius: 3px;
+            border-radius: 10px;
             width: 28px;
             height: 28px;
             padding: 0 10px;
@@ -55,11 +54,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-
-
+            color: #aaa;
+            font-size: 18px;
+          
+            background-color: rgba(255, 255, 255, 0.5); /* 투명한 배경 색상 */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* 테두리 스타일 */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
+            transition: opacity 0.3s ease-in-out; /* 부드러운 효과를 위한 트랜지션 추가 */
+          
             &:hover {
-                background-color: darken($buttonColor0, 10%);
+              opacity: 0.7;
             }
-        }
+        }          
     }
 }

@@ -98,7 +98,6 @@ export default function WorkCon () {
         if (pageNumber === startPage && pageNumber !== 1) {
           return (
             <div>
-              <span key="prev">...</span>
               <button
                 onClick={() => pageHandle(pageNumber - 1)}
                 style={{ fontWeight: isCurrentPage ? "bold" : "normal" }}
@@ -118,7 +117,6 @@ export default function WorkCon () {
               >
                 {pageNumber}
               </button>
-              <span key="next">...</span>
             </div>
           );
         } else {
