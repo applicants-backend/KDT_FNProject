@@ -32,7 +32,8 @@ export const data = {
 };
 const options = {
   // 옵션 (1)
-  responsive: true,
+  // responsive: true,
+  maintainAspectRatio : false,
   // 옵션 (2)
   interaction: {
     mode: "index" as const,

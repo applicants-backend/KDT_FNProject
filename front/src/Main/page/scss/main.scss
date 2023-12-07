@@ -22,11 +22,11 @@
             }
         }
     }
-    background-image: url("../scss/img2.jpg");
-     background-size: cover;
-     background-repeat: no-repeat;
+
     .middle-page {
- 
+        background-image: url("https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/img2.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
         flex-grow: 3; width: 85%; height: 100vh; 
         padding: 0 1em;  
         overflow: auto;
@@ -44,7 +44,7 @@
         
         }
         .middle-page {
-            margin-top: 2%; 
+            padding-top: 2%; 
         }
     }
 }
@@ -66,7 +66,7 @@
             }
         }
         .middle-page {
-            margin-top: 2%; width: 100%;
+            padding-top: 2%;  width: 100%;
         }
     }
 }

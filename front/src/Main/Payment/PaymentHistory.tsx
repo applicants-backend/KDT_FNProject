@@ -111,6 +111,28 @@ export default function PaymentHistory () {
     function createArray(length : number) {
         return Array.from({ length }, (_,index : number) => index + 1);
     }
+    function formatCurrency(amount : number) {
+      const formatter = new Intl.NumberFormat('ko-KR', {
+        style: 'currency',
+        currency: 'KRW',
+        currencyDisplay: 'code'
+      });
+    
+      const formattedAmount = formatter.format(amount);
+      return formattedAmount.slice(3); 
+    }
+
+    function formatDateString(inputDateString : string) {
+      const date = new Date(inputDateString);
+      
+      const year = String(date.getFullYear()).substring(2);
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+  
+      return `${year}-${month}-${day} ${hours}:${minutes}`;
+    }
 
 
     return (
@@ -118,14 +140,14 @@ export default function PaymentHistory () {
         <div className="PaymentHistory">
 
         <div className="top">
-          <div>월</div>
+          <div>날짜</div>
           <div>합계</div>
         </div>
          {Array.isArray(paymentList) &&
         paymentList.map((value: UserPaypentinterface, index) => (
             <div key={value.payid} className="contents">
-                <div>{value.pay}</div>
-                <div>{value.register}</div>
+                <div>{formatDateString(value.register)}</div>
+                <div>{formatCurrency(value.pay as unknown as number)}원</div>
             </div>
         ))}
           <div className="bottom">
@@ -145,7 +167,7 @@ export default function PaymentHistory () {
             paymentList.map((value: AdminPaypentinterface,index) => (
                 <div key={index} className="contents">
                     <div>{value.month}</div>
-                    <div>{value.sum}</div>
+                    <div>{formatCurrency(value.sum)}원</div>
                 </div>
           ))}
 
