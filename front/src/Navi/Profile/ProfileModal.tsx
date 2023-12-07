@@ -1,6 +1,6 @@
 import axios from "axios"
 import UserTypeState, {ProfileState, URLstate, UserDataState } from "../../Store/Store"
-import React, { useCallback, useState, useRef, useMemo, SyntheticEvent} from "react"
+import React, { FocusEvent, useCallback, useState, useRef, useMemo, SyntheticEvent} from "react"
 
 import "./scss/ProfileModal.scss"
 
@@ -11,6 +11,7 @@ export default function ProfileModal() {
     const {UserType} = UserTypeState(state => state)
     const {Memberid, Storeid, setName} = UserDataState(state=>state)
 
+    console.log('UserType', UserType)
     const[userPw, setUserpw]=useState<string>("")
     const[userPwre, setUserpwre]=useState<string>("")
 
@@ -213,92 +214,128 @@ export default function ProfileModal() {
         e.currentTarget.src = "https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/defalut_image.png";
     }
 
+    const onfocusBluer = (e:FocusEvent<HTMLInputElement>, type:string) => {
+
+        if (type === "focus" && e.target.parentElement) {
+            e.target.parentElement.style.borderColor = "rgb(94, 53, 177)";
+            e.target.parentElement.style.borderWidth = "1.5px"
+        }
+        if (type === "blur" && e.target.parentElement) {
+            e.target.parentElement.style.borderColor = "#ccc";
+            e.target.parentElement.style.borderWidth = "1px"
+        }
+      }
+
     
     return(
         <form name="RegisterForm" className="register-form">
             
             <div className="profile-img">
-
                 <div className="image-box">
                     <img src={UserType ==="admin" ? companyImg === null ? "" : companyImg : userImg === null ? "" : userImg } 
                         alt='profile-image' 
                         onError={defalutImg}/>
                 </div>
-                <div className="profile-image-input"> 
+            </div>
+
+            <div className="profile-image-input"> 
                     <input  id="profileFile" type='file' 
                             accept='image/jpg, impge/png, image/jpeg, image/gif' 
                             size={ 5 * 1024 * 1024 }
                             style={{display:'none'}}
                             name='profile_img' onChange={uploadImg}/>
                     <label htmlFor="profileFile" >이미지 변경하기</label>
-                </div>
-                    
             </div>
 
-            <div className="input-box">
-                <div>
-                    <label htmlFor="id"> 아이디 : </label>
-                    <input name="memberid" value={Memberid ? Memberid : "" } id="id" placeholder="아이디" readOnly/>
-                </div>
+            <div className="input-label">
+                <label htmlFor="id"> 아이디 : </label>
+                <input name="memberid" 
+                        onFocus={(e) => onfocusBluer(e,"focus")}
+                        onBlur={(e) => onfocusBluer(e,"blur")}
+                        value={Memberid ? Memberid : "" } 
+                        id="id" placeholder="아이디" readOnly/>
+            </div>
 
-                <div>
-                    <label htmlFor="pw"> 비밀번호 : </label>
-                    <input  name="password" type="password" id="pw"  
-                            autoComplete="new-password" 
-                            placeholder="비밀번호" ref={pwInputRef} onChange={ e=> handlePassWordVail(e)}/>
-                    <span style={{ color: pwIs ? 'green' : 'red' }}>{pwMes}</span>
-                </div>
+            <div className="input-label">
+                <label htmlFor="pw"> 비밀번호 : </label>
+                <input  name="password" type="password" id="pw"  
+                        onFocus={(e) => onfocusBluer(e,"focus")}
+                        onBlur={(e) => onfocusBluer(e,"blur")}
+                        autoComplete="new-password" 
+                        placeholder="비밀번호" ref={pwInputRef} onChange={ e=> handlePassWordVail(e)}/>
+                <span style={{ color: pwIs ? 'green' : 'red' }}>{pwMes}</span>
+            </div>
 
-                <div>   
-                    <label htmlFor="PWre"> 비밀번호 확인 : </label>
-                    <input name="pwre" type="password" id="PWre" 
-                    value={userPwre} placeholder="비밀번호 확인" autoComplete="new-password" ref={repwInputRef} onChange={e=>handlePassWordConfirm(e)}/>
-                    <span style={{ color: repwIs ? 'green' : 'red'}}>{repwMes}</span>
-                </div>
-                
-                <div >
-                    <label htmlFor="name"> 이름 : </label>
-                    <input name="name" id="name" placeholder="이름" value={userName} ref={nameInputRef} onChange={e=>setuserName(e.target.value)}/>
-                </div>
+            <div className="input-label">
+                <label htmlFor="PWre"> 비밀번호 확인 : </label>
+                <input name="pwre" type="password" id="PWre" 
+                        onFocus={(e) => onfocusBluer(e,"focus")}
+                        onBlur={(e) => onfocusBluer(e,"blur")}
+                        value={userPwre} placeholder="비밀번호 확인" 
+                        autoComplete="new-password" ref={repwInputRef} 
+                        onChange={e=>handlePassWordConfirm(e)}/>
+                <span style={{ color: repwIs ? 'green' : 'red'}}>{repwMes}</span>
+            </div>
 
-                <div >
-                    <label htmlFor="email"> 이메일 : </label>
-                    <input name="email" id="email" placeholder="이메일" value={email} ref={emailInputRef} onChange={e=>setEmail(e.target.value)}/>
-                </div>
+            <div className="input-label">
+                <label htmlFor="name"> 이름 : </label>
+                <input name="name" id="name" placeholder="이름" 
+                        onFocus={(e) => onfocusBluer(e,"focus")}
+                        onBlur={(e) => onfocusBluer(e,"blur")}
+                        value={userName} 
+                        ref={nameInputRef} onChange={e=>setuserName(e.target.value)}/>
+            </div>
+
+            <div className="input-label">
+                <label htmlFor="email"> 이메일 : </label>
+                <input name="email" id="email" placeholder="이메일" 
+                        onFocus={(e) => onfocusBluer(e,"focus")}
+                        onBlur={(e) => onfocusBluer(e,"blur")}
+                        value={email} ref={emailInputRef} onChange={e=>setEmail(e.target.value)}/>
+            </div>
+
+            <div className="input-label">
+                <label htmlFor="phoneNumber"> 휴대전화 번호 : </label>
+                <input name="phonenumber" id="phoneNumber" 
+                        onFocus={(e) => onfocusBluer(e,"focus")}
+                        onBlur={(e) => onfocusBluer(e,"blur")}
+                        value={phoneNumber} 
+                        placeholder="휴대전화 번호" ref={phoneNumberInputRef} 
+                        onChange={e=>setphoneNumber(e.target.value)}/>
+            </div>
+
+
             
-                <div >
-                    <label htmlFor="phoneNumber"> 휴대전화 번호 : </label>
-                    <input name="phonenumber" id="phoneNumber" value={phoneNumber} 
-                            placeholder="휴대전화 번호" ref={phoneNumberInputRef} onChange={e=>setphoneNumber(e.target.value)}/>
-                </div>
-
-
-                {UserType === "admin" ? 
+            {UserType === "admin" ? 
                 /////// 유저타입이 사업자 일때 추가되는 input
                     <>
-                        <div>       
+
+                        <div className="input-label">
                             <label htmlFor="companyName"> 사업자 상호명 : </label>
-                            <input name="companyName" id="companyName" value={companyName} placeholder="사업자 상호명" readOnly/>
+                            <input name="companyName" id="companyName" 
+                                    value={companyName} placeholder="사업자 상호명" 
+                                    readOnly/>
                         </div>
-                        <div >
+                        <div className="input-label">
                             <label htmlFor="CEO"> 대표자 : </label>
-                            <input name="CEO" id="CEO" placeholder="대표자" value={CEO} readOnly/>
+                            <input name="CEO" id="CEO" placeholder="대표자" value={CEO} readOnly/>  
                         </div>
-                        <div >
+                   
+                        <div className="input-label">
                             <label htmlFor="companyNumber"> 사업자 번호 : </label>
-                            <input name="companyNumber" id="companyNumber" value={companyNumber} placeholder="000-00-00000 형식으로 입력하세요" readOnly/>
+                            <input name="companyNumber" id="companyNumber" value={companyNumber} 
+                                    placeholder="000-00-00000 형식으로 입력하세요" readOnly/>
                         </div>
+                 
                     </> 
                 :
                     /////// 유저타입이 근로자 일때 추가되는 input
-                    <div >
-                        <label htmlFor="companyToken"> 사업장 인증번호 </label>
-                        <input name="companyToken" id="companyToken" value={companyToken} placeholder="사업장 인증번호" readOnly/>
-                    </div>
-                }
-            </div>
 
-      
+                    <>
+                    </>
+                }
+
+
             <button className="update-button" type="button" onClick={(e)=>{UpdateMemberData()}}>정보수정</button>
             <button className="remove-button" type="button" onClick={(e)=>{DeleteMemberData()}}>회원탈퇴</button>
             
