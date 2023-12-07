@@ -101,7 +101,7 @@ export default function AttendanceCon () {
                         <div className="material-symbols-outlined icon">local_cafe</div>
                         <div className="categoryName">법정휴게시간</div>
                     </div>
-                    <div className="data">{Math.floor(AttendWeek ? AttendWeek /60/8 : 0)}  h</div>
+                    <div className="data">{(AttendWeek ? AttendWeek /60/8 : 0)} h</div>
                 </div> 
 
                 <div className="row">

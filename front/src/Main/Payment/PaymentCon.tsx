@@ -70,7 +70,7 @@ export default function PaymentCon () {
 
                 const adminMonthRes = await axios.get(`${URL}/admin/allpayment/${Memberid}/${month1}`)
                 const adminEachRes = await axios.get(`${URL}/admin/each/${Memberid}/${month1}`)
-                const CompareDataRes = await axios.post(`${URL}/admin/percent`, {memberid: Memberid,month1})
+                const CompareDataRes = await axios.post(`${URL}/admin/percent`, {memberid: Memberid,month:month1})
 
                 setAdminEach(adminEachRes.data.data)
                 setAdminMonth(adminMonthRes.data.data)
@@ -154,7 +154,7 @@ export default function PaymentCon () {
                   <div className="categoryName">이번달 예상 실수령액</div>
                   <div className="data">
                   {PaymentData?.month && IncomeRate !== undefined
-                  ? `${formatCurrency(Math.floor(PaymentData.month * (1 - 0.045 - 0.03545 - 0.03545 * 0.1281 - 0.09 - IncomeRate - IncomeRate * 0.1)))} 원`
+                  ? `${formatCurrency(Math.floor(PaymentData.month * (1- 0.045 - 0.03545 - 0.03545 * 0.1281 - 0.09 - IncomeRate - IncomeRate * 0.1)))}원`
                   : '금액을 계산할 수 없습니다'}
                   </div>
               </div>
@@ -167,7 +167,7 @@ export default function PaymentCon () {
                   <div className="datatext">세금은?</div>
                   <div className="data" style={{color:"rgb(219, 112, 147)"}}>
                   {PaymentData?.month && IncomeRate !== undefined
-                  ? `${formatCurrency(Math.floor(PaymentData.month * ( 0.045 + 0.03545 + 0.03545 * 0.1281 + 0.09 - IncomeRate + IncomeRate * 0.1)))} 원`
+                  ? `${formatCurrency(Math.floor(PaymentData.month * ( 0.045 + 0.03545 + 0.03545 * 0.1281 + 0.09 + IncomeRate + IncomeRate * 0.1)))}원`
                   : '금액을 계산할 수 없습니다'}
                   </div>                
                 </div>
@@ -271,7 +271,7 @@ export default function PaymentCon () {
               <div className="datatext">세금은?</div>
               <div className="data" style={{color:"rgb(219, 112, 147)"}}>
                   {adminMonth && IncomeRate !== undefined
-                  ? `${formatCurrency(Math.floor(adminMonth* ( 0.045 + 0.03545 + 0.03545 * 0.1281 + 0.09 - IncomeRate + IncomeRate * 0.1)))}원`
+                  ? `${formatCurrency(Math.floor(adminMonth * ( 0.045 + 0.03545 + 0.03545 * 0.1281 + 0.09 + IncomeRate + IncomeRate * 0.1)))}원`
                   : '금액을 계산할 수 없습니다'}
               </div>    
             </div>
