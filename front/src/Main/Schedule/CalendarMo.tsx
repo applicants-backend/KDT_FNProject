@@ -389,25 +389,24 @@ savings
         attendid: attendid,
         wage: selectedEvent.wage,
       });
-      try {
-        console.log("gowork 요청중");
-        // UserType에 따라 다른 엔드포인트를 사용할 수 있습니다.
-        const res = await axios.patch(
-          `${URL}/user/attendance/gowork`,
-          sendUserData
-        );
-        console.log("res : ", res);
-        console.log("sendUserDate : ", sendUserData);
-        console.log("sendDataToCon : ", sendDataToCon);
-      } catch (error) {
-        console.error("gowork 요청 중 오류 발생:", error);
-      }
+    //   try {
+    //     console.log("gowork 요청중");
+    //     // UserType에 따라 다른 엔드포인트를 사용할 수 있습니다.
+    //     const res = await axios.patch(
+    //       `${URL}/user/attendance/gowork`,
+    //       sendUserData
+    //     );
+    //     console.log("res : ", res);
+    //     console.log("sendUserDate : ", sendUserData);
+    //     console.log("sendDataToCon : ", sendDataToCon);
+    //   } catch (error) {
+    //     console.error("gowork 요청 중 오류 발생:", error);
+    //   }
     } else {
       // 선택된 이벤트가 없을 경우 에러 메시지를 설정합니다.
       setAdditionalContent("이벤트가 선택되지 않았습니다.");
     }
     closeModal();
-    window.location.reload();
   }
 
   async function getCurrentTimeEnd() {
@@ -425,7 +424,7 @@ savings
       const newData = new Date(formattedTime);
       const format =
         newData.toLocaleDateString() + newData.toLocaleTimeString();
-      const news = now.toString();
+        const news = now.toString();
 
       const isoString = now.toISOString();
 
@@ -456,25 +455,24 @@ savings
         attendid: attendid,
         wage: selectedEvent.wage,
       });
-      try {
-        console.log("leavework 요청중");
-        // UserType에 따라 다른 엔드포인트를 사용할 수 있습니다.
-        const res = await axios.patch(
-          `${URL}/user/attendance/leavework`,
-          sendUserData
-        );
-        console.log("res : ", res);
-        console.log("sendUserDate : ", sendUserData);
-        console.log("sendDataToCon : ", sendDataToCon);
-      } catch (error) {
-        console.error("leavework 요청 중 오류 발생:", error);
-      }
+    //   try {
+    //     console.log("leavework 요청중");
+    //     // UserType에 따라 다른 엔드포인트를 사용할 수 있습니다.
+    //     const res = await axios.patch(
+    //       `${URL}/user/attendance/leavework`,
+    //       sendUserData
+    //     );
+    //     console.log("res : ", res);
+    //     console.log("sendUserDate : ", sendUserData);
+    //     console.log("sendDataToCon : ", sendDataToCon);
+    //   } catch (error) {
+    //     console.error("leavework 요청 중 오류 발생:", error);
+    //   }
     } else {
       // 선택된 이벤트가 없을 경우 에러 메시지를 설정합니다.
       setAdditionalContent("이벤트가 선택되지 않았습니다.");
     }
     closeModal();
-    window.location.reload();
   }
 
   const renderUserForm = () => (
@@ -491,18 +489,6 @@ savings
     </>
   );
 
-  const userEventForm = () => (
-    <>
-      <label htmlFor="gowork"  >출근 시간 : {gowork}</label>
-      <button type="button" onClick={getCurrentTimeStart}>
-        출근
-      </button>
-      <label htmlFor="leavework">퇴근 시간 : {leavework}</label>
-      <button type="button" onClick={getCurrentTimeEnd}>
-        퇴근
-      </button>
-    </>
-  );
 
   const handleEdit = () => {
     setEditMode(true);
@@ -585,23 +571,25 @@ savings
             );
           })}
       </select>
-
-      <label htmlFor="start">출근 시간  </label>
-      <input
-        type="datetime-local"
-        id="start"
-        value={start || newEventDefaultDateStart}
-        onChange={(e) => setStart(e.target.value)}
-      />
-      <label htmlFor="end" >퇴근 시간  </label>
-      <input
-        type="datetime-local"
-        id="end"
-        value={end || newEventDefaultDateEnd}
-        onChange={(e) => setEnd(e.target.value)}
-      />
-      <label htmlFor="wage" >급여  </label>
-      <input type="text" id="wage" onChange={(e) => setWage(e.target.value)} />
+      <div>
+        <label htmlFor="start">출근 시간  </label>
+        <input
+          type="datetime-local"
+          id="start"
+          value={start || newEventDefaultDateStart}
+          onChange={(e) => setStart(e.target.value)}
+        />
+        <label htmlFor="end" >퇴근 시간  </label>
+        <input
+          type="datetime-local"
+          id="end"
+          value={end || newEventDefaultDateEnd}
+          onChange={(e) => setEnd(e.target.value)}
+        />
+        <label htmlFor="wage" >급여  </label>
+        <input type="text" id="wage" onChange={(e) => setWage(e.target.value)} />
+      </div>
+      
       <button type="button" onClick={handleUpdate}>
         수정하기
       </button>
@@ -611,57 +599,66 @@ savings
   return (
     <>
       {isOpen && selectedDate && (
-        <div className="modal-container">
-          <div className="modal-wrap">
-            <div className="modal-cancle">
-              <div className="close-button" onClick={closeModal}>
-                <span className="material-symbols-outlined">arrow_back_ios</span>
-              </div>
-            </div>
-            
-            <h2>{newDefaultDate}</h2>
-           
-         
- 
-          <div className="modal-line"></div>
-          <div className="modal-RegisterForm">
-          <form name="RegisterForm">
-            {UserType === "admin" ? renderAdminForm() : renderUserForm()}
-          </form>
-          </div>
-          <div className="modal-line"></div>
+        <div className="modal-container" onClick={closeModal}>
+          <div className="modal-wrap" onClick={(e) => e.stopPropagation()}>
+                <div className="modal-cancle">
+                    <div className="close-button" onClick={closeModal}>
+                    <span className="material-symbols-outlined">arrow_back_ios</span>
+                    </div>
+                </div>
+                <h2>{newDefaultDate}</h2>
+                <div className="modal-line"></div>
 
-          </div>
+                <div className="modal-RegisterForm">
+                    <form name="RegisterForm">
+                    {UserType === "admin" ? renderAdminForm() : renderUserForm()}
+                    </form>
+                </div>
+
+            </div>
         </div>
       )}
 
       {isOpen && selectedEvent && (
-        <div className="modal-container">
-           <div className="modal-wrap">
-           <div className="modal-cancle">
-              <div className="close-button" onClick={closeModal}>
-                <span className="material-symbols-outlined">arrow_back_ios</span>
-              </div>
-            </div>
+        <div className="modal-container" onClick={closeModal}>
+          <div className="modal-wrap" onClick={(e) => e.stopPropagation()}>
+                <div className="modal-title">   
+                    <div className="modal-cancle">
+                        <div className="close-button" onClick={closeModal}>
+                            <span className="material-symbols-outlined">arrow_back_ios</span>
+                        </div>
+                    </div>
+                    <h2>{newSelectedDate}</h2>
+                </div>
+                
+              
+                <div className="user-detail-box">
+                    {!editMode && eventDetails}
+                </div>
 
-             <h2>{newSelectedDate}</h2>
-          <div className="modal-line"></div>
-          <form name="EventForm">
-            {UserType === "admin" ? adminEventForm() : userEventForm()}
-          </form>
-          {!editMode && eventDetails}
-          <p>{additionalContent}</p>
-
-          
-          {UserType === "admin" && !editMode && (
-            <button onClick={handleEdit}>수정하기</button>
-          )}
-          {editMode && updateForm()}
-          {/* <button className="close-button" onClick={closeModal}>
-            닫기
-          </button> */}
+                <div className="user-register-btn">
+                    {UserType === "admin" ? 
+                        <form name="EventForm">
+                            {adminEventForm()} 
+                        </form>
+                    :
+                    <div>
+                        <button type="button" onClick={getCurrentTimeStart}>
+                            출근
+                        </button>
+                        <button type="button" onClick={getCurrentTimeEnd}>
+                            퇴근
+                        </button>
+                    </div>
+                    }  
+                </div>
+                <p>{additionalContent}</p>
+                {UserType === "admin" && !editMode && (
+                    <button onClick={handleEdit}>수정하기</button>
+                )}
+                {editMode && updateForm()}
         </div>
-        </div>
+      </div>
       )}
     </>
   );
