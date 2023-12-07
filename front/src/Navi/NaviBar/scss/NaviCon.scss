@@ -44,16 +44,24 @@
     .navicon {
         width: 100%;  background-color: #f9f8f8;
         padding: 1em; position: relative; z-index: 999;
-
-        div {
+        text-align: center; margin-left: 0;
+        a {
             color: #000;
-            a {
+            &:hover {
+                font-weight: bold;
+            }
+
+            .navicon-1 {
                 color: #000;
-                &:hover {
-                    font-weight: bold;
+                .material-symbols-outlined {
+                    color: #000;
+                }
+                div {
+                    color: #000;
                 }
             }
         }
+        
     }
 
 }
