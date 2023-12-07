@@ -15,6 +15,7 @@ import axios from './common/handler/axios'
 export default function AppRouter() {
 
     const [isLogin, setIslogin] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const cookies = new Cookies();
     useLayoutEffect(() => {
         islogin();
@@ -29,33 +30,43 @@ export default function AppRouter() {
                     token : token
                 }
             }
-
             const result = await axios.post(Pram)
             if (result.data && result.data.data === true) {
+            
                 setIslogin(true);
+               
             } else {
                 cookies.remove("token");
             }
+         
        }
+        setTimeout(() => {
+            setLoading(true);
+        },1000)
     }
     
     return (
         <>
             <BrowserRouter>
                 <div id='wrap'>
-                    {!isLogin ? 
-                        <Routes>
-                            <Route path='/' element={<Loginpage/>} />
-                            <Route path='/register'  element={<Register/>} />
-                            <Route path='/findPassword' element={<FindPw/>}/>
-                            <Route path='*'  element={<Loginpage/>} />
-                        </Routes>
-                        :   
-                        <Routes>
-                            <Route path='/'  element={<MainPage/>} />
-                            <Route path='*'  element={<MainPage/>} />
-                        </Routes>
-                    }   
+                    {!loading ? 
+                        <div className='loading_box'>loading<span>...</span></div>
+                        :
+
+                        !isLogin ? 
+                            <Routes>
+                                <Route path='/' element={<Loginpage/>} />
+                                <Route path='/register'  element={<Register/>} />
+                                <Route path='/findPassword' element={<FindPw/>}/>
+                                <Route path='*'  element={<Loginpage/>} />
+                            </Routes>
+                            :   
+                            <Routes>
+                                <Route path='/'  element={<MainPage/>} />
+                                <Route path='*'  element={<MainPage/>} />
+                            </Routes>
+                    }
+                   
                 </div>
             </BrowserRouter>
         </>

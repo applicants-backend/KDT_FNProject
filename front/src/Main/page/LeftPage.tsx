@@ -94,7 +94,9 @@ export default function LeftPage (): ReturnType<FC>  {
                             <div className="main-header-icon">
                         
                                 <div className="logout-icon" onClick={() => {if (logout) logout()}}>
-                                    <img src={"https://kdt9hotdog.s3.ap-northeast-2.amazonaws.com/alba/shutdown_icon.png"} alt="shutdown_icon" />
+                                    <div className="material-symbols-outlined" style={{margin:"auto"}}>
+                                        logout
+                                    </div>
                                 </div>
                                 
                                 <div className="profile-img" onClick={() => setmodalOpenis(true)}>
@@ -122,6 +124,8 @@ export default function LeftPage (): ReturnType<FC>  {
                     shouldCloseOnOverlayClick={true}
                     style={customModalStyles}
                 >
+                <div className="profile-back material-symbols-outlined" onClick={() =>setmodalOpenis(false)}>close</div>
+
                  <ProfileModal></ProfileModal>
             </ReactModal>  
 
