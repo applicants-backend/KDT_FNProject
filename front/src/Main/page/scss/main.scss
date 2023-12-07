@@ -1,6 +1,6 @@
 
 @import "../../../common/style/style.scss"; 
-
+//@import "../scss/img1.jpg";
 .main-wrap {
     display: flex; 
     justify-content: space-around;  
@@ -22,12 +22,16 @@
             }
         }
     }
+    background-image: url("../scss/img2.jpg");
+     background-size: cover;
+     background-repeat: no-repeat;
     .middle-page {
  
         flex-grow: 3; width: 85%; height: 100vh; 
         padding: 0 1em;  
         overflow: auto;
-        background-color: rgb(238, 242, 246);
+         //background-color: rgb(238, 242, 246);
+       
     }
 }
 

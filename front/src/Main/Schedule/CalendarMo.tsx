@@ -8,6 +8,7 @@ import UserTypeState, {
 } from "../../Store/Store";
 import axios from "axios";
 import "./scss/calendarMoStyle.scss";
+import { colors } from "react-select/dist/declarations/src/theme";
 
 interface CalendarMoProps {
   isOpen: boolean;
@@ -18,15 +19,16 @@ interface CalendarMoProps {
 }
 
 const DateTimeLabel = styled.label`
-  margin-bottom: 5px;
-  font-weight: bold;
+  //margin-bottom: 5px;
+  //font-weight: bold;
 `;
 
 const DateTimeInput = styled.input`
   padding: 8px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  //font-size: 14px;
+  border: none;
+  /* border: 1px solid #cccccc0; */
+  border-radius: 5px;
 `;
 
 function CalendarMo({
@@ -131,12 +133,13 @@ function CalendarMo({
 
   const eventDetails = selectedEvent ? (
     <>
-      <p>근무자 : {selectedEvent.title}</p>
-      <p>사장님이 등록한 출근시간 : {selectedEvent.start?.toString()}</p>
-      <p>사장님이 등록한 퇴근시간 : {selectedEvent.end?.toString()}</p>
-      <p>근무자가 입력한 출근시간 : {selectedEvent.gowork?.toString()}</p>
-      <p>근무자가 입력한 퇴근시간 : {selectedEvent.leavework?.toString()}</p>
-      <p>시급 : {selectedEvent.wage}</p>
+      <div className="modal-worker"><p>근무자  {selectedEvent.title}</p></div>
+      <div className="modal-worker">
+        <div className="modal-input"><p style={{marginRight:"50px"}}><span></span>예정 출근시간</p><p>{selectedEvent.start?.toString()}</p></div></div>
+      <div className="modal-worker"><p style={{marginRight:"50px"}}>예정 퇴근시간  {selectedEvent.end?.toString()}</p></div>
+      <div className="modal-worker"><p>실제 출근시간  {selectedEvent.gowork?.toString()}</p></div>
+      <div className="modal-worker"><p>실제 퇴근시간  {selectedEvent.leavework?.toString()}</p></div>
+      <div className="modal-worker"><p>시급 : {selectedEvent.wage}</p></div>
       {UserType === "admin" && <button onClick={handleDelete}>삭제하기</button>}
     </>
   ) : null;
@@ -261,14 +264,19 @@ function CalendarMo({
               .slice(0, 5)}`;
           } else {
             return "";
-          }
+          } 
         }
       })()
     : "";
 
   const renderAdminForm = () => (
     <>
-      <label htmlFor="worker">근무자 : {worker}</label>
+      <div className="modal-worker">      
+      <label htmlFor="worker">
+      <p><span className="material-symbols-outlined">group</span> 근무자</p>
+      {/* {worker} */}
+      </label>
+
       <select
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
           setWorker(e.target.value)
@@ -283,26 +291,41 @@ function CalendarMo({
             );
           })}
       </select>
+      </div>
 
-      <DateTimeLabel htmlFor="start">출근 시간 : </DateTimeLabel>
+      <div className="modal-worker">
+      <DateTimeLabel htmlFor="start"><span className="material-symbols-outlined">
+schedule
+</span>출근  </DateTimeLabel>
       <DateTimeInput
         type="datetime-local"
         id="start"
         value={start || defaultDate}
         onChange={(e) => setStart(e.target.value)}
       />
-      <DateTimeLabel htmlFor="end">퇴근 시간 : </DateTimeLabel>
+      </div>
+      <div className="modal-worker">
+      <DateTimeLabel htmlFor="end"><span className="material-symbols-outlined">
+schedule
+</span>퇴근  </DateTimeLabel>
       <DateTimeInput
         type="datetime-local"
         id="end"
         value={end || defaultDate}
         onChange={(e) => setEnd(e.target.value)}
       />
-      <label htmlFor="wage">급여 : </label>
+      </div>
+      <div className="modal-worker">
+      <label htmlFor="wage"><span className="material-symbols-outlined">
+savings
+</span>급여  </label>
       <input type="text" id="wage" onChange={(e) => setWage(e.target.value)} />
-      <button type="button" onClick={adminAdditonalPost}>
+      </div>
+          
+      <button className="modal-save" type="button" onClick={adminAdditonalPost}>
         저장하기
       </button>
+
     </>
   );
 
@@ -470,7 +493,7 @@ function CalendarMo({
 
   const userEventForm = () => (
     <>
-      <label htmlFor="gowork">출근 시간 : {gowork}</label>
+      <label htmlFor="gowork"  >출근 시간 : {gowork}</label>
       <button type="button" onClick={getCurrentTimeStart}>
         출근
       </button>
@@ -547,7 +570,7 @@ function CalendarMo({
 
   const updateForm = () => (
     <>
-      <label htmlFor="worker">근무자 : {worker}</label>
+      <label htmlFor="worker">근무자  {worker}</label>
       <select
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
           setWorker(e.target.value)
@@ -563,21 +586,21 @@ function CalendarMo({
           })}
       </select>
 
-      <label htmlFor="start">출근 시간 : </label>
+      <label htmlFor="start">출근 시간  </label>
       <input
         type="datetime-local"
         id="start"
         value={start || newEventDefaultDateStart}
         onChange={(e) => setStart(e.target.value)}
       />
-      <label htmlFor="end">퇴근 시간 : </label>
+      <label htmlFor="end" >퇴근 시간  </label>
       <input
         type="datetime-local"
         id="end"
         value={end || newEventDefaultDateEnd}
         onChange={(e) => setEnd(e.target.value)}
       />
-      <label htmlFor="wage">급여 : </label>
+      <label htmlFor="wage" >급여  </label>
       <input type="text" id="wage" onChange={(e) => setWage(e.target.value)} />
       <button type="button" onClick={handleUpdate}>
         수정하기
@@ -590,38 +613,54 @@ function CalendarMo({
       {isOpen && selectedDate && (
         <div className="modal-container">
           <div className="modal-wrap">
+            <div className="modal-cancle">
+              <div className="close-button" onClick={closeModal}>
+                <span className="material-symbols-outlined">arrow_back_ios</span>
+              </div>
+            </div>
+            
             <h2>{newDefaultDate}</h2>
-            <form name="RegisterForm">
-              {UserType === "admin" ? renderAdminForm() : renderUserForm()}
-            </form>
-            <button className="close-button" onClick={closeModal}>
-              닫기
-            </button>
+           
+         
+ 
+          <div className="modal-line"></div>
+          <div className="modal-RegisterForm">
+          <form name="RegisterForm">
+            {UserType === "admin" ? renderAdminForm() : renderUserForm()}
+          </form>
+          </div>
+          <div className="modal-line"></div>
+
           </div>
         </div>
       )}
 
       {isOpen && selectedEvent && (
         <div className="modal-container">
-          <div className="modal-wrap">
-            <div className="modal-h2">
-              <h2 className="modal-date-h2">{newSelectedDate}</h2>
+           <div className="modal-wrap">
+           <div className="modal-cancle">
+              <div className="close-button" onClick={closeModal}>
+                <span className="material-symbols-outlined">arrow_back_ios</span>
+              </div>
             </div>
 
-            <form name="EventForm">
-              {UserType === "admin" ? adminEventForm() : userEventForm()}
-            </form>
-            {!editMode && eventDetails}
-            <p>{additionalContent}</p>
+             <h2>{newSelectedDate}</h2>
+          <div className="modal-line"></div>
+          <form name="EventForm">
+            {UserType === "admin" ? adminEventForm() : userEventForm()}
+          </form>
+          {!editMode && eventDetails}
+          <p>{additionalContent}</p>
 
-            {UserType === "admin" && !editMode && (
-              <button onClick={handleEdit}>수정하기</button>
-            )}
-            {editMode && updateForm()}
-            <button className="close-button" onClick={closeModal}>
-              닫기
-            </button>
-          </div>
+          
+          {UserType === "admin" && !editMode && (
+            <button onClick={handleEdit}>수정하기</button>
+          )}
+          {editMode && updateForm()}
+          {/* <button className="close-button" onClick={closeModal}>
+            닫기
+          </button> */}
+        </div>
         </div>
       )}
     </>

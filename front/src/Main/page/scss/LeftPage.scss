@@ -9,6 +9,7 @@
       cursor: pointer;
    }
    z-index: 1002;
+  // background-image: "./img1.jpg";
 }
 
 
@@ -16,8 +17,20 @@
    
    .left-page-contents {
       width: 80%;
-      
+     
    }
+   
+     .modal-h2{
+    position: relative;
+    margin-bottom: 100px;
+    .modal-date-h2 {
+      position: absolute;
+      top:-100px;
+      color: white;
+      
+    }
+  }
+
    .profile-line{
       width: 100%;
       border: rgba(255, 255, 255, 0.095) solid 0.5px;
