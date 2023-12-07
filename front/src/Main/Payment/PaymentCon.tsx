@@ -24,8 +24,10 @@ export default function PaymentCon () {
     const [PaymentData, setPaymentData] = useState<Datainterface>()
     const [PercentData, setPercentData] = useState()
 
-    const [adminMonth, setAdminMonth] = useState()
+    const [adminMonth, setAdminMonth] = useState<number>()
     const [adminEach, setAdminEach] = useState<[string,string]>()
+
+    const [IncomeRate,setIncomeRate] = useState<number>()
     
     const [Color,setColor] = useState(true)
 
@@ -41,6 +43,7 @@ export default function PaymentCon () {
                 const CompareDataRes = await axios.post(`${URL}/percent`, {memberid: Memberid,month})
                 const PaymentData = PaymentdataRes.data.data
                 const CompareData = CompareDataRes.data.data
+                setIncomeRate(IncomeTaxRate(PaymentData.month))
                 console.log(CompareData)
                 setPaymentData(PaymentData)
                 setPercentData(CompareData)
@@ -58,15 +61,29 @@ export default function PaymentCon () {
                 const adminMonthRes = await axios.get(`${URL}/admin/allpayment/${Memberid}/${month}`)
                 const adminEachRes = await axios.get(`${URL}/admin/each/${Memberid}/${month}`)
                 const CompareDataRes = await axios.post(`${URL}/admin/percent`, {memberid: Memberid,month})
-                console.log(adminEachRes.data.data)
+
                 setAdminEach(adminEachRes.data.data)
                 setAdminMonth(adminMonthRes.data.data)
                 setPercentData(CompareDataRes.data.data)
+                setIncomeRate(IncomeTaxRate(adminMonthRes.data.data))
+                if(CompareDataRes.data.data < 0) {
+                  setColor(false)
+              }
             }
         
         }
         loadData()
     },[])
+
+    const IncomeTaxRate = (MonthPayment : number) => {
+      if(MonthPayment < 1000000){
+        return 0.06;
+      } else if (MonthPayment < 3830000) {
+        return 0.15;
+      } else if (MonthPayment < 7330000) {
+        return 0.24;
+      }
+    }
 
 
     const Admindata = {
@@ -111,6 +128,48 @@ export default function PaymentCon () {
                 <div className="data">{PaymentData?.month} 원</div>
               </div> 
 
+              <div className="realPaymentCon">
+                  <div className="material-symbols-outlined icon">calendar_clock</div>
+                  <div className="categoryName">이번달 예상 실수령액</div>
+                  <div className="data">
+                  {PaymentData?.month && IncomeRate !== undefined
+                  ? `${Math.floor(PaymentData.month * (1 - 0.045 - 0.03545 - 0.03545 * 0.1281 - 0.09 - IncomeRate - IncomeRate * 0.1))} 원`
+                  : '금액을 계산할 수 없습니다'}
+                  </div>
+              </div>
+
+              <div className="texboxCon">
+
+                <div className="category" style={{display:"flex",flexDirection:"column"}}>
+                  <div className="material-symbols-outlined icon">price_check</div>
+                  <div className="categoryName">이번달 내야할</div>
+                  <div className="datatext">세금은?</div>
+                  <div className="data" style={{color:"rgb(219, 112, 147)"}}>
+                  {PaymentData?.month && IncomeRate !== undefined
+                  ? `${Math.floor(PaymentData.month * ( 0.045 + 0.03545 + 0.03545 * 0.1281 + 0.09 - IncomeRate + IncomeRate * 0.1))} 원`
+                  : '금액을 계산할 수 없습니다'}
+                  </div>                
+                </div>
+
+                <div className="texbox">
+                        <div className="texcategory">국민연금<div> 4.5%</div></div>
+                        <div className="texcategory">건강보험<div> 3.545%</div></div>
+                        <div className="texcategory">장기요양보험<div> 건강보험의 12.81%</div></div>
+                        <div className="texcategory">고용보험<div> 0.9%</div></div>
+                        <div className="texcategory">소득세<div> 구간별상이</div></div>
+                        <div className="texcategory">지방소득세<div> 소득세의 10%</div></div>
+                      </div>
+
+                      <div className="tex">
+                        <div>{PaymentData?.month ? (PaymentData.month * 0.045).toFixed(0) + '원' : '70000원'}</div>
+                        <div>{PaymentData?.month ? (PaymentData.month * 0.03545).toFixed(0) + '원' : '0원'}</div>
+                        <div>{PaymentData?.month ? (PaymentData.month * 0.03545 * 0.1281 ).toFixed(0) + '원' : '60000원'}</div>
+                        <div>{PaymentData?.month ? (PaymentData.month * 0.09).toFixed(0) + '원' : '60000원'}</div>
+                        <div>{PaymentData?.month && IncomeRate ? (PaymentData.month * IncomeRate).toFixed(0) + '원' : '60000원'}</div>
+                        <div>{PaymentData?.month && IncomeRate ? (PaymentData.month * IncomeRate * 0.1).toFixed(0) + '원' : '1312원'}</div>
+                      </div>
+              </div>
+
               <div className="category">
                 <div className="material-symbols-outlined icon">more_time</div>
                 <div className="categoryName">지난 달에 비해 </div>
@@ -135,6 +194,20 @@ export default function PaymentCon () {
           :(
             <div className="PaymentConWrapAdmin">
 
+              <div className="category">
+              <div className="material-symbols-outlined icon">work</div>
+                  알바별 이번달 급여
+                  {adminEach &&
+                  Object.entries(adminEach).map(([key, value]: [string, string]) => {
+                    return (
+                      <div key={key} className="Eachdata">
+                        <div>{key}</div>
+                        <div>{value}</div>
+                      </div>
+                    );
+                  })}
+              </div>
+
               <div>
                 <div className="category">
                   <div className="material-symbols-outlined icon">schedule</div>
@@ -142,6 +215,7 @@ export default function PaymentCon () {
                 </div>
                 <div className="data">{adminMonth} 원</div>
               </div>
+
 
               <div className="category">
                 <div className="material-symbols-outlined icon">more_time</div>
@@ -163,18 +237,38 @@ export default function PaymentCon () {
                 <div className="data" style={{color : "rgb(219, 112, 147)" }}>줄었어요!</div>
             </div>)}
 
-              <div>
-                  알바별 이번달 급여
-                  {adminEach &&
-                  Object.entries(adminEach).map(([key, value]: [string, string]) => {
-                    return (
-                      <div key={key}>
-                        <div>{key}</div>
-                        <div>{value}</div>
-                      </div>
-                    );
-                  })}
-              </div>
+            <div className="texboxCon">
+
+            <div className="category" style={{display:"flex",flexDirection:"column"}}>
+              <div className="material-symbols-outlined icon">price_check</div>
+              <div className="categoryName">이번달 내야할</div>
+              <div className="datatext">세금은?</div>
+              <div className="data" style={{color:"rgb(219, 112, 147)"}}>
+                  {adminMonth && IncomeRate !== undefined
+                  ? `${Math.floor(adminMonth* ( 0.045 + 0.03545 + 0.03545 * 0.1281 + 0.09 - IncomeRate + IncomeRate * 0.1))} 원`
+                  : '금액을 계산할 수 없습니다'}
+              </div>    
+            </div>
+
+            <div className="texbox">
+                    <div className="texcategory">국민연금<div> 4.5%</div></div>
+                    <div className="texcategory">건강보험<div> 3.545%</div></div>
+                    <div className="texcategory">장기요양보험<div> 건강보험의 12.81%</div></div>
+                    <div className="texcategory">고용보험<div> 0.9%</div></div>
+                    <div className="texcategory">소득세<div> 구간별상이</div></div>
+                    <div className="texcategory">지방소득세<div> 소득세의 10%</div></div>
+            </div>
+
+                  <div className="tex">
+                    <div>{adminMonth? (adminMonth * 0.045).toFixed(0) + '원' : '70000원'}</div>
+                    <div>{adminMonth ? (adminMonth * 0.03545).toFixed(0) + '원' : '0원'}</div>
+                    <div>{adminMonth? (adminMonth * 0.03545 * 0.1281 ).toFixed(0) + '원' : '60000원'}</div>
+                    <div>{adminMonth ? (adminMonth * 0.09).toFixed(0) + '원' : '60000원'}</div>
+                    <div>{PaymentData?.month && IncomeRate ? (PaymentData.month * IncomeRate).toFixed(0) + '원' : '60000원'}</div>
+                    <div>{PaymentData?.month && IncomeRate ? (PaymentData.month * IncomeRate * 0.1).toFixed(0) + '원' : '1312원'}</div>
+                  </div>
+            </div>
+
 
               <div>
                 <Chartex data={Admindata}/>

@@ -125,7 +125,7 @@ export default function AttendanceHistory () {
           <div>출근시간</div>
           <div>퇴근시간</div>
           <div>시급</div>
-          <div>승인현황</div>
+          <div className="unConfirm">승인현황</div>
         </div>
 
         {AttendList.map((value: Attendinterface) => {

@@ -114,23 +114,26 @@ export default function Profile ({setmodalOpenis, logout}:profileProps):ReturnTy
                 <div style={{
                     width : "100%",
                     height: "100%",
-                    display : "flex", alignItems:"center",
-                    textAlign:"center"
+                    display:"flex"
                 }}>
                 <div style={{
-                    width:"80%",
-                    margin:"auto"
+                    width:"100%",
+                    height:"100%",
+                    margin:"auto",
+                    display:"flex",
+                    flexDirection:"column",
+                    textAlign:"center",
+                    justifyContent:"center",
+                    alignItems:"center"
                 }}>
                     <div style={{
                             width: "100%",
                             height: "50px",
-
                     }}>
                         {Token}
                     </div>
-                    <button  
-                        style={{backgroundColor:"rgb(94, 53, 177)", color:"#fff", padding:"0.3em", borderColor:"#eee"}}
-                     onClick={(e)=>CodeGenerater()}>초대코드 발급</button>
+                    <button className="codeGenerator" style={{width:"30%",padding:"3%",color:"rgb(85, 105, 255)",border:"1px solid rgb(85, 105, 255)",backgroundColor:"white",borderRadius:"10px"}} onClick={(e)=>CodeGenerater()}>초대코드 발급</button>
+                    <div onClick={()=>setInviteModal(false)} style={{position:"absolute", top:"3%",right:"3%",fontSize:"24px",cursor:"pointer"}}>X</div>
                 </div>
         
                 </div>
