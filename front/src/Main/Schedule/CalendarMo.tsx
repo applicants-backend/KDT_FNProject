@@ -133,13 +133,30 @@ function CalendarMo({
 
   const eventDetails = selectedEvent ? (
     <>
-      <div className="modal-worker"><p>근무자  {selectedEvent.title}</p></div>
-      <div className="modal-worker">
-        <div className="modal-input"><p style={{marginRight:"50px"}}><span></span>예정 출근시간</p><p>{selectedEvent.start?.toString()}</p></div></div>
-      <div className="modal-worker"><p style={{marginRight:"50px"}}>예정 퇴근시간  {selectedEvent.end?.toString()}</p></div>
-      <div className="modal-worker"><p>실제 출근시간  {selectedEvent.gowork?.toString()}</p></div>
-      <div className="modal-worker"><p>실제 퇴근시간  {selectedEvent.leavework?.toString()}</p></div>
-      <div className="modal-worker"><p>시급 : {selectedEvent.wage}</p></div>
+        <div className="modal-worker">
+            <p>근무자  </p>
+            <p>{selectedEvent.title}</p>
+        </div>
+        <div className="modal-worker">
+            <p>예정 출근시간  </p>
+            <p>{selectedEvent.start?.toString()}</p>
+        </div>
+        <div className="modal-worker">
+            <p>예정 퇴근시간  </p> 
+            <p> {selectedEvent.end?.toString()}</p>
+        </div>
+        <div className="modal-worker">
+            <p>실제 출근시간  </p>
+            <p> {selectedEvent.gowork?.toString()}</p>
+        </div>
+        <div className="modal-worker">
+            <p>실제 퇴근시간  </p> 
+            <p> {selectedEvent.leavework?.toString()}</p>
+        </div>
+        <div className="modal-worker">
+            <p>시급  </p>
+            <p> {selectedEvent.wage}</p>
+        </div>
     
     </>
   ) : null;
@@ -272,7 +289,7 @@ function CalendarMo({
     <>
       <div className="modal-worker">      
       <label htmlFor="worker">
-      <p><span className="material-symbols-outlined">group</span> 근무자</p>
+      <span className="material-symbols-outlined">group</span> 근무자
       {/* {worker} */}
       </label>
 
