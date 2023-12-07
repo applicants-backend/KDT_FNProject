@@ -59,14 +59,14 @@ export default function HomeData () {
         <div className="HomeDataCon">
             
             <div><div className="info"><div className="material-symbols-outlined icon">work</div>이번달 일한 시간은 ? </div>
-                <div>{attend}</div>
+                <div className="data">{attend as number/60}h</div>
             </div>
 
             <div><div className="payinfo">
                 <div className="material-symbols-outlined icon">payments</div>
                 이번달 예상 월급은 ?
                 </div> 
-                <div>{formatCurrency(payment? payment : 0)}</div>
+                <div className="data">{formatCurrency(payment? payment : 0)}</div>
             </div>
 
             <div>
@@ -74,7 +74,7 @@ export default function HomeData () {
                 <div className="material-symbols-outlined icon">work_history</div>
                 오늘 업무 일지
                 </div>
-                <div> {checked} / {unchecked}</div>
+                <div className="data"> {checked} / {unchecked}</div>
             </div>
         </div>
         ) : (
