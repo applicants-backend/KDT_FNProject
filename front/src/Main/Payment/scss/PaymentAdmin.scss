@@ -11,7 +11,6 @@
     font-size: 48px;
     margin-right: 0;
   }
-
   .category {
     display: flex;
     align-items: center;
@@ -26,6 +25,53 @@
   .datatext{
     font-size: 1.5rem;
     color: rgb(34, 51, 84);
+  }
+  .Eachdata{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    overflow-y: scroll;
+    
+      &::-webkit-scrollbar{
+      display: none;
+    }
+  }
+
+  .texboxCon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  .realPaymentCon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .texbox {
+    display: flex;
+    flex-direction: column;
+    align-items:baseline;
+  } 
+
+  .texcategory{
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    >div {
+      font-size: x-small;
+      color:rgb(84 120 194);
+    }
+  }
+  .tex {
+    display: flex;
+    flex-direction: column;
+    align-items:baseline;
+    div {
+      margin-bottom: 14px;
+    }
   }
 
 
@@ -63,16 +109,23 @@
   }
 
   > div:nth-child(3) {
-    grid-column: 3 / span 1;
+    grid-column: 1 / span 1;
+    grid-row: 2 / span 1;
    
   }
 
   > div:nth-child(4) {
-    grid-column: 4 / span 1;
+    grid-column: 2 / span 1;
+    grid-row: 2 / span 1;
   }
 
   > div:nth-child(5) {
-    grid-column: 1 / span 4;
+    grid-column: 3 / span 2;
+
+  }
+
+  > div:nth-child(6) {
+    grid-column: 3 / span 2;
     grid-row: 2 / span 1;
   }
 }
@@ -82,7 +135,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   width: 100%;
-  height: 30%;
   margin-top: 20px;
 
   .icon {
@@ -104,6 +156,43 @@
   .datatext{
     font-size: 1.5rem;
     color: rgb(34, 51, 84);
+  }
+
+  .texboxCon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  .realPaymentCon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .texbox {
+    display: flex;
+    flex-direction: column;
+    align-items:baseline;
+  } 
+
+  .texcategory{
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    >div {
+      font-size: x-small;
+      color:rgb(84 120 194);
+    }
+  }
+  .tex {
+    display: flex;
+    flex-direction: column;
+    align-items:baseline;
+    div {
+      margin-bottom: 14px;
+    }
   }
 
 
@@ -139,12 +228,24 @@
   }
 
   > div:nth-child(3) {
-    grid-column: 3 / span 1;
+    grid-column: 3 / span 2;
    
   }
 
   > div:nth-child(4) {
-    grid-column: 4 / span 1;
+    grid-column: 3 / span 2;
+    grid-row: 2 / span 1 ;
+  }
+
+  > div:nth-child(5) {
+    grid-column: 1 / span 1;
+    grid-row: 2 / span 1 ;
+   
+  }
+
+  > div:nth-child(6) {
+    grid-column: 2 / span 1;
+    grid-row: 2 / span 1 ;
   }
 }
   

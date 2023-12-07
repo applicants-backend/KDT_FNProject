@@ -22,6 +22,7 @@ export default function AttendanceCon () {
         const loadData = async () =>{
             const AttendweekRes = await axios.get(UserType === 'admin' ? `${URL}/admin/attendance/week/${Memberid}/${Storeid}/${workerid}` : `${URL}/user/attendance/week/${Memberid}/${Storeid}` )
             setAttendWeek(AttendweekRes.data.data)
+            console.log(AttendweekRes)
             
             const AttendMonthRes = await axios.get(UserType === 'admin' ? `${URL}/admin/attendance/month/${Memberid}/${Storeid}/${workerid}` : `${URL}/user/attendance/month/${Memberid}/${Storeid}` )
             setAttendMonth(AttendMonthRes.data.data)
@@ -75,6 +76,45 @@ export default function AttendanceCon () {
                 <div className="data" style={{color : "rgb(219, 112, 147)"}}>{AttendPercent} %</div>
                 <div className="data" style={{color : "rgb(219, 112, 147)" }}>줄었어요!</div>
             </div>)}
+
+            <div className="RowBox">
+                <div className="row">
+                    <div className="category">
+                        <div className="material-symbols-outlined icon">gavel</div>
+                        <div className="categoryName">법정근로시간</div>
+                    </div>
+                    <div className="data">{AttendWeek} h / 52 h</div>
+                </div> 
+
+                <div className="row">
+                    <div className="category">
+                        <div className="categoryName info">  
+                            <div>①연장+휴일근로 포함 월~일요일 1주 총 근로시간 최대 52시간 초과 금지</div>
+                            <div>②하루 8시간을 초과하는 근로시간 설정 불가(법정근로: 1주 40시간)</div>
+                            <div>③사업장-근로자 간 합의된 경우에만 1주 근로시간을 12시간 한도로 연장 가능</div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <div className="RowBox">
+                <div className="row">
+                    <div className="category">
+                        <div className="material-symbols-outlined icon">local_cafe</div>
+                        <div className="categoryName">법정휴게시간</div>
+                    </div>
+                    <div className="data">{AttendWeek} h</div>
+                </div> 
+
+                <div className="row">
+                    <div className="category">
+                        <div className="categoryName info">  
+                            <div>①연장+휴일근로 포함 월~일요일 1주 총 근로시간 최대 52시간 초과 금지</div>
+                            <div>②하루 8시간을 초과하는 근로시간 설정 불가(법정근로: 1주 40시간)</div>
+                            <div>③사업장-근로자 간 합의된 경우에만 1주 근로시간을 12시간 한도로 연장 가능</div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
         </div> 
    
       ) : (
@@ -125,7 +165,45 @@ export default function AttendanceCon () {
                     <div className="data" style={{color : "rgb(219, 112, 147)"}}>{AttendPercent} %</div>
                     <div className="data" style={{color : "rgb(219, 112, 147)" }}>줄었어요!</div>
                 </div>)}
-            
+
+                <div className="RowBox">
+                    <div className="row">
+                        <div className="category">
+                            <div className="material-symbols-outlined icon">gavel</div>
+                            <div className="categoryName">법정근로시간</div>
+                        </div>
+                        <div className="data">{AttendWeek} h / 52 h</div>
+                    </div> 
+
+                    <div className="row">
+                        <div className="category">
+                            <div className="categoryName info">  
+                                <div>①연장+휴일근로 포함 월~일요일 1주 총 근로시간 최대 52시간 초과 금지</div>
+                                <div>②하루 8시간을 초과하는 근로시간 설정 불가(법정근로: 1주 40시간)</div>
+                                <div>③사업장-근로자 간 합의된 경우에만 1주 근로시간을 12시간 한도로 연장 가능</div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+
+                <div className="RowBox">
+                <div className="row">
+                    <div className="category">
+                        <div className="material-symbols-outlined icon">local_cafe</div>
+                        <div className="categoryName">법정휴게시간</div>
+                    </div>
+                    <div className="data">{AttendWeek && AttendWeek/8} h</div>
+                </div> 
+
+                <div className="row">
+                    <div className="category">
+                        <div className="categoryName info">  
+                            <div>①사용자는 근로시간이 4시간인 경우에는 30분 이상, 8시간인 경우에는 1시간 이상의 휴게시간을 근로시간 도중에 주어야 한다. </div>
+                            <div>②휴게시간은 근로자가 자유롭게 이용할 수 있다.</div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
             </div>
 
         </div>
