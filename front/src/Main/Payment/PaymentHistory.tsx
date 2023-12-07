@@ -65,7 +65,7 @@ export default function PaymentHistory () {
     
         if (pageNumber === startPage && pageNumber !== 1) {
           return (
-            <div>
+            <div style={{display:"flex", alignItems:"center"}}>
               <span key="prev">...</span>
               <button
                 onClick={() => pageHandle(pageNumber - 1)}
@@ -78,7 +78,7 @@ export default function PaymentHistory () {
           );
         } else if (pageNumber === endPage && pageNumber !== totalPage) {
           return (
-            <div>
+            <div style={{display:"flex", alignItems:"center"}}>
               <button
                 onClick={() => pageHandle(pageNumber - 1)}
                 style={{ fontWeight: isCurrentPage ? "bold" : "normal" }}
