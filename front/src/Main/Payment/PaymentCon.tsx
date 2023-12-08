@@ -23,6 +23,7 @@ export default function PaymentCon () {
     const {WorkerList}= WorkerListState(state=>state)
 
     const [PaymentData, setPaymentData] = useState<Datainterface>()
+    const [fixMonthpay, setfinxMonthpay] =useState(0)
     const [PercentData, setPercentData] = useState<number>()
 
     const [adminMonth, setAdminMonth] = useState<number>()
@@ -42,12 +43,15 @@ export default function PaymentCon () {
                 const PaymentdataRes = await axios.post(`${URL}/allpayment`, {memberid: Memberid})
                 const month =  new Date().getMonth()+1;
                 const CompareDataRes = await axios.post(`${URL}/percent`, {memberid: Memberid,month})
+                const DataRes = await axios.get(`${URL}/user/findAll/${Memberid}/${month}`)
                 const PaymentData = PaymentdataRes.data.data
                 const CompareData = CompareDataRes.data.data
-                setIncomeRate(IncomeTaxRate(PaymentData.month))
+                setIncomeRate(IncomeTaxRate(DataRes.data.data[month]))
+                setfinxMonthpay(DataRes.data.data[month])
                 console.log(CompareData)
                 setPaymentData(PaymentData)
                 setPercentData(CompareData)
+                console.log(PaymentData.month)
                 if(CompareData < 0) {
                     setColor(false)
                 }
@@ -146,15 +150,14 @@ export default function PaymentCon () {
                     <div className="material-symbols-outlined icon">calendar_clock</div>
                     <div className="categoryName">이번달 예상 급여</div>
                 </div>
-                <div className="data">{formatCurrency(PaymentData?.month as number)} 원</div>
+                <div className="data">{formatCurrency(fixMonthpay && fixMonthpay as number)} 원</div>
               </div> 
-
               <div className="realPaymentCon">
                   <div className="material-symbols-outlined icon">calendar_clock</div>
                   <div className="categoryName">이번달 예상 실수령액</div>
                   <div className="data">
-                  {PaymentData?.month && IncomeRate !== undefined
-                  ? `${formatCurrency(Math.floor(PaymentData.month * (1- 0.045 - 0.03545 - 0.03545 * 0.1281 - 0.09 - IncomeRate - IncomeRate * 0.1)))}원`
+                  {fixMonthpay && IncomeRate !== undefined
+                  ? `${formatCurrency(Math.floor(fixMonthpay * (1- 0.045 - 0.03545 - 0.03545 * 0.1281 - 0.09 - IncomeRate - IncomeRate * 0.1)))}원`
                   : '금액을 계산할 수 없습니다'}
                   </div>
               </div>
@@ -166,8 +169,8 @@ export default function PaymentCon () {
                   <div className="categoryName">이번달 내야할</div>
                   <div className="datatext">세금은?</div>
                   <div className="data" style={{color:"rgb(219, 112, 147)"}}>
-                  {PaymentData?.month && IncomeRate !== undefined
-                  ? `${formatCurrency(Math.floor(PaymentData.month * ( 0.045 + 0.03545 + 0.03545 * 0.1281 + 0.09 + IncomeRate + IncomeRate * 0.1)))}원`
+                  {fixMonthpay&& IncomeRate !== undefined
+                  ? `${formatCurrency(Math.floor(fixMonthpay * ( 0.045 + 0.03545 + 0.03545 * 0.1281 + 0.09 + IncomeRate + IncomeRate * 0.1)))}원`
                   : '금액을 계산할 수 없습니다'}
                   </div>                
                 </div>

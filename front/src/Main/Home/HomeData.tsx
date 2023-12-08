@@ -21,11 +21,13 @@ export default function HomeData () {
 
             const AttendMonthRes = await axios.get(UserType === 'admin' ? `${URL}/admin/attendance/data/${Memberid}/${Storeid}` : `${URL}/user/attendance/month/${Memberid}/${Storeid}` )
             const FirstWorkRes = await axios.get(`${URL}/work/boards/${Storeid}/0`)
+            const DataRes = await axios.get(`${URL}/user/findAll/${Memberid}/${month}`)
+
 
           
             const PaymentMonthRes = UserType === 'admin'
             ? await axios.get(`${URL}/admin/allpayment/${Memberid}/${month}`)
-            : await axios.post(`${URL}/allpayment`, { memberid: Memberid });
+            : await axios.get(`${URL}/user/findAll/${Memberid}/${month}`);
           
             if (FirstWorkRes && FirstWorkRes.data.data.content[0]?.workid) {
                 const WorkListRes = await axios.get(`${URL}/work/boards/detail/${FirstWorkRes.data.data.content[0].workid}`);
@@ -36,7 +38,7 @@ export default function HomeData () {
               } 
             
             setAttend(AttendMonthRes.data.data)
-            setPayment(UserType === 'admin' ? PaymentMonthRes.data.data : PaymentMonthRes.data.data.month)            
+            setPayment(UserType === 'admin' ? PaymentMonthRes.data.data : PaymentMonthRes.data.data[month])            
 
         }
         loadData()
