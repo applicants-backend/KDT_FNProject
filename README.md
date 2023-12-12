@@ -65,9 +65,10 @@
 플로우차트
 <br>
 <br>
-<img width="4495" alt="플로우" src="https://github.com/TeamOHJO/Frontend/assets/38286505/9050c524-5243-4505-97b0-a0b074d3bbcf">
+<img width="1153" alt="KakaoTalk_Photo_2023-12-12-16-49-10" src="https://github.com/applicants-backend/KDT_FNProject/assets/137901354/e3c88254-ec43-40f5-ab4b-5c8c2158593f">
 
 <br>
+
 와이어프레임
 <br>
 <br>
@@ -96,19 +97,89 @@
                                                                                          
 <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"><img src="https://img.shields.io/badge/axios-671ddf?&style=for-the-badge&logo=axios&logoColor=white"><img src="https://img.shields.io/badge/recoil-3578E5?style=for-the-badge&logo=recoil&logoColor=white" /><br><img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"><img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white">
 
-## 🔥 필수 구현 사항
+<h2>🔥 서버 구현 사항</h2>
+<h3 align="center">AWS RDS</h3>
+<h4>1. 리전(ASIA/seoul)</h4>
+ <h4>2. 파라미터 그룹 생성</h4>
+✅time/zone 설정 (ASIA/seoul)<br>
+ <h4>3. 네트워크 인바운드 규칙 설정 (MYSQL/Aurora)</h4>
+ <h4>4. MySQL Schema 생성(UTF-8/general)</h4>
+ <br>
+ <h3 align="center">AWS EC2, Nginx</h3>
+ <h4>1.EC2 설정</h4>
+  ✅ 네트워크 인바운드 규칙설정(80,443)<br>
+  ✅ 동적 IP 할당<br>
+  ✅ 리전(ASIA/seoul)<br>
+  <h4>2.EC2에 Nginx 웹서버 설치</h4>
+ ✅ opjdk 17.0.9설치<br>
+ ✅ Nginx error log 설정<br>
+ <h4>3.EC2에 Nginx configuration 파일 작성</h4>
+✅ 이미지 요청 관련 이미지 크기 설정<br>
+✅ HTTP(80) 요청에 대한 proxy pass설정<br>
+  <h4>4. Spring boot YAML 작성</h4>
+✅ 프로젝트 서버 port설정<br>
+ ✅ database connect 설정 (Local Mysql, AWS RDS)<br>
+ ✅ JPA Hibernate SQL default 설정<br>
+ <h4>5. AWS EC2에 jar파일 배포</h4>
+ ✅ nohup를 사용하여 jar 무중단 배포<br>
+<br>
+ <br>
+ <br>
+ <h2>:불: 기능 구현 사항</h2>
+ <h3 align="center"> :위를_가리키는_손_모양_2: 주요기능</h3>
+<h4>회원관련 기능<h4>
+<h5>역할군에 따른 회원가입 기능</h5>
+:흰색_확인_표시: 기본정보는 인증을 위한 이메일, 아이디, 비밀번호, 이름 이때 비밀번호는 데이터베이스에 암호화하여 저장.<br>
+:흰색_확인_표시: Admin -  추가적으로 사업자이름,사업자번호 <br>
+:흰색_확인_표시: User -  해당 사업장의 admin이 발행한 인증코드를 적어 유효한지 판단 후 가입승인. <br>
+:흰색_확인_표시: 아이디와 비밀번호로 로그인 기능 <br>
+:흰색_확인_표시: 회원가입 외에 기능은 로그인과 jwt토큰 인가과정 필요 <br>
+:흰색_확인_표시: 인증메일을 통한 비밀번호 찾기 기능 <br>
+<h3 align="center">:v: 메인기능</h3>
+<h4>캘린더를 이용한 스케줄관리 기능</h4>
+<h5>Admin</h5>
+:흰색_확인_표시: 해당사업장의 User 전체 근무자 목록을 GET.<br>
+:흰색_확인_표시: 캘린더에서 해당요일을 누르고 근무자, 근무시간, 시급을 입력하고 저장.<br>
+<h5>User</h5>
+:흰색_확인_표시: 캘린더에서 본인일정과 타 User들의 일정을 GET.<br>
+:흰색_확인_표시: 캘린더에서 출근과 퇴근버튼을 통해 근무시간을 기록한다.<br>
+:흰색_확인_표시: 퇴근버튼을 누를 시 오늘 출근한 기록이 있는지 조회.<br>
+<h4>근태관리에서 근태및 데이터 조회 기능</h4>
+<h5>Admin</h5>
+:흰색_확인_표시: 모든 User의 출근 및 퇴근기록 GET. <br>
+:흰색_확인_표시: 모든 User의 월별 근태 분석 데이터를 GET.<br>
+:흰색_확인_표시: 퇴근처리가 되어야 승인 버튼 활성화<br>
+:흰색_확인_표시: 승인 버튼을 누르면 근무시간과 시급을 통해 오늘 하루의 급여를 계산 후 급여데이터에 UPDATE <br>
+<h5>User</h5>
+:흰색_확인_표시: 해당 User의 출근 및 퇴근기록 GET. <br>
+:흰색_확인_표시: 해당 User의 월별 근태 분석 데이터를 GET. <br>
+<h4>급여관리에서 월급및 데이터 조회 기능</h4>
+<h5>Admin</h5>
+:흰색_확인_표시: 데이터베이스에서 모든 User의 급여데이터를 GET. <br>
+:흰색_확인_표시: 데이터베이스에서 월별 급여 분석 데이터를 GET.  <br>
+<h5>User</h5>
+:흰색_확인_표시: 데이터베이스에서 모든 User의 급여데이터를 GET. <br>
+:흰색_확인_표시: 데이터베이스에서 월별 급여 분석 데이터를 GET. <br>
+<h4>업무관리에서 투두리스트 및 댓글 기능</h4>
+<h5>Admin</h5>
+:흰색_확인_표시: 데이터베이스에서 모든 업무리스트데이터를 최신순으로 GET. <br>
+:흰색_확인_표시: 업무일지, 근무일지 생성 및 수정 삭제기능 <br>
+:흰색_확인_표시: 업무 체크리스트 생성 및 업데이트 기능 <br>
+:흰색_확인_표시: 댓글쓰기 기능 <br>
+<h5>User</h5>
+:흰색_확인_표시: 데이터베이스에서 모든 업무리스트데이터를 최신순으로 GET. <br>
+:흰색_확인_표시: 체크박스 클릭시 누가 클릭했는지 표시되는 기능 <br>
+:흰색_확인_표시: 댓글쓰기 기능 <br>
+<br>
 
-✅ 회원가입 가능<br> 
+
 
 <br>
 
 ## 📘Convention
 
-- [**commit convention**](https://www.notion.so/Commit-Convention-6f8f2c9f19594d3f8938cc55d9e64d94?pvs=4)
-- [pull request](https://www.notion.so/pr-04666827e78e429d8bf4a2a72ef62d08?pvs=4)
-- [branch](https://www.notion.so/branch-b2d7151b35d24c93b88ba4aa1d22b17c?pvs=4)
-- [issue](https://www.notion.so/issue-86653fb009e24ae9a706605c0c8c9bff?pvs=4)
-- [stack](https://www.notion.so/Stack-879d61903f624a1ca50dd39ccdbc361d?pvs=4)
+- [**develop convention**](https://trello.com/b/w3NlKj5m/%EC%86%8C%EA%B7%9C%EB%AA%A8%EC%97%85%EC%9E%A5%EC%A7%81%EC%9B%90%EA%B4%80%EB%A6%AC)
+- [swagger ui](http://ec2-3-39-203-178.ap-northeast-2.compute.amazonaws.com/swagger-ui)
 
 <br>
 
@@ -118,9 +189,11 @@
 
 </div>
 
-| <img src="https://avatars.githubusercontent.com/u/83493231?v=4" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/38286505?v=4" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/57976371?v=4" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/139190686?v=4" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/139193612?v=4" width="150px" /> |
-| :------------------------------------------------------------------------------: | :------------------------------------------------------------------------------: | :------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------: |
-|                   FE: [김특희](https://github.com/turkey-kim)                    |                   FE: [최재훈](https://github.com/zoeyourlife)                   |                   FE: [진정민](https://github.com/JeongMin83)                    |                   FE: [김다빈](https://github.com/dabin-Hailey)                   |                    FE: [신하연](https://github.com/gkdus2217)                     |
+| <img src="" width="150px" /> | <img src="" width="150px" /> |
+| :------------------------------------------------------------------------------: | :------------------------------------------------------------------------------: |
+| FE: [김민현](https://github.com/applicants-backend) | FE: [차두환](https://github.com/chaduhwan) |
+
+
 
 <br/>
 
@@ -134,50 +207,11 @@
 
 </div>
 
-**[`OHNOLZA-BACKEND 레포지토리`](https://github.com/TeamOHJO/yanoljaProject-Backend)**
+**[`AlbaOn-BACKEND 레포지토리`](https://github.com/TeamOHJO/yanoljaProject-Backend)**
 
-OH! 놀자의 백엔드 레포지토리 입니다.
+AlbaOn의 백엔드 레포지토리 입니다.
 
 <br />
-
-## 네이밍 규칙
-
-### ✅ Commit log
-
-```
-feat : 새로운 기능 추가
-env : 개발 환경 관련 설정
-fix : 버그 수정
-style : 코드 스타일 수정 (세미 콜론, 인덴트 등의 스타일적인 부분만)
-refactor : 코드 리팩토링 (더 효율적인 코드로 변경 등)
-design : CSS 등 디자인 추가/수정
-comment : 주석 추가/수정
-docs : 내부 문서 추가/수정
-test : 테스트 추가/수정
-chore : 빌드 관련 코드 수정
-rename : 파일 및 폴더명 수정
-remove : 파일 삭제
-```
-
-### ✅ Branch Naming
-
-```
-feat/#이슈번호
-```
-
-### ✅ Issue Naming
-
-```
-[커밋 로그 명] 주요 기능 명
-ex) [feat] ~~기능 추가
-```
-
-### ✅ Requests Naming
-
-```
-[#이슈넘버] 주요 기능 명
-ex) [#4] ~~기능 추가
-```
 
 ## 폴더 구조
 
@@ -214,7 +248,6 @@ ex) [#4] ~~기능 추가
 
 ```
 - 컴포넌트들은 기본적으로 PascalCase(대문자 시작) 제작
-- 상위 폴더는 기본적으로 camelCase(소문자 시작) 시작
 - 상수화 파일 제외 모든 변수, 함수명은 camelCase로 시작
-- 스타일 컴포넌트는 같은 파일 내에 기재
+- scss는 같은 파일 내에 기재
 ```
