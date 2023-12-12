@@ -125,51 +125,51 @@
 <br>
  <br>
  <br>
- <h2>:불: 기능 구현 사항</h2>
+ <h2>🔥  기능 구현 사항</h2>
  <h3 align="center"> :위를_가리키는_손_모양_2: 주요기능</h3>
 <h4>회원관련 기능<h4>
 <h5>역할군에 따른 회원가입 기능</h5>
-:흰색_확인_표시: 기본정보는 인증을 위한 이메일, 아이디, 비밀번호, 이름 이때 비밀번호는 데이터베이스에 암호화하여 저장.<br>
-:흰색_확인_표시: Admin -  추가적으로 사업자이름,사업자번호 <br>
-:흰색_확인_표시: User -  해당 사업장의 admin이 발행한 인증코드를 적어 유효한지 판단 후 가입승인. <br>
-:흰색_확인_표시: 아이디와 비밀번호로 로그인 기능 <br>
-:흰색_확인_표시: 회원가입 외에 기능은 로그인과 jwt토큰 인가과정 필요 <br>
-:흰색_확인_표시: 인증메일을 통한 비밀번호 찾기 기능 <br>
+ ✅  기본정보는 인증을 위한 이메일, 아이디, 비밀번호, 이름 이때 비밀번호는 데이터베이스에 암호화하여 저장.<br>
+ ✅  Admin -  추가적으로 사업자이름,사업자번호 <br>
+ ✅  User -  해당 사업장의 admin이 발행한 인증코드를 적어 유효한지 판단 후 가입승인. <br>
+ ✅  아이디와 비밀번호로 로그인 기능 <br>
+ ✅  회원가입 외에 기능은 로그인과 jwt토큰 인가과정 필요 <br>
+ ✅  인증메일을 통한 비밀번호 찾기 기능 <br>
 <h3 align="center">:v: 메인기능</h3>
 <h4>캘린더를 이용한 스케줄관리 기능</h4>
 <h5>Admin</h5>
-:흰색_확인_표시: 해당사업장의 User 전체 근무자 목록을 GET.<br>
-:흰색_확인_표시: 캘린더에서 해당요일을 누르고 근무자, 근무시간, 시급을 입력하고 저장.<br>
+ ✅ 해당사업장의 User 전체 근무자 목록을 GET.<br>
+ ✅  캘린더에서 해당요일을 누르고 근무자, 근무시간, 시급을 입력하고 저장.<br>
 <h5>User</h5>
-:흰색_확인_표시: 캘린더에서 본인일정과 타 User들의 일정을 GET.<br>
-:흰색_확인_표시: 캘린더에서 출근과 퇴근버튼을 통해 근무시간을 기록한다.<br>
-:흰색_확인_표시: 퇴근버튼을 누를 시 오늘 출근한 기록이 있는지 조회.<br>
+ ✅  캘린더에서 본인일정과 타 User들의 일정을 GET.<br>
+ ✅ 캘린더에서 출근과 퇴근버튼을 통해 근무시간을 기록한다.<br>
+ ✅  퇴근버튼을 누를 시 오늘 출근한 기록이 있는지 조회.<br>
 <h4>근태관리에서 근태및 데이터 조회 기능</h4>
 <h5>Admin</h5>
-:흰색_확인_표시: 모든 User의 출근 및 퇴근기록 GET. <br>
-:흰색_확인_표시: 모든 User의 월별 근태 분석 데이터를 GET.<br>
-:흰색_확인_표시: 퇴근처리가 되어야 승인 버튼 활성화<br>
-:흰색_확인_표시: 승인 버튼을 누르면 근무시간과 시급을 통해 오늘 하루의 급여를 계산 후 급여데이터에 UPDATE <br>
+ ✅ 모든 User의 출근 및 퇴근기록 GET. <br>
+ ✅  모든 User의 월별 근태 분석 데이터를 GET.<br>
+ ✅  퇴근처리가 되어야 승인 버튼 활성화<br>
+ ✅  승인 버튼을 누르면 근무시간과 시급을 통해 오늘 하루의 급여를 계산 후 급여데이터에 UPDATE <br>
 <h5>User</h5>
-:흰색_확인_표시: 해당 User의 출근 및 퇴근기록 GET. <br>
-:흰색_확인_표시: 해당 User의 월별 근태 분석 데이터를 GET. <br>
+ ✅  해당 User의 출근 및 퇴근기록 GET. <br>
+ ✅  해당 User의 월별 근태 분석 데이터를 GET. <br>
 <h4>급여관리에서 월급및 데이터 조회 기능</h4>
 <h5>Admin</h5>
-:흰색_확인_표시: 데이터베이스에서 모든 User의 급여데이터를 GET. <br>
-:흰색_확인_표시: 데이터베이스에서 월별 급여 분석 데이터를 GET.  <br>
+ ✅  데이터베이스에서 모든 User의 급여데이터를 GET. <br>
+ ✅  데이터베이스에서 월별 급여 분석 데이터를 GET.  <br>
 <h5>User</h5>
-:흰색_확인_표시: 데이터베이스에서 모든 User의 급여데이터를 GET. <br>
-:흰색_확인_표시: 데이터베이스에서 월별 급여 분석 데이터를 GET. <br>
+ ✅  데이터베이스에서 모든 User의 급여데이터를 GET. <br>
+ ✅  데이터베이스에서 월별 급여 분석 데이터를 GET. <br>
 <h4>업무관리에서 투두리스트 및 댓글 기능</h4>
 <h5>Admin</h5>
-:흰색_확인_표시: 데이터베이스에서 모든 업무리스트데이터를 최신순으로 GET. <br>
-:흰색_확인_표시: 업무일지, 근무일지 생성 및 수정 삭제기능 <br>
-:흰색_확인_표시: 업무 체크리스트 생성 및 업데이트 기능 <br>
+ ✅ 데이터베이스에서 모든 업무리스트데이터를 최신순으로 GET. <br>
+ ✅ 업무일지, 근무일지 생성 및 수정 삭제기능 <br>
+ ✅ 업무 체크리스트 생성 및 업데이트 기능 <br>
 :흰색_확인_표시: 댓글쓰기 기능 <br>
 <h5>User</h5>
-:흰색_확인_표시: 데이터베이스에서 모든 업무리스트데이터를 최신순으로 GET. <br>
-:흰색_확인_표시: 체크박스 클릭시 누가 클릭했는지 표시되는 기능 <br>
-:흰색_확인_표시: 댓글쓰기 기능 <br>
+ ✅ 데이터베이스에서 모든 업무리스트데이터를 최신순으로 GET. <br>
+ ✅ 체크박스 클릭시 누가 클릭했는지 표시되는 기능 <br>
+ ✅ 댓글쓰기 기능 <br>
 <br>
 
 
@@ -189,7 +189,7 @@
 
 </div>
 
-| <img src="" width="150px" /> | <img src="" width="150px" /> |
+| <img src="https://github.com/applicants-backend/KDT_FNProject/assets/137901354/698bf719-1fe9-4697-ae65-0cdc0ef15518" width="150px" /> | <img src="https://github.com/applicants-backend/KDT_FNProject/assets/137901354/8a8938d4-d987-4c67-9ab5-5b6ede2d23bf" width="150px" /> |
 | :------------------------------------------------------------------------------: | :------------------------------------------------------------------------------: |
 | FE: [김민현](https://github.com/applicants-backend) | FE: [차두환](https://github.com/chaduhwan) |
 
@@ -207,11 +207,21 @@
 
 </div>
 
-**[`AlbaOn-BACKEND 레포지토리`](https://github.com/TeamOHJO/yanoljaProject-Backend)**
+**[`AlbaOn-BACKEND 레포지토리`](https://github.com/kangseokjooo/Albabackend)**
 
 AlbaOn의 백엔드 레포지토리 입니다.
-
-<br />
+<h2>👨🏻‍💻 contributors</h2>
+<div id="contributors">
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/EndBug"><img src="https://github.com/kangseokjooo/Albabackend/assets/102424773/475b4b2a-268c-4ff3-8acd-45c7d621236c" width="100px;" alt="kang"/><br /><sub><b>강석주</b></sub></a><br /></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://olets.dev"><img src="https://github.com/kangseokjooo/Albabackend/assets/102424773/e4afa1c4-7b09-4609-924e-8c820e9487b1" width="100px;" alt="justin"/><br /><sub><b>정인근</b></sub></a><br /></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://hsyoonhs.github.io"><img src="https://github.com/kangseokjooo/Albabackend/assets/102424773/8486735e-0064-470a-a43b-5d2dd352a3c9" width="100px;" alt="chan"/><br /><sub><b>최영찬</b></sub></a><br /></td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 ## 폴더 구조
 
