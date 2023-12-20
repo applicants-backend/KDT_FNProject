@@ -53,6 +53,26 @@ export default function Login({type, img, onLoginSuccess} : props) {
       alert('로그인 실패. 아이디와 비밀번호를 확인하세요.');
     }
   };
+
+  const handleGuestLogin = async () =>{
+    const response = await axios.post(`${URL}/login`, UserType === "admin" ? {memberid : "admin1", password : "admin123!", role : "ADMIN"}
+    :{memberid : "user1", password : "dbwj123!", role : "USER"});
+
+    if (response.status === 200 && response.data && response.data.data) {
+
+      setMemberid(response.data.data.memberid);
+      setStoreid(response.data.data.storeid);
+      setName(response.data.data.name)
+      cookies.set("token",response.data.data.token);
+
+      onLoginSuccess();
+    } else {
+      // 성공하지 않았을 때 에러 콘솔 출력
+      console.error('로그인 실패. 응답:', response);
+      alert('로그인 실패. 아이디와 비밀번호를 확인하세요.');
+    }
+
+  }
   
   const onfocusBluer = (e:FocusEvent<HTMLInputElement>, type:string) => {
 
@@ -91,6 +111,7 @@ export default function Login({type, img, onLoginSuccess} : props) {
             비밀번호를 잊으셨나요? <b><Link to={"/findPassword"}>비밀번호 찾기</Link></b>
         </span>
         <button className='login-button' type='button' onClick={handleLogin}>로그인</button>
+        <button className='Guest' type='button' onClick={handleGuestLogin}>게스트 로그인</button>
     </>
   );
 }
